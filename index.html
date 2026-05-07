@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Beijia Tang</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --paper:#f4f2ed;--paper2:#edeae4;
+  --teal-deep:#0a3d35;--teal-mid:#1a6b5a;--teal-light:#3ca98a;
+  --teal-pale:#d4ede8;--ocean:#0e4a6e;--ocean-mid:#1a7a9c;
+  --accent:#c5d8d3;--muted:#6b8c85;--ink:#1a2e28;
+  --serif:'Cormorant Garamond',Georgia,serif;--mono:'DM Mono',monospace;
+}
+html{scroll-behavior:smooth;}
+body{background:var(--paper);color:var(--ink);font-family:var(--serif);font-size:17px;line-height:1.7;overflow-x:hidden;cursor:none;}
+#cursor{width:8px;height:8px;border-radius:50%;background:var(--teal-light);position:fixed;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);mix-blend-mode:multiply;}
+#cursor-ring{width:28px;height:28px;border-radius:50%;border:1px solid var(--teal-light);position:fixed;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);opacity:0.45;transition:width 0.2s,height 0.2s,opacity 0.2s;}
+#mag-canvas{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0;opacity:0.13;}
+
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;justify-content:space-between;align-items:center;padding:0.8rem 3.5rem;background:rgba(244,242,237,0.94);backdrop-filter:blur(10px);border-bottom:1px solid var(--accent);}
+nav .logo{font-family:var(--mono);font-size:0.68rem;letter-spacing:0.18em;color:var(--muted);text-transform:uppercase;}
+nav ul{list-style:none;display:flex;gap:2rem;}
+nav a{font-family:var(--mono);font-size:0.64rem;letter-spacing:0.13em;text-transform:uppercase;color:var(--teal-deep);text-decoration:none;transition:color 0.2s;}
+nav a:hover{color:var(--teal-light);}
+
+.hero{padding:5rem 3.5rem 3.5rem;display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:center;position:relative;z-index:1;}
+.hero-eyebrow{font-family:var(--mono);font-size:0.64rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--teal-light);margin-bottom:0.9rem;}
+h1{font-size:clamp(3.8rem,7vw,6.5rem);font-weight:300;line-height:0.95;color:var(--teal-deep);margin-bottom:1.4rem;}
+h1 em{font-style:italic;color:var(--ocean);}
+.hero-desc{font-size:0.98rem;color:#4a6660;max-width:40ch;font-style:italic;line-height:1.8;margin-bottom:1.5rem;}
+.hero-tags{display:flex;flex-wrap:wrap;gap:0.4rem;}
+.tag{font-family:var(--mono);font-size:0.57rem;letter-spacing:0.09em;text-transform:uppercase;padding:0.2rem 0.55rem;border:1px solid var(--accent);color:var(--teal-mid);}
+.hero-right{position:relative;height:360px;}
+.coord-frame{position:absolute;inset:0;background:var(--teal-deep);overflow:hidden;}
+.coord-grid{position:absolute;inset:0;opacity:0.1;background-image:linear-gradient(var(--teal-light) 1px,transparent 1px),linear-gradient(90deg,var(--teal-light) 1px,transparent 1px);background-size:32px 32px;}
+.coord-caption{position:absolute;bottom:0.8rem;left:0;right:0;text-align:center;font-family:var(--mono);font-size:0.52rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(212,237,232,0.38);}
+
+section{padding:3.5rem 3.5rem;position:relative;z-index:1;}
+.section-label{font-family:var(--mono);font-size:0.6rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--teal-light);margin-bottom:1.8rem;display:flex;align-items:center;gap:1rem;}
+.section-label::after{content:'';height:1px;background:var(--accent);width:100px;}
+h2{font-size:clamp(1.9rem,3.5vw,2.8rem);font-weight:300;line-height:1.15;color:var(--teal-deep);margin-bottom:1.5rem;}
+h2 em{font-style:italic;color:var(--ocean);}
+
+.about-grid{display:grid;grid-template-columns:1fr 1.7fr;gap:3.5rem;align-items:start;}
+.about-stats{display:grid;grid-template-columns:1fr 1fr;gap:1.1rem;}
+.stat{border-left:2px solid var(--teal-light);padding-left:0.85rem;}
+.stat-num{font-size:1.7rem;font-weight:300;color:var(--teal-deep);display:block;line-height:1.1;}
+.stat-label{font-family:var(--mono);font-size:0.52rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);}
+.about-edu{margin-top:1.5rem;padding-top:1.5rem;border-top:1px solid var(--accent);}
+.about-edu-label{font-family:var(--mono);font-size:0.55rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--teal-light);margin-bottom:0.7rem;}
+.about-edu ul{list-style:none;font-size:0.85rem;color:var(--teal-deep);line-height:1.9;}
+.about-body{font-size:0.93rem;line-height:1.88;color:#3a4a46;}
+.about-body p+p{margin-top:0.9rem;}
+
+.approach-section{background:var(--paper2);padding:3.5rem 3.5rem;position:relative;z-index:1;}
+.approach-section .section-label::after{background:#d4d0c8;}
+.identity-text{max-width:58ch;font-size:1rem;line-height:1.9;color:#3a4a46;}
+.identity-text p+p{margin-top:0.9rem;}
+.identity-text em{color:var(--teal-deep);font-style:italic;}
+
+.workmap-section{background:var(--teal-deep);padding:3.5rem 3.5rem;position:relative;z-index:1;}
+.workmap-section .section-label{color:var(--teal-light);}
+.workmap-section .section-label::after{background:rgba(255,255,255,0.1);}
+.workmap-section h2{color:var(--teal-pale);}
+.workmap-section h2 em{color:var(--ocean-mid);}
+.workmap-section .sub{font-size:0.85rem;color:var(--muted);font-style:italic;margin-bottom:1.5rem;}
+#wm-wrap{position:relative;width:100%;background:#061410;border:1px solid rgba(60,169,138,0.18);}
+#wm-wrap svg{display:block;width:100%;height:auto;}
+.wm-popup{position:absolute;background:rgba(4,14,12,0.97);border:1px solid var(--teal-light);padding:1rem 1.2rem;max-width:240px;pointer-events:none;z-index:10;display:none;}
+.wm-popup .wp-org{font-family:var(--mono);font-size:0.53rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--teal-light);margin-bottom:0.3rem;}
+.wm-popup .wp-area{font-size:0.92rem;font-weight:300;color:var(--teal-pale);margin-bottom:0.4rem;line-height:1.2;}
+.wm-popup .wp-body{font-size:0.78rem;color:#8ab8b0;line-height:1.6;font-style:italic;}
+
+.world-section{background:var(--paper);padding:3.5rem 3.5rem;position:relative;z-index:1;}
+#tm-wrap{position:relative;width:100%;background:#0d1e18;border:1px solid var(--accent);margin-top:1.5rem;overflow:hidden;}
+#tm-wrap svg{display:block;width:100%;height:auto;}
+.t-popup{position:absolute;background:rgba(4,14,12,0.97);border:1px solid var(--teal-light);padding:0.9rem 1.1rem;max-width:210px;pointer-events:none;z-index:10;display:none;}
+.t-popup .tp-city{font-family:var(--mono);font-size:0.53rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--teal-light);margin-bottom:0.3rem;}
+.t-popup .tp-mem{font-size:0.8rem;color:var(--teal-pale);line-height:1.6;font-style:italic;}
+
+.skills-section{background:var(--paper2);padding:3.5rem 3.5rem;position:relative;z-index:1;}
+.skills-grid{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--accent);border-left:1px solid var(--accent);margin-top:1.8rem;}
+.skill-group{padding:1.3rem 1.5rem;border-right:1px solid var(--accent);border-bottom:1px solid var(--accent);}
+.skill-group-title{font-family:var(--mono);font-size:0.56rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--teal-light);margin-bottom:0.65rem;}
+.skill-list{list-style:none;font-size:0.87rem;color:var(--teal-deep);line-height:1.95;}
+
+.contact-section{background:var(--teal-deep);color:var(--teal-pale);padding:3.5rem 3.5rem;position:relative;z-index:1;}
+.contact-section .section-label{color:var(--teal-light);}
+.contact-section .section-label::after{background:rgba(255,255,255,0.1);}
+.contact-section h2{color:var(--teal-pale);margin-bottom:0.7rem;}
+.contact-section p{font-size:0.92rem;color:var(--muted);font-style:italic;margin-bottom:1.8rem;max-width:48ch;}
+.contact-links{display:flex;gap:1rem;flex-wrap:wrap;}
+.contact-link{font-family:var(--mono);font-size:0.63rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--teal-pale);text-decoration:none;padding:0.65rem 1.4rem;border:1px solid rgba(255,255,255,0.18);transition:border-color 0.2s,color 0.2s;}
+.contact-link:hover{border-color:var(--teal-light);color:var(--teal-light);}
+footer{padding:0.9rem 3.5rem;background:#040d0b;display:flex;justify-content:space-between;align-items:center;position:relative;z-index:1;}
+footer span{font-family:var(--mono);font-size:0.53rem;letter-spacing:0.12em;color:#2a4a42;text-transform:uppercase;}
+</style>
+</head>
+<body>
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+<canvas id="mag-canvas"></canvas>
+
+<nav>
+  <span class="logo">Beijia Tang</span>
+  <ul>
+    <li><a href="#about">About</a></li>
+    <li><a href="#work">Work</a></li>
+    <li><a href="#world">World</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div>
+    <p class="hero-eyebrow">Environmental & Geoscience · Brisbane · Five Languages</p>
+    <h1>Beijia<br><em>Tang</em></h1>
+    <p class="hero-desc">Cross-disciplinary scientist. Logged cores, identified macroinvertebrates, maintained legal-consequence spatial datasets. Interested in work where data becomes a decision.</p>
+    <div class="hero-tags">
+      <span class="tag">Mine Rehabilitation</span>
+      <span class="tag">Vegetation Management</span>
+      <span class="tag">Native Title</span>
+      <span class="tag">Aquatic Ecology</span>
+      <span class="tag">Remote Sensing</span>
+      <span class="tag">Contaminated Land</span>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="coord-frame">
+      <div class="coord-grid"></div>
+      <svg viewBox="0 0 560 360" xmlns="http://www.w3.org/2000/svg" style="position:absolute;inset:0;width:100%;height:100%">
+        <ellipse cx="280" cy="180" rx="210" ry="148" fill="none" stroke="#3ca98a" stroke-width="0.6" opacity="0.28"/>
+        <ellipse cx="280" cy="180" rx="162" ry="108" fill="none" stroke="#3ca98a" stroke-width="0.7" opacity="0.36"/>
+        <ellipse cx="280" cy="180" rx="112" ry="70" fill="none" stroke="#3ca98a" stroke-width="0.9" opacity="0.46"/>
+        <ellipse cx="280" cy="180" rx="65" ry="40" fill="none" stroke="#3ca98a" stroke-width="1.1" opacity="0.56"/>
+        <ellipse cx="280" cy="180" rx="30" ry="18" fill="none" stroke="#3ca98a" stroke-width="1.3" opacity="0.66"/>
+        <circle cx="280" cy="180" r="4" fill="#3ca98a"/>
+        <circle cx="280" cy="180" r="10" fill="none" stroke="#3ca98a" stroke-width="0.8" opacity="0.38"/>
+        <path d="M48 152 Q158 118 280 146 Q402 170 512 130" fill="none" stroke="#1a7a9c" stroke-width="1" opacity="0.38"/>
+        <path d="M58 218 Q172 198 280 213 Q388 226 502 203" fill="none" stroke="#1a7a9c" stroke-width="0.6" opacity="0.22"/>
+      </svg>
+      <div class="coord-caption">27.4698° S · 153.0251° E · Queensland</div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-label">About</div>
+  <div class="about-grid">
+    <div>
+      <h2>Science<br>with <em>consequence</em></h2>
+      <div class="about-stats">
+        <div class="stat"><span class="stat-num">5</span><span class="stat-label">Languages</span></div>
+        <div class="stat"><span class="stat-num">3</span><span class="stat-label">Countries studied</span></div>
+        <div class="stat"><span class="stat-num">500+</span><span class="stat-label">Reef survey sites</span></div>
+        <div class="stat"><span class="stat-num">4+</span><span class="stat-label">Industry sectors</span></div>
+        <div class="stat"><span class="stat-num">10+</span><span class="stat-label">Years volunteering</span></div>
+        <div class="stat"><span class="stat-num">2</span><span class="stat-label">Research projects</span></div>
+      </div>
+      <div class="about-edu">
+        <div class="about-edu-label">Education</div>
+        <ul>
+          <li>MEM — University of Queensland, 2023</li>
+          <li>BSc Marine Science — UQ, 2023</li>
+          <li>Natural Sciences — Bologna, 2020</li>
+          <li>GPA 6.5 / 7.0</li>
+        </ul>
+      </div>
+    </div>
+    <div class="about-body">
+      <p>Career spans mine rehabilitation monitoring at METServe, aquatic habitat mapping and AUSRIVAS bioassessment at Hydrobiology, multispectral remote sensing and EA approval mapping at Geoconsult, and native title, vegetation, and place names spatial work at Queensland Government. Each role involved producing outputs that fed directly into regulatory decisions — court submissions, EIA documentation, legislative compliance.</p>
+      <p>Academic path ran from natural sciences at Bologna across biological, earth, and environmental disciplines, to marine science and environmental management at UQ. Research covered Diamantina Basin carbon sequestration using HYDRUS-2D and Great Barrier Reef carbonate chemistry under ANZG ecotoxicological frameworks.</p>
+      <p>Multilingual across Chinese, English, Italian, German, and Spanish. Volunteered since 2015 translating scientific documentary content into Chinese. Reef Census surveys across Moreton Bay and the Whitsundays. COP15 CBD reporting for Chinese and African civil society organisations in Kunming.</p>
+    </div>
+  </div>
+</section>
+
+<!-- APPROACH -->
+<section class="approach-section">
+  <div class="section-label">Approach</div>
+  <div class="identity-text">
+    <p>Most GIS people have never logged a core or identified a macroinvertebrate. Most field ecologists cannot build an FME workflow. The work that interests me sits in the gap between those two worlds — <em>where technical depth meets regulatory consequence and someone has to translate between them.</em></p>
+    <p>Spatial tools are the medium. The point is what the data is arguing.</p>
+  </div>
+</section>
+
+<!-- WORK MAP -->
+<section id="work" class="workmap-section">
+  <div class="section-label">Work</div>
+  <h2>Where the <em>work happened</em></h2>
+  <p class="sub">Areas I've worked in across Queensland. Click a marker for context.</p>
+  <div id="wm-wrap">
+    <svg viewBox="0 0 800 640" xmlns="http://www.w3.org/2000/svg">
+      <rect width="800" height="640" fill="#061410"/>
+      <g stroke="rgba(60,169,138,0.07)" stroke-width="0.5">
+        <line x1="0" y1="64" x2="800" y2="64"/><line x1="0" y1="128" x2="800" y2="128"/>
+        <line x1="0" y1="192" x2="800" y2="192"/><line x1="0" y1="256" x2="800" y2="256"/>
+        <line x1="0" y1="320" x2="800" y2="320"/><line x1="0" y1="384" x2="800" y2="384"/>
+        <line x1="0" y1="448" x2="800" y2="448"/><line x1="0" y1="512" x2="800" y2="512"/>
+        <line x1="0" y1="576" x2="800" y2="576"/>
+        <line x1="80" y1="0" x2="80" y2="640"/><line x1="160" y1="0" x2="160" y2="640"/>
+        <line x1="240" y1="0" x2="240" y2="640"/><line x1="320" y1="0" x2="320" y2="640"/>
+        <line x1="400" y1="0" x2="400" y2="640"/><line x1="480" y1="0" x2="480" y2="640"/>
+        <line x1="560" y1="0" x2="560" y2="640"/><line x1="640" y1="0" x2="640" y2="640"/>
+        <line x1="720" y1="0" x2="720" y2="640"/>
+      </g>
+      <path d="M 30,20 L 770,20 L 770,42 Q 720,46 698,82 Q 676,120 664,162 Q 652,205 660,248 Q 666,284 658,318 Q 648,358 630,394 Q 610,430 588,462 Q 562,498 535,526 Q 504,556 472,574 Q 440,590 408,596 Q 374,601 340,596 Q 304,590 272,574 Q 238,556 210,532 Q 178,504 155,472 Q 130,438 112,400 Q 92,360 76,318 Q 58,272 46,224 Q 34,175 30,128 Z"
+        fill="rgba(60,169,138,0.07)" stroke="rgba(60,169,138,0.28)" stroke-width="1.2"/>
+      <g id="wm0" style="cursor:pointer">
+        <circle cx="701" cy="529" r="13" fill="rgba(60,169,138,0.12)"/>
+        <circle cx="701" cy="529" r="6" fill="#3ca98a" stroke="rgba(60,169,138,0.5)" stroke-width="1.5"/>
+        <text x="716" y="533" fill="rgba(212,237,232,0.6)" font-family="DM Mono,monospace" font-size="10">Hydrobiology</text>
+      </g>
+      <g id="wm1" style="cursor:pointer">
+        <circle cx="550" cy="500" r="13" fill="rgba(60,169,138,0.12)"/>
+        <circle cx="550" cy="500" r="6" fill="#3ca98a" stroke="rgba(60,169,138,0.5)" stroke-width="1.5"/>
+        <text x="565" y="504" fill="rgba(212,237,232,0.6)" font-family="DM Mono,monospace" font-size="10">Geoconsult</text>
+      </g>
+      <g id="wm2" style="cursor:pointer">
+        <circle cx="530" cy="440" r="13" fill="rgba(26,122,156,0.15)"/>
+        <circle cx="530" cy="440" r="6" fill="#1a7a9c" stroke="rgba(26,122,156,0.5)" stroke-width="1.5"/>
+        <text x="545" y="444" fill="rgba(212,237,232,0.6)" font-family="DM Mono,monospace" font-size="10">Native Title</text>
+      </g>
+      <g id="wm3" style="cursor:pointer">
+        <circle cx="307" cy="336" r="13" fill="rgba(60,169,138,0.12)"/>
+        <circle cx="307" cy="336" r="6" fill="#3ca98a" stroke="rgba(60,169,138,0.5)" stroke-width="1.5"/>
+        <text x="322" y="340" fill="rgba(212,237,232,0.6)" font-family="DM Mono,monospace" font-size="10">Place Names · QLD-wide</text>
+      </g>
+      <circle cx="725" cy="572" r="3" fill="rgba(212,237,232,0.22)"/>
+      <text x="732" y="576" fill="rgba(212,237,232,0.2)" font-family="DM Mono,monospace" font-size="8">Brisbane</text>
+    </svg>
+    <div class="wm-popup" id="wm-popup">
+      <div class="wp-org" id="wp-org"></div>
+      <div class="wp-area" id="wp-area"></div>
+      <div class="wp-body" id="wp-body"></div>
+    </div>
+  </div>
+</section>
+
+<!-- WORLD -->
+<section id="world" class="world-section">
+  <div class="section-label">World</div>
+  <h2>Coordinates that<br><em>left something behind</em></h2>
+  <div id="tm-wrap">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 500" width="100%" preserveAspectRatio="xMidYMid meet">
+      <rect width="1000" height="500" fill="#0d1e18"/>
+      <g stroke="rgba(60,169,138,0.07)" stroke-width="0.4">
+        <line x1="0" y1="83" x2="1000" y2="83"/><line x1="0" y1="167" x2="1000" y2="167"/>
+        <line x1="0" y1="250" x2="1000" y2="250"/><line x1="0" y1="333" x2="1000" y2="333"/>
+        <line x1="0" y1="417" x2="1000" y2="417"/>
+        <line x1="167" y1="0" x2="167" y2="500"/><line x1="333" y1="0" x2="333" y2="500"/>
+        <line x1="500" y1="0" x2="500" y2="500"/><line x1="667" y1="0" x2="667" y2="500"/>
+        <line x1="833" y1="0" x2="833" y2="500"/>
+      </g>
+      <g fill="#1a6b5a" opacity="0.85">
+        <path d="M140 180 L180 160 L220 170 L240 200 L210 230 L170 220 Z"/>
+        <path d="M260 150 L320 130 L360 150 L340 190 L280 200 Z"/>
+        <path d="M420 170 L500 150 L560 180 L540 230 L460 240 L410 210 Z"/>
+        <path d="M600 160 L660 140 L720 160 L710 200 L640 220 L600 200 Z"/>
+        <path d="M750 200 L820 180 L860 210 L840 260 L770 250 Z"/>
+        <path d="M300 260 L380 240 L420 270 L400 320 L330 330 L290 300 Z"/>
+        <path d="M520 260 L600 240 L650 280 L620 340 L540 330 L500 290 Z"/>
+        <path d="M700 300 L780 280 L820 320 L800 380 L720 370 L680 330 Z"/>
+        <path d="M150 280 L210 260 L240 300 L220 340 L160 330 Z"/>
+      </g>
+      <g stroke="#3ca98a" stroke-width="0.8" opacity="0.25" fill="none">
+        <path d="M200 200 L350 180 L480 210 L650 190 L780 240"/>
+        <path d="M360 300 L560 300 L740 340"/>
+      </g>
+      <!-- TRAVEL PINS — add more entries in the same format below -->
+      <!-- Prague -->
+      <g id="tp0" style="cursor:pointer">
+        <circle cx="540" cy="111" r="11" fill="rgba(60,169,138,0.18)"/>
+        <circle cx="540" cy="111" r="5" fill="#3ca98a" stroke="rgba(60,169,138,0.5)" stroke-width="1.2"/>
+        <text x="554" y="115" fill="rgba(212,237,232,0.65)" font-family="DM Mono,monospace" font-size="9">Prague</text>
+      </g>
+      <!-- Füssen -->
+      <g id="tp1" style="cursor:pointer">
+        <circle cx="524" cy="120" r="11" fill="rgba(60,169,138,0.18)"/>
+        <circle cx="524" cy="120" r="5" fill="#3ca98a" stroke="rgba(60,169,138,0.5)" stroke-width="1.2"/>
+        <text x="538" y="136" fill="rgba(212,237,232,0.65)" font-family="DM Mono,monospace" font-size="9">Füssen</text>
+      </g>
+    </svg>
+    <div class="t-popup" id="t-popup">
+      <div class="tp-city" id="tp-city"></div>
+      <div class="tp-mem" id="tp-mem"></div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills" class="skills-section">
+  <div class="section-label">Skills</div>
+  <h2>Tools &amp; <em>methods</em></h2>
+  <div class="skills-grid">
+    <div class="skill-group">
+      <div class="skill-group-title">Spatial platforms</div>
+      <ul class="skill-list"><li>ArcGIS Pro</li><li>QGIS</li><li>ArcGIS Online</li><li>Field Maps</li><li>FME</li></ul>
+    </div>
+    <div class="skill-group">
+      <div class="skill-group-title">Remote sensing & analysis</div>
+      <ul class="skill-list"><li>Sentinel-2</li><li>ASTER</li><li>Vegetation indices</li><li>Change detection</li><li>WellCAD · Minescape</li></ul>
+    </div>
+    <div class="skill-group">
+      <div class="skill-group-title">Programming & data</div>
+      <ul class="skill-list"><li>Python</li><li>PowerBI</li><li>Spatial SQL</li><li>Access</li><li>HYDRUS-2D</li></ul>
+    </div>
+    <div class="skill-group" style="border-bottom:none">
+      <div class="skill-group-title">Field & lab</div>
+      <ul class="skill-list"><li>Macroinvertebrate taxonomy</li><li>Core logging</li><li>Leaf damage quantification</li><li>Seagrass & coral surveys</li><li>Sample chain-of-custody</li></ul>
+    </div>
+    <div class="skill-group" style="border-bottom:none">
+      <div class="skill-group-title">Regulatory frameworks</div>
+      <ul class="skill-list"><li>EPBC Act</li><li>Native Title Act</li><li>Vegetation Mgmt Act</li><li>Place Names Act</li><li>EA approvals</li></ul>
+    </div>
+    <div class="skill-group" style="border-bottom:none">
+      <div class="skill-group-title">Languages</div>
+      <ul class="skill-list"><li>Chinese (native)</li><li>English</li><li>Italian</li><li>German</li><li>Spanish</li></ul>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" class="contact-section">
+  <div class="section-label">Contact</div>
+  <h2>Get in <em>touch</em></h2>
+  <p>Open to conversations about mine rehabilitation, contaminated land, and resources sector environmental roles. Interested in work where data becomes a decision.</p>
+  <div class="contact-links">
+    <a href="https://github.com/AcorusT" class="contact-link" target="_blank">GitHub</a>
+    <a href="https://www.linkedin.com/in/beijia-tang/" class="contact-link" target="_blank">LinkedIn</a>
+    <a href="mailto:your@email.com" class="contact-link">Email</a><!-- replace your@email.com -->
+  </div>
+</section>
+
+<footer>
+  <span>Beijia Tang · Brisbane</span>
+  <span>Applied Environmental Scientist</span>
+  <span>© 2025</span>
+</footer>
+
+<script>
+// CURSOR
+const cursor=document.getElementById('cursor');
+const ring=document.getElementById('cursor-ring');
+let mx=window.innerWidth/2,my=window.innerHeight/2,rx=mx,ry=my;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cursor.style.left=mx+'px';cursor.style.top=my+'px';});
+(function ar(){rx+=(mx-rx)*0.12;ry+=(my-ry)*0.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(ar);})();
+document.querySelectorAll('a').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{ring.style.width='42px';ring.style.height='42px';ring.style.opacity='0.75';});
+  el.addEventListener('mouseleave',()=>{ring.style.width='28px';ring.style.height='28px';ring.style.opacity='0.45';});
+});
+
+// MAGNETIC FIELD
+const mc=document.getElementById('mag-canvas');
+const mctx=mc.getContext('2d');
+function rmag(){mc.width=window.innerWidth;mc.height=window.innerHeight;}
+rmag();window.addEventListener('resize',rmag);
+const pts=Array.from({length:48},()=>{const ox=Math.random()*window.innerWidth,oy=Math.random()*window.innerHeight;return{ox,oy,x:ox,y:oy,vx:0,vy:0};});
+(function am(){
+  mctx.clearRect(0,0,mc.width,mc.height);
+  pts.forEach(p=>{
+    const dx=mx-p.x,dy=my-p.y,dist=Math.sqrt(dx*dx+dy*dy),pull=Math.max(0,1-dist/200);
+    p.vx+=dx*pull*0.04+(p.ox-p.x)*0.025;p.vy+=dy*pull*0.04+(p.oy-p.y)*0.025;
+    p.vx*=0.80;p.vy*=0.80;p.x+=p.vx;p.y+=p.vy;
+  });
+  mctx.lineWidth=0.7;mctx.strokeStyle='#3ca98a';
+  for(let i=0;i<pts.length;i++)for(let j=i+1;j<pts.length;j++){
+    const dx=pts[i].x-pts[j].x,dy=pts[i].y-pts[j].y,d=Math.sqrt(dx*dx+dy*dy);
+    if(d<105){mctx.globalAlpha=(1-d/105)*0.42;mctx.beginPath();mctx.moveTo(pts[i].x,pts[i].y);mctx.lineTo(pts[j].x,pts[j].y);mctx.stroke();}
+  }
+  mctx.globalAlpha=0.38;mctx.fillStyle='#3ca98a';
+  pts.forEach(p=>{mctx.beginPath();mctx.arc(p.x,p.y,1.3,0,Math.PI*2);mctx.fill();});
+  mctx.globalAlpha=1;
+  requestAnimationFrame(am);
+})();
+
+// WORK MAP POPUPS
+const workData=[
+  {org:"Hydrobiology QLD",area:"Mary River & Paradise Dam",body:"Threatened species habitat mapping under EPBC Act — Mary River Turtle surveys feeding into EIA documentation for regulatory submission. Water quality REMP reporting aligned to EPP 2019. AUSRIVAS bioassessment and macroinvertebrate taxonomy across catchment reference sites."},
+  {org:"Geoconsult",area:"North Bowen Basin · Chinchilla region",body:"ASTER and Sentinel-2 multispectral remote sensing for coal target identification and bentonite characterisation. Biodiversity offset assessments and land clearing approvals for proposed mine sites. 100+ project maps for drilling plans and EA approval submissions."},
+  {org:"DNRMMRRD — Native Title",area:"Woppaburra & Manbarra · QLD/NSW/NT",body:"Native title determination and claims mapping under the Native Title Act 1993. Historical cadastral boundary research supporting land compensation outcomes in Queensland courts. Cross-border spatial work spanning QLD, NSW, and NT."},
+  {org:"DNRMMRRD — Place Names",area:"Queensland-wide localities",body:"Maintained Queensland Place Names Gazetteer under Place Names Act 1994. Python scripts automating QSCF feature integration into address and administrative boundary datasets. FME workbenches for state-wide dataset validation and transformation."},
+];
+const wmWrap=document.getElementById('wm-wrap');
+const wmPopup=document.getElementById('wm-popup');
+['wm0','wm1','wm2','wm3'].forEach((id,i)=>{
+  document.getElementById(id).addEventListener('click',e=>{
+    const rect=wmWrap.getBoundingClientRect();
+    const d=workData[i];
+    document.getElementById('wp-org').textContent=d.org;
+    document.getElementById('wp-area').textContent=d.area;
+    document.getElementById('wp-body').textContent=d.body;
+    let px=e.clientX-rect.left+14,py=e.clientY-rect.top-10;
+    if(px+250>wmWrap.offsetWidth) px=e.clientX-rect.left-264;
+    if(py<0) py=4;
+    wmPopup.style.left=px+'px';wmPopup.style.top=py+'px';wmPopup.style.display='block';
+    e.stopPropagation();
+  });
+});
+wmWrap.addEventListener('click',()=>wmPopup.style.display='none');
+
+// TRAVEL MAP POPUPS
+// To add a new place: copy one entry below, update city/mem, and add a matching <g id="tp2"> pin in the SVG above
+const travelData=[
+  {city:"Prague · Czech Republic",mem:"Lived on a boat hotel on the Vltava river. The hotel no longer exists."},
+  {city:"Füssen · Germany",mem:"Watched the musical about Ludwig II, then walked up to his castle the next day."},
+];
+const tmWrap=document.getElementById('tm-wrap');
+const tPopup=document.getElementById('t-popup');
+['tp0','tp1'].forEach((id,i)=>{
+  document.getElementById(id).addEventListener('click',e=>{
+    const rect=tmWrap.getBoundingClientRect();
+    const d=travelData[i];
+    document.getElementById('tp-city').textContent=d.city;
+    document.getElementById('tp-mem').textContent=d.mem;
+    let px=e.clientX-rect.left+14,py=e.clientY-rect.top-10;
+    if(px+220>tmWrap.offsetWidth) px=e.clientX-rect.left-234;
+    if(py<0) py=4;
+    tPopup.style.left=px+'px';tPopup.style.top=py+'px';tPopup.style.display='block';
+    e.stopPropagation();
+  });
+});
+tmWrap.addEventListener('click',()=>tPopup.style.display='none');
+</script>
+</body>
+</html>
