@@ -12,20 +12,18 @@
   --teal-deep:#0a3d35;--teal-mid:#1a6b5a;--teal-light:#3ca98a;
   --teal-pale:#d4ede8;--ocean:#0e4a6e;--ocean-mid:#1a7a9c;
   --accent:#c5d8d3;--muted:#6b8c85;--ink:#1a2e28;
-  --serif:'Cormorant Garamond',Georgia,serif;--mono:'DM Mono',monospace;
+  --serif:"Cormorant Garamond",Georgia,serif;--mono:"DM Mono",monospace;
 }
 html{scroll-behavior:smooth;}
 body{background:var(--paper);color:var(--ink);font-family:var(--serif);font-size:17px;line-height:1.7;overflow-x:hidden;cursor:none;}
 #cursor{width:8px;height:8px;border-radius:50%;background:var(--teal-light);position:fixed;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);mix-blend-mode:multiply;}
 #cursor-ring{width:28px;height:28px;border-radius:50%;border:1px solid var(--teal-light);position:fixed;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);opacity:0.45;transition:width 0.2s,height 0.2s,opacity 0.2s;}
 #mag-canvas{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0;opacity:0.13;}
-
 nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;justify-content:space-between;align-items:center;padding:0.8rem 3.5rem;background:rgba(244,242,237,0.94);backdrop-filter:blur(10px);border-bottom:1px solid var(--accent);}
 nav .logo{font-family:var(--mono);font-size:0.68rem;letter-spacing:0.18em;color:var(--muted);text-transform:uppercase;}
 nav ul{list-style:none;display:flex;gap:2rem;}
 nav a{font-family:var(--mono);font-size:0.64rem;letter-spacing:0.13em;text-transform:uppercase;color:var(--teal-deep);text-decoration:none;transition:color 0.2s;}
 nav a:hover{color:var(--teal-light);}
-
 .hero{padding:5rem 3.5rem 3.5rem;display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:center;position:relative;z-index:1;}
 .hero-eyebrow{font-family:var(--mono);font-size:0.64rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--teal-light);margin-bottom:0.9rem;}
 h1{font-size:clamp(3.8rem,7vw,6.5rem);font-weight:300;line-height:0.95;color:var(--teal-deep);margin-bottom:1.4rem;}
@@ -37,13 +35,11 @@ h1 em{font-style:italic;color:var(--ocean);}
 .coord-frame{position:absolute;inset:0;background:var(--teal-deep);overflow:hidden;}
 .coord-grid{position:absolute;inset:0;opacity:0.1;background-image:linear-gradient(var(--teal-light) 1px,transparent 1px),linear-gradient(90deg,var(--teal-light) 1px,transparent 1px);background-size:32px 32px;}
 .coord-caption{position:absolute;bottom:0.8rem;left:0;right:0;text-align:center;font-family:var(--mono);font-size:0.52rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(212,237,232,0.38);}
-
 section{padding:3.5rem 3.5rem;position:relative;z-index:1;}
 .section-label{font-family:var(--mono);font-size:0.6rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--teal-light);margin-bottom:1.8rem;display:flex;align-items:center;gap:1rem;}
-.section-label::after{content:'';height:1px;background:var(--accent);width:100px;}
+.section-label::after{content:"";height:1px;background:var(--accent);width:100px;}
 h2{font-size:clamp(1.9rem,3.5vw,2.8rem);font-weight:300;line-height:1.15;color:var(--teal-deep);margin-bottom:1.5rem;}
 h2 em{font-style:italic;color:var(--ocean);}
-
 .about-grid{display:grid;grid-template-columns:1fr 1.7fr;gap:3.5rem;align-items:start;}
 .about-stats{display:grid;grid-template-columns:1fr 1fr;gap:1.1rem;}
 .stat{border-left:2px solid var(--teal-light);padding-left:0.85rem;}
@@ -54,44 +50,35 @@ h2 em{font-style:italic;color:var(--ocean);}
 .about-edu ul{list-style:none;font-size:0.85rem;color:var(--teal-deep);line-height:1.9;}
 .about-body{font-size:0.93rem;line-height:1.88;color:#3a4a46;}
 .about-body p+p{margin-top:0.9rem;}
-
 .approach-section{background:var(--paper2);padding:3.5rem 3.5rem;position:relative;z-index:1;}
 .approach-section .section-label::after{background:#d4d0c8;}
-.identity-text{max-width:58ch;font-size:1rem;line-height:1.9;color:#3a4a46;}
+.approach-inner{max-width:62ch;margin:0 auto;}
+.identity-text{font-size:1rem;line-height:1.9;color:#3a4a46;}
 .identity-text p+p{margin-top:0.9rem;}
 .identity-text em{color:var(--teal-deep);font-style:italic;}
-
 .workmap-section{background:var(--teal-deep);padding:3.5rem 3.5rem;position:relative;z-index:1;}
 .workmap-section .section-label{color:var(--teal-light);}
 .workmap-section .section-label::after{background:rgba(255,255,255,0.1);}
 .workmap-section h2{color:var(--teal-pale);}
 .workmap-section h2 em{color:var(--ocean-mid);}
 .workmap-section .sub{font-size:0.85rem;color:var(--muted);font-style:italic;margin-bottom:1.5rem;}
-#wm-wrap{position:relative;width:100%;background:#061410;border:1px solid rgba(60,169,138,0.18);}
+#wm-wrap{position:relative;width:100%;max-width:520px;background:#061410;border:1px solid rgba(60,169,138,0.18);}
 #wm-wrap svg{display:block;width:100%;height:auto;}
-.wm-popup{position:absolute;background:rgba(4,14,12,0.97);border:1px solid var(--teal-light);padding:1rem 1.2rem;max-width:240px;pointer-events:none;z-index:10;display:none;}
+.wm-popup{position:absolute;background:rgba(4,14,12,0.97);border:1px solid var(--teal-light);padding:1rem 1.2rem;width:240px;pointer-events:none;z-index:10;display:none;}
 .wm-popup .wp-org{font-family:var(--mono);font-size:0.53rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--teal-light);margin-bottom:0.3rem;}
 .wm-popup .wp-area{font-size:0.92rem;font-weight:300;color:var(--teal-pale);margin-bottom:0.4rem;line-height:1.2;}
 .wm-popup .wp-body{font-size:0.78rem;color:#8ab8b0;line-height:1.6;font-style:italic;}
-
-.world-section{background:var(--paper);padding:3.5rem 3.5rem;position:relative;z-index:1;}
-#tm-wrap{position:relative;width:100%;background:#0d1e18;border:1px solid var(--accent);margin-top:1.5rem;overflow:hidden;}
-#tm-wrap svg{display:block;width:100%;height:auto;}
-.t-popup{position:absolute;background:rgba(4,14,12,0.97);border:1px solid var(--teal-light);padding:0.9rem 1.1rem;max-width:210px;pointer-events:none;z-index:10;display:none;}
-.t-popup .tp-city{font-family:var(--mono);font-size:0.53rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--teal-light);margin-bottom:0.3rem;}
-.t-popup .tp-mem{font-size:0.8rem;color:var(--teal-pale);line-height:1.6;font-style:italic;}
-
 .skills-section{background:var(--paper2);padding:3.5rem 3.5rem;position:relative;z-index:1;}
 .skills-grid{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--accent);border-left:1px solid var(--accent);margin-top:1.8rem;}
 .skill-group{padding:1.3rem 1.5rem;border-right:1px solid var(--accent);border-bottom:1px solid var(--accent);}
 .skill-group-title{font-family:var(--mono);font-size:0.56rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--teal-light);margin-bottom:0.65rem;}
 .skill-list{list-style:none;font-size:0.87rem;color:var(--teal-deep);line-height:1.95;}
-
 .contact-section{background:var(--teal-deep);color:var(--teal-pale);padding:3.5rem 3.5rem;position:relative;z-index:1;}
 .contact-section .section-label{color:var(--teal-light);}
 .contact-section .section-label::after{background:rgba(255,255,255,0.1);}
 .contact-section h2{color:var(--teal-pale);margin-bottom:0.7rem;}
-.contact-section p{font-size:0.92rem;color:var(--muted);font-style:italic;margin-bottom:1.8rem;max-width:48ch;}
+.contact-inner{max-width:62ch;margin:0 auto;}
+.contact-inner p{font-size:0.92rem;color:var(--muted);font-style:italic;margin-bottom:1.8rem;}
 .contact-links{display:flex;gap:1rem;flex-wrap:wrap;}
 .contact-link{font-family:var(--mono);font-size:0.63rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--teal-pale);text-decoration:none;padding:0.65rem 1.4rem;border:1px solid rgba(255,255,255,0.18);transition:border-color 0.2s,color 0.2s;}
 .contact-link:hover{border-color:var(--teal-light);color:var(--teal-light);}
@@ -103,24 +90,20 @@ footer span{font-family:var(--mono);font-size:0.53rem;letter-spacing:0.12em;colo
 <div id="cursor"></div>
 <div id="cursor-ring"></div>
 <canvas id="mag-canvas"></canvas>
-
 <nav>
   <span class="logo">Beijia Tang</span>
   <ul>
     <li><a href="#about">About</a></li>
     <li><a href="#work">Work</a></li>
-    <li><a href="#world">World</a></li>
     <li><a href="#skills">Skills</a></li>
     <li><a href="#contact">Contact</a></li>
   </ul>
 </nav>
-
-<!-- HERO -->
 <section class="hero">
   <div>
-    <p class="hero-eyebrow">Environmental & Geoscience · Brisbane · Five Languages</p>
+    <p class="hero-eyebrow">Applied Scientist · Brisbane · Environmental Regulation</p>
     <h1>Beijia<br><em>Tang</em></h1>
-    <p class="hero-desc">Cross-disciplinary scientist. Logged cores, identified macroinvertebrates, maintained legal-consequence spatial datasets. Interested in work where data becomes a decision.</p>
+    <p class="hero-desc">Drawn to places where human decisions have left a physical mark on the landscape — and to the data that makes those marks legible.</p>
     <div class="hero-tags">
       <span class="tag">Mine Rehabilitation</span>
       <span class="tag">Vegetation Management</span>
@@ -148,20 +131,16 @@ footer span{font-family:var(--mono);font-size:0.53rem;letter-spacing:0.12em;colo
     </div>
   </div>
 </section>
-
-<!-- ABOUT -->
 <section id="about">
   <div class="section-label">About</div>
   <div class="about-grid">
     <div>
       <h2>Science<br>with <em>consequence</em></h2>
       <div class="about-stats">
-        <div class="stat"><span class="stat-num">5</span><span class="stat-label">Languages</span></div>
         <div class="stat"><span class="stat-num">3</span><span class="stat-label">Countries studied</span></div>
-        <div class="stat"><span class="stat-num">500+</span><span class="stat-label">Reef survey sites</span></div>
         <div class="stat"><span class="stat-num">4+</span><span class="stat-label">Industry sectors</span></div>
         <div class="stat"><span class="stat-num">10+</span><span class="stat-label">Years volunteering</span></div>
-        <div class="stat"><span class="stat-num">2</span><span class="stat-label">Research projects</span></div>
+        <div class="stat"><span class="stat-num">5</span><span class="stat-label">Languages spoken</span></div>
       </div>
       <div class="about-edu">
         <div class="about-edu-label">Education</div>
@@ -180,60 +159,61 @@ footer span{font-family:var(--mono);font-size:0.53rem;letter-spacing:0.12em;colo
     </div>
   </div>
 </section>
-
-<!-- APPROACH -->
 <section class="approach-section">
   <div class="section-label">Approach</div>
-  <div class="identity-text">
-    <p>Most GIS people have never logged a core or identified a macroinvertebrate. Most field ecologists cannot build an FME workflow. The work that interests me sits in the gap between those two worlds — <em>where technical depth meets regulatory consequence and someone has to translate between them.</em></p>
-    <p>Spatial tools are the medium. The point is what the data is arguing.</p>
+  <div class="approach-inner">
+    <div class="identity-text">
+      <p>Every role has involved being dropped into a system that was already complicated — a mine site, a river catchment, a government database, a court boundary dispute — and finding the question that actually mattered inside it. The domain keeps changing. The pattern does not.</p>
+      <p>Most GIS people have never logged a core or identified a macroinvertebrate. Most field ecologists cannot build an FME workflow. <em>The gap between those two worlds is where the interesting work happens.</em> Spatial tools are the medium. The point is what the data is arguing.</p>
+    </div>
   </div>
 </section>
-
-<!-- WORK MAP -->
 <section id="work" class="workmap-section">
   <div class="section-label">Work</div>
   <h2>Where the <em>work happened</em></h2>
-  <p class="sub">Areas I've worked in across Queensland. Click a marker for context.</p>
+  <p class="sub">Areas I have worked in across Queensland. Click a marker for context.</p>
   <div id="wm-wrap">
-    <svg viewBox="0 0 800 640" xmlns="http://www.w3.org/2000/svg">
-      <rect width="800" height="640" fill="#061410"/>
+    <svg viewBox="0 0 359.58 508.33" xmlns="http://www.w3.org/2000/svg">
+      <rect width="359.58" height="508.33" fill="#061410"/>
       <g stroke="rgba(60,169,138,0.07)" stroke-width="0.5">
-        <line x1="0" y1="64" x2="800" y2="64"/><line x1="0" y1="128" x2="800" y2="128"/>
-        <line x1="0" y1="192" x2="800" y2="192"/><line x1="0" y1="256" x2="800" y2="256"/>
-        <line x1="0" y1="320" x2="800" y2="320"/><line x1="0" y1="384" x2="800" y2="384"/>
-        <line x1="0" y1="448" x2="800" y2="448"/><line x1="0" y1="512" x2="800" y2="512"/>
-        <line x1="0" y1="576" x2="800" y2="576"/>
-        <line x1="80" y1="0" x2="80" y2="640"/><line x1="160" y1="0" x2="160" y2="640"/>
-        <line x1="240" y1="0" x2="240" y2="640"/><line x1="320" y1="0" x2="320" y2="640"/>
-        <line x1="400" y1="0" x2="400" y2="640"/><line x1="480" y1="0" x2="480" y2="640"/>
-        <line x1="560" y1="0" x2="560" y2="640"/><line x1="640" y1="0" x2="640" y2="640"/>
-        <line x1="720" y1="0" x2="720" y2="640"/>
+        <line x1="0" y1="60" x2="359.58" y2="60"/><line x1="0" y1="120" x2="359.58" y2="120"/>
+        <line x1="0" y1="180" x2="359.58" y2="180"/><line x1="0" y1="240" x2="359.58" y2="240"/>
+        <line x1="0" y1="300" x2="359.58" y2="300"/><line x1="0" y1="360" x2="359.58" y2="360"/>
+        <line x1="0" y1="420" x2="359.58" y2="420"/><line x1="0" y1="480" x2="359.58" y2="480"/>
+        <line x1="60" y1="0" x2="60" y2="508.33"/><line x1="120" y1="0" x2="120" y2="508.33"/>
+        <line x1="180" y1="0" x2="180" y2="508.33"/><line x1="240" y1="0" x2="240" y2="508.33"/>
+        <line x1="300" y1="0" x2="300" y2="508.33"/>
       </g>
-      <path d="M 30,20 L 770,20 L 770,42 Q 720,46 698,82 Q 676,120 664,162 Q 652,205 660,248 Q 666,284 658,318 Q 648,358 630,394 Q 610,430 588,462 Q 562,498 535,526 Q 504,556 472,574 Q 440,590 408,596 Q 374,601 340,596 Q 304,590 272,574 Q 238,556 210,532 Q 178,504 155,472 Q 130,438 112,400 Q 92,360 76,318 Q 58,272 46,224 Q 34,175 30,128 Z"
-        fill="rgba(60,169,138,0.07)" stroke="rgba(60,169,138,0.28)" stroke-width="1.2"/>
+      <path d="m126.75 0.5875-0.87 0.72-1.88-0.16-1 2.91-1.87 1.84-2.72 0.16 0.4 0.87-1.12-0.71 0.4-0.32-2 1.16 0.44 3.19-0.15 0.56 0.28 0.56 0.28-0.56-0.13 0.72-1.31 2.44 0.31 3.75-1.03 2.15-0.84 1.75v0.56h-0.28l-0.88 3.04-0.15 0.28-0.57 1.72 0.13 0.43 2.47-0.12-0.6 0.84-2.43-0.28-1.29 4.91 0.13 0.4 0.59-0.28-0.43 0.44 1 0.44 0.56 1.31 0.75-1.47h0.12l-0.56 2.31-1.87-1-0.6 1 0.44 1.72-1.16 0.6 1.03-0.72-1.31-4.19 0.6-0.72-0.88-0.16-0.72 0.72-3.03 6.07 0.72 0.28 0.28-0.28 0.88 0.59-0.88-0.16-0.28 0.44 0.16-0.44-1.44-0.15-3.47 8.34 0.87 0.59 1.72-0.59v-0.56h-1.15l0.56-1.91 0.59 0.47 1.88-0.16-1.88 1.04 1.72 0.84 1.44 1.75 1.59-0.59 0.44 0.43 1.16-0.72 1 0.88-1.28-0.16-0.6 0.57-0.28-0.41-1.87 1.28 1.43 0.56 1 1.6 1.44-0.28-0.41 0.12 0.41 0.31-1.72 0.41 0.72 4.19-1.28-2 0.12-2.75-1-1.16-0.87 0.28v-0.72l-2 4.47-2.47 1.6-0.41-0.29-0.87 1.16-0.44 1 0.88 1.44v3.03l1.72 2.59-1.16 2 0.44 0.28 1-0.84h0.72l-1.44 0.84 1.59 1.16-0.56-0.12 0.28 1-0.59-0.72-0.44 0.28 0.31-0.72-1.15 0.44-0.6-0.6-2.59 4.07-2.16 8.18-0.12 2.03 3.03 4.16 0.56 2.75-0.56-0.16 0.12 2.32-2.15 5.47 1.43 9.81 1.16 2 0.72 3.03-1.16 1.72 0.28 1.15-1.28 1.16-0.15 0.13-1.16 3.31-0.12 0.59-2.16 4.91-2.16 9.19-0.43 0.59 1.28 4.16-2 3.18-1.6 4.75-0.28 0.44 0.16 1.88-1.03 1.84-0.88 0.87-0.72 2.6-0.12 0.15-2.75 2.72-0.28-0.12-0.72 2.28-2.6 2.75-0.28 1.16h0.57l-1 3.43-0.29 0.6-1.15 4.75-1.6 2.15-3.31 1.16-2.59 1.87-0.72 0.13-3 1.47 0.12-0.6-2.15 0.88-3.47 0.28h-0.56l-2.88 0.44-2.31-0.44-1.16-0.87-0.56-1.44-2.47-0.88-0.4-0.72-1.6 0.16-0.72-0.72-1.87-0.44-0.88-1-0.28 0.88-0.12-1.31-1.16-0.57-1.75-2.03-0.72 0.44 0.16-0.56-0.72-0.44-3.03-0.28-1.56-1.31-1.88-3.44-0.44-2.75 0.44-1.44-1.59-0.72-1.32-1.59v-1l-7.03-2.16-3.18-2.03-3.72 0.28-3.03-1.28h-0.72l-4.35-1.87v-0.16l-1.28-0.56-3.34-3.41-5.6 248.19 71.13 3.47-4.44 78.62 80.5 6.19 50.97 5.19 51.34 6.19 2.07-1.29 1.15-2.46 1.32-0.04 5.59-3.28 0.59 0.44 2.44-2.5 3.53 1 2.1 0.34 3.15 0.29 3.91 0.09 4.31 0.22 1.88-0.6 3.37 3.63 1.81 0.28v0.41l1-0.28 1.16 0.75 2.87-0.75 2.6 1.87h0.72l0.56 1.31 1.87 0.85 0.29 2.59 1.31-0.28 2.72 2.31 0.72 1.94-0.41 3.09 0.72 1.32-0.31 0.56 1.87 0.72 2.88-2.44v-1.31l1.31-1.57 2.31-0.31 2.16-1.28 0.87 2.59 0.72-0.15 0.56 0.44 0.57-1.29 2.46 0.57 2-1.16-0.43-0.44 1.15-2.87 0.72-0.56-0.12-0.72-1.32-1.03v-1.72l-0.71-1 0.28-0.88 0.59-0.28v0.59l0.72 0.13 1.44-1.31 2.15-0.57 1.32 0.57 2.43-1.85 1.72 0.41 0.88-0.84 0.15-0.88 0.57 0.16 0.56-0.88 1.03-0.15 0.72 0.43-0.44 1.03 1 1.13 1.16-1.72 0.43 1.31 2.29 1.72 1.31-0.15 4.09 0.21 3.38 0.07 1.18-0.41 0.29-1.16 1.28 0.72 1.15-0.72 1.72 0.72 3.19-1.87 1.16 0.72 0.37-0.28h-0.53l-1-1-0.16-1.04-0.43 0.16 0.43-0.28-0.43-5.91 0.59-2.15-0.88-0.44-0.12-2.16-0.88-1.15v-1.72l0.57-0.28-0.72-1.03 0.44-0.88h-0.72l-0.28-1.44-0.29 0.44-1.03-0.28-0.12-2-1 0.56-1.03 0.28 1.31-0.56 0.56-1.44-1.59-1.03-0.28-1.44-0.85 0.16 1-0.28-0.15-1.16 0.43 0.88 0.72 0.12 0.44-1.28v-0.59l-1.72-0.13v-1.87l0.28 0.72 0.72-1 1.88-0.6-0.72-0.28-0.44-1.59-0.44 0.15 0.28-0.71-0.71-0.16 0.15-0.44 0.56 0.31-0.4-1.03 0.84-0.72-0.28 1.88 1.72 3.47 1-0.72-1.13-5.19 0.41-1.87-0.72 1.87 0.44-1.87h0.72l0.15-3.32-2.03-1.71 1.32 0.56 0.28-3.03 1.31-3.72h-1.88l0.85-0.16 0.44-3.87 3.87-7.38-0.84 0.44-1-0.72-0.44-3.03-0.72-0.41 0.56 0.57-0.72 0.59 0.29 1-0.29 0.56-0.71-0.28 0.71 0.88-0.56 0.12-0.59 1.31-0.44-0.72 1.03-0.87-0.31-0.84 0.31-0.04v-0.84l-0.15-0.03 0.15-1-0.72-0.84-0.87 0.12v0.44l-0.16-0.72h1.03l0.13-0.56-1-0.44-0.72-1.16 0.44-0.43-1.16-0.41 0.44-0.59 0.72 0.28-0.72-3.32 0.72-0.12-0.44-0.44 0.87 0.16v-0.88h-0.09l0.66-0.72-0.88 0.13 0.88-0.44 0.28 0.31 0.59-0.87-2.75 1.28-2.15-0.12 2.15-0.16 0.88-1.28h0.84l-1-0.6 0.72 0.16 0.59 0.56v-4.03l-1.43-0.28-0.32-1-0.72 0.56-3-1-0.87-1.87-1.44-0.28-0.31 0.56 0.31-0.72-0.44-0.12 2.04 0.28 0.4-0.44-1.72-2.44-1.15-2.87 0.28-1-0.85 0.28 1-0.6-0.28-2.71-1.15-1.88h-0.44l-0.28 1h-0.16l0.16-1.59-2.03-0.57-1.28-1.59-0.6-0.72 0.56 0.72-0.4-0.28-0.41 0.19 0.25-0.19-1.84-2.59-0.88-1.88-0.59 0.28 0.44-0.4-1.28-2.6-0.44-4.9-1.16-2.6-0.31 0.56h-0.84l-1-1.56-1-0.31 1 0.16-0.72-2.32 0.43-0.4-0.59-0.44-0.16 0.41-2-1.41-0.87-0.16-0.13 0.88 0.72-0.16v0.72l0.88 0.72 0.12 0.44-0.4-0.16 0.28 1-1-1.28-1.47-0.88-0.56 0.88 0.12 0.16-0.4 1-0.44-1.72-0.88-0.32-0.43 0.72-0.41-1.28-0.16 1.6-0.59-1.6 0.44-0.28-1.16-2.16h-0.41l-0.43-2.03-0.88 1 0.28-1.56-2.87-1.59-0.56-1.16 0.28-1.16-0.44 0.32-0.44-1.19 0.44-0.25-0.72-0.47h0.59l-1.59-1.12-0.56-2.04v1.44h-0.44l0.28-1.15-0.87-0.57-0.13 1.16-0.87 0.28 0.43 0.44-0.59-0.44-0.12 1.72-0.44-1.72-1.28-1.72 0.72 0.13v-0.44l-1.91-1.44 1.59 0.31 0.44-0.59-1.16-2.16-0.28-2.31-0.59-0.28v-0.44l0.75 0.44 1-1.28-0.16-1-1.12-0.59h0.56l0.16-1-1.03-0.88 1.15-4.47-0.44 0.88 0.44-1.44-0.72 0.56-0.28-1.15 1.72 0.59-0.12-1.44 1.71-5.06-1.31-1.13 0.31-3.18-0.59-0.13 0.44 0.85-1 1.03 0.28 1.12-1-0.12-0.44-0.88 0.88 0.72v-2l-1.03 0.13 0.31-0.41-0.75-1.88 0.59 0.41 0.16-0.41 0.84 1.29 1-1.72-1.44-0.72-0.28-2.19-0.59 0.47 0.47 0.84-0.31 1.32-0.16-0.72-0.72 0.4 0.31-0.56 0.41-0.16-1-0.71 0.72-0.16-0.44-0.84 0.44 0.43 0.28-0.59-2-1-1 2.16 0.56 0.87-0.56-0.28 0.12 0.44 1.16 0.72-1.28-0.44 1.56 1.56-0.72-0.56-0.4 0.15 2.15 1.44-0.15 0.56-0.57-0.43v0.59l-0.31-1.16-1-0.28 0.72 2.6 1 0.28h-0.84l0.43 1-1.43-2.6-0.88 0.72 0.28-0.56-0.56-0.59 0.56 0.15-1.28-1.15 0.44 1.43-0.44-1.28-0.87-0.15-0.88-1.44-2.28-1.88v-0.59l-2.03-0.41-0.84-1.03 0.4-0.84-0.72-0.72v-1.16l-1.28-1.31-0.15-1.72-0.85-0.84-2.31 1.28-1.28 3.47 1.28 0.41-1.44 0.15 2 7.94 0.6 0.72-1.32-1.03-0.56-2.28-1.72-1.6-1.59-3.19-0.72 1.16-2.59 1.59 0.28 0.29-0.88-0.16-1 1.91 0.72-2.16 1.44-0.88 0.28-1.87-0.28-1.16-1 0.57-0.72-0.41h0.87l-0.59-1.59-1.56-0.16-0.88 1-0.59-0.28 1.47-0.72 1.12-0.56-0.84-2.32-0.44 0.16 0.56-0.59-0.84-2.72 0.28-1.16-1.31-2.87 0.44-2.19h-0.85l0.72-0.41-0.59-0.59-0.13-1.56 0.72-0.32 0.56 0.44 0.16-0.44-0.72-0.4-0.15-2.03 1.59-2.32-0.59-0.4-0.72 1.12-0.13-0.72h-0.87l-0.44-0.56 0.59-1.15-1.15 0.28-0.16-0.85-1.16 0.57-0.12 0.71v-1.15l-0.59-0.44h0.87l0.16-1.12 0.84 0.28v-0.44l-1.56-0.72h1.28l-0.16-3.16h-0.72l-0.4-0.87-1.88 1.72 0.57-1-0.72-0.16 1-0.84-0.57-1-0.71 0.12 0.56-0.28 0.15 0.16 0.29 0.28 0.43-1.88-1.15-0.31h1.28l0.15 0.6 0.44-2.04h-0.59l-0.72-1.12-0.28-0.88-0.56-0.28-0.29 0.85-0.59-1.57-1.56 0.13-0.6 0.59 0.29-1.43 0.43 0.12-0.43-0.72h1.15l-0.56-0.84-0.72 0.28-1.16-1.16-1 0.28-0.59-1-1.44 1 0.28-2-1.15-0.31 0.28-0.56h1.03l-2.59-2.31v-1l-1 0.15 1.28-1.03-2.16-2.72 0.88 0.57 1.12-1.6-0.72-1.72 2.03 1.32 1-0.72v-0.72l0.44 2.15 0.72 0.88 1.88 0.41-1-1.29 0.71-0.31-0.28-0.28h-0.59l-0.84-1.16 0.12-1-0.44-0.28 0.6-0.72-1.72-1.87 0.84-0.16-0.56-0.28v-1l-0.59-0.15-0.57 1.03-1.31-0.16 0.28-1-0.56 0.13v-0.57l0.56-1.15-0.84 1-0.16-1.28-0.28 1.28-0.72-0.28 0.56-0.88-1 0.44 0.44-0.85-0.72 0.13v-2.88l-0.87 0.72-1.72-1.15-0.44 1.43 1.16 0.44-1.31 0.81-0.41-0.09-0.16 0.59-0.28-0.15-0.15-0.56-1.57-0.32 0.13-0.28-1.56-1.56 0.4-0.31-1.28-1 0.28-0.57 0.72 0.13-0.12-1.28-0.6 0.12-0.44-0.84-1.71-0.44 0.28 0.56-1.16-0.71-0.56-1.72-2.47 0.87-1.13-0.31-1.03-1.16 0.32 0.75-0.88-1.47-0.28-3.15-0.59-0.88-1.72-0.28-0.28 1.72 0.71 1.75 0.57 0.16-0.44 0.12-2.72-0.72-1.87-2.87-0.44 0.44 0.28-0.88 0.31 0.16 0.13-0.88-1.57-0.56 1.44-0.16-0.31-1.31-0.84-0.41 0.84 0.29v-0.6l-0.41-1.28-0.18 0.06-0.13-0.34-1.12-1.88-0.66-1.81-0.5 0.81-3.19-0.87-1.56 0.87-0.16-0.71-1.43-0.44-0.44 0.72 0.15-0.88h-0.71l-0.32 1.16-0.28-1.72-1.56-2.59 0.56-1-1-2.04 0.13 0.72-1.57 2.32-2.03-0.29-0.87-0.87-0.41 0.16 0.28-0.72-1.15-0.44-0.28-1.47-3.04-0.28-4.62-3.44-4.44-6.06 2.28-5.75-0.72-0.16 0.72-0.56-0.12-1.03-0.28-0.41 0.72 0.16-0.16-0.88-0.44-0.31-0.12 0.44-0.44-0.72-0.53 0.13-0.35-0.57-0.87-0.12-0.56 0.56 0.43-0.84-0.71-0.32 0.43-0.12-0.31-0.59-0.72 0.31-0.4-2.6v1l-2.91-4.46-0.28-2.16 0.87-2 0.72-1.31-0.72-0.28 0.72 0.12 0.44-1.28 0.12 0.44 0.72-0.28v-1.91l0.72-1.13-0.72-2.03 0.72-0.28-0.28-1.72 1.31-1.43-0.31-1.32-0.56 0.88-0.13-0.06 0.57-0.94-1.44-2.31 0.44-3.04-1.6-2-1.15-5.18-1.29-2.03 0.29-1.72 1.56-2.6-0.85-0.87-0.43 0.87-0.72 0.16-0.56-1.03-1.88 1.31-0.44-0.59 0.44-0.72-0.59-0.28-0.72-1.88-0.85-0.72-0.31-1-2.15-1.59-2.32-3.88-0.12-1.75-1.44-0.56 0.28-3.15 0.88-1.44-0.88-0.31 1.88 0.15-1.16-2.75 1.16-2.44-1.6-3.87-1.43-0.28 0.87-2.47-0.59-0.88 0.43-2.15-1.15-2.16 0.28-1.87-2.56-1.57 1.43 0.29 0.29-0.88-0.6-1h-0.4l1.56-2.75-0.28-0.72 1.87-1-0.44-1.44-0.71 0.88-1.16-0.16-0.44-2.87-0.72-0.72 0.72 0.44 1.03-2.03 2-1.88-0.12-0.84h-1.75l-1.44-2.19 0.28-1.13-3-0.43-0.44-0.72-0.43 0.56v-0.72l-0.88 0.28-0.72-1.43-1.43-0.72v-1.57l-0.72-0.43-0.28-1.44-2.72-0.59-0.44-1.29-2.47-0.15-1.56-2.16v-1.15l1-1.72-1.6-0.16 0.44-2.59-2.03-2.72h-0.72l-0.84 1.72-1.31 0.72 0.31 0.28-0.75-0.13-1.28 0.72-1.6-0.28-1.56-1.47-0.59 0.16v1.72l-0.72 1.59-3.47 2.31-2-0.15-0.44 0.87-0.28-1.03-1.72-0.41-1.31-1.03-1.44-2.28-1-4.03-0.28-5.19-1.59-1.44-0.57-2.59-1.59-2.75 1-4.31 0.88-1.28-1.16-0.16h1l0.44-3.03-0.44-1.28-1.28-1.31 0.12-3.88-0.4-1.31v-5.19l1.28-2.28-1.6 0.44-0.84-0.44-1.31 0.84 0.44 1.03-0.72 0.57v-0.57l-0.88-0.31 0.6-0.28-0.72-0.28 0.12-1.72 1.88-3.91-0.57-0.28 1-1.31-3.15-1.84-0.88-1.6-0.87 0.44 1.03-0.72-0.16-2.03-0.59-0.72-1.72-1.15h-1.16l0.32 0.43-0.72-0.72-0.44 0.6-0.59-0.6 0.59-4.31-0.87-1.15 0.87 0.59 2.59-4.19 1 0.16 0.29-0.6-0.72-0.43-1 0.56-0.6-1.56-1.28-0.72-1.72 1-1.43-0.16-3.04-2.72 0.29-5.18-0.72-4.47 1.15-2-0.59-1.72-1.13-1.31v-5.35l-1.75-3.31-1.15 0.31-0.56 0.85 0.56-1.44-0.72-0.44-1.28 0.31 0.72-1.15-0.72-1v0.4l-0.88-0.4-0.4 0.56 0.56 1.44-0.88-0.72-0.4 0.72-0.47 0.15 0.59-3.03 0.72-0.15 1.72-2.16-1.28-0.56-0.72-1.16zm112.97 239.53 0.06-0.06-0.22-0.38 0.16 0.44zm-0.16-0.44-0.62-1.78-0.6-0.43 1.22 2.21zm45.28 84.63h0.47l-0.28 0.41-0.19-0.41zm46.5 50.72-0.56 1.53-0.12-1.16 0.68-0.37zm8.1 19.19 0.44 0.34h-0.88l0.44-0.34zm4.03 3.37h0.12l0.16 1-0.28-1z"
+        fill="rgba(60,169,138,0.1)" stroke="#3ca98a" stroke-width="0.8" stroke-linejoin="round" stroke-linecap="round"/>
+      <!-- Markers: projected from lat/lng onto viewBox 0 0 359.58 508.33 -->
+      <!-- Mary River / Paradise Dam: lat=-26.1, lng=152.5 => (325.9, 430.7) -->
       <g id="wm0" style="cursor:pointer">
-        <circle cx="701" cy="529" r="13" fill="rgba(60,169,138,0.12)"/>
-        <circle cx="701" cy="529" r="6" fill="#3ca98a" stroke="rgba(60,169,138,0.5)" stroke-width="1.5"/>
-        <text x="716" y="533" fill="rgba(212,237,232,0.6)" font-family="DM Mono,monospace" font-size="10">Hydrobiology</text>
+        <circle cx="325.9" cy="430.7" r="8" fill="rgba(60,169,138,0.15)"/>
+        <circle cx="325.9" cy="430.7" r="4.5" fill="#3ca98a" stroke="rgba(60,169,138,0.5)" stroke-width="1"/>
+        <text x="313" y="422" fill="rgba(212,237,232,0.6)" font-family="DM Mono,monospace" font-size="8" text-anchor="end">Hydrobiology</text>
       </g>
+      <!-- Chinchilla / N Bowen Basin: lat=-26.7, lng=150.6 => (283.2, 446.8) -->
       <g id="wm1" style="cursor:pointer">
-        <circle cx="550" cy="500" r="13" fill="rgba(60,169,138,0.12)"/>
-        <circle cx="550" cy="500" r="6" fill="#3ca98a" stroke="rgba(60,169,138,0.5)" stroke-width="1.5"/>
-        <text x="565" y="504" fill="rgba(212,237,232,0.6)" font-family="DM Mono,monospace" font-size="10">Geoconsult</text>
+        <circle cx="283.2" cy="446.8" r="8" fill="rgba(60,169,138,0.15)"/>
+        <circle cx="283.2" cy="446.8" r="4.5" fill="#3ca98a" stroke="rgba(60,169,138,0.5)" stroke-width="1"/>
+        <text x="270" y="438" fill="rgba(212,237,232,0.6)" font-family="DM Mono,monospace" font-size="8" text-anchor="end">Geoconsult</text>
       </g>
+      <!-- Woppaburra/Manbarra: lat=-23.5, lng=150.5 => (280.9, 361.2) -->
       <g id="wm2" style="cursor:pointer">
-        <circle cx="530" cy="440" r="13" fill="rgba(26,122,156,0.15)"/>
-        <circle cx="530" cy="440" r="6" fill="#1a7a9c" stroke="rgba(26,122,156,0.5)" stroke-width="1.5"/>
-        <text x="545" y="444" fill="rgba(212,237,232,0.6)" font-family="DM Mono,monospace" font-size="10">Native Title</text>
+        <circle cx="280.9" cy="361.2" r="8" fill="rgba(26,122,156,0.18)"/>
+        <circle cx="280.9" cy="361.2" r="4.5" fill="#1a7a9c" stroke="rgba(26,122,156,0.5)" stroke-width="1"/>
+        <text x="268" y="353" fill="rgba(212,237,232,0.6)" font-family="DM Mono,monospace" font-size="8" text-anchor="end">Native Title</text>
       </g>
+      <!-- Place Names QLD-wide: lat=-22.0, lng=145.0 => (157.3, 321.1) -->
       <g id="wm3" style="cursor:pointer">
-        <circle cx="307" cy="336" r="13" fill="rgba(60,169,138,0.12)"/>
-        <circle cx="307" cy="336" r="6" fill="#3ca98a" stroke="rgba(60,169,138,0.5)" stroke-width="1.5"/>
-        <text x="322" y="340" fill="rgba(212,237,232,0.6)" font-family="DM Mono,monospace" font-size="10">Place Names · QLD-wide</text>
+        <circle cx="157.3" cy="321.1" r="8" fill="rgba(60,169,138,0.15)"/>
+        <circle cx="157.3" cy="321.1" r="4.5" fill="#3ca98a" stroke="rgba(60,169,138,0.5)" stroke-width="1"/>
+        <text x="170" y="317" fill="rgba(212,237,232,0.6)" font-family="DM Mono,monospace" font-size="8">Place Names</text>
       </g>
-      <circle cx="725" cy="572" r="3" fill="rgba(212,237,232,0.22)"/>
-      <text x="732" y="576" fill="rgba(212,237,232,0.2)" font-family="DM Mono,monospace" font-size="8">Brisbane</text>
+      <!-- Brisbane: lat=-27.47, lng=153.02 => (337.6, 467.4) -->
+      <circle cx="337.6" cy="467.4" r="2.5" fill="rgba(212,237,232,0.25)"/>
+      <text x="325" y="479" fill="rgba(212,237,232,0.2)" font-family="DM Mono,monospace" font-size="7" text-anchor="end">Brisbane</text>
     </svg>
     <div class="wm-popup" id="wm-popup">
       <div class="wp-org" id="wp-org"></div>
@@ -242,59 +222,6 @@ footer span{font-family:var(--mono);font-size:0.53rem;letter-spacing:0.12em;colo
     </div>
   </div>
 </section>
-
-<!-- WORLD -->
-<section id="world" class="world-section">
-  <div class="section-label">World</div>
-  <h2>Coordinates that<br><em>left something behind</em></h2>
-  <div id="tm-wrap">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 500" width="100%" preserveAspectRatio="xMidYMid meet">
-      <rect width="1000" height="500" fill="#0d1e18"/>
-      <g stroke="rgba(60,169,138,0.07)" stroke-width="0.4">
-        <line x1="0" y1="83" x2="1000" y2="83"/><line x1="0" y1="167" x2="1000" y2="167"/>
-        <line x1="0" y1="250" x2="1000" y2="250"/><line x1="0" y1="333" x2="1000" y2="333"/>
-        <line x1="0" y1="417" x2="1000" y2="417"/>
-        <line x1="167" y1="0" x2="167" y2="500"/><line x1="333" y1="0" x2="333" y2="500"/>
-        <line x1="500" y1="0" x2="500" y2="500"/><line x1="667" y1="0" x2="667" y2="500"/>
-        <line x1="833" y1="0" x2="833" y2="500"/>
-      </g>
-      <g fill="#1a6b5a" opacity="0.85">
-        <path d="M140 180 L180 160 L220 170 L240 200 L210 230 L170 220 Z"/>
-        <path d="M260 150 L320 130 L360 150 L340 190 L280 200 Z"/>
-        <path d="M420 170 L500 150 L560 180 L540 230 L460 240 L410 210 Z"/>
-        <path d="M600 160 L660 140 L720 160 L710 200 L640 220 L600 200 Z"/>
-        <path d="M750 200 L820 180 L860 210 L840 260 L770 250 Z"/>
-        <path d="M300 260 L380 240 L420 270 L400 320 L330 330 L290 300 Z"/>
-        <path d="M520 260 L600 240 L650 280 L620 340 L540 330 L500 290 Z"/>
-        <path d="M700 300 L780 280 L820 320 L800 380 L720 370 L680 330 Z"/>
-        <path d="M150 280 L210 260 L240 300 L220 340 L160 330 Z"/>
-      </g>
-      <g stroke="#3ca98a" stroke-width="0.8" opacity="0.25" fill="none">
-        <path d="M200 200 L350 180 L480 210 L650 190 L780 240"/>
-        <path d="M360 300 L560 300 L740 340"/>
-      </g>
-      <!-- TRAVEL PINS — add more entries in the same format below -->
-      <!-- Prague -->
-      <g id="tp0" style="cursor:pointer">
-        <circle cx="540" cy="111" r="11" fill="rgba(60,169,138,0.18)"/>
-        <circle cx="540" cy="111" r="5" fill="#3ca98a" stroke="rgba(60,169,138,0.5)" stroke-width="1.2"/>
-        <text x="554" y="115" fill="rgba(212,237,232,0.65)" font-family="DM Mono,monospace" font-size="9">Prague</text>
-      </g>
-      <!-- Füssen -->
-      <g id="tp1" style="cursor:pointer">
-        <circle cx="524" cy="120" r="11" fill="rgba(60,169,138,0.18)"/>
-        <circle cx="524" cy="120" r="5" fill="#3ca98a" stroke="rgba(60,169,138,0.5)" stroke-width="1.2"/>
-        <text x="538" y="136" fill="rgba(212,237,232,0.65)" font-family="DM Mono,monospace" font-size="9">Füssen</text>
-      </g>
-    </svg>
-    <div class="t-popup" id="t-popup">
-      <div class="tp-city" id="tp-city"></div>
-      <div class="tp-mem" id="tp-mem"></div>
-    </div>
-  </div>
-</section>
-
-<!-- SKILLS -->
 <section id="skills" class="skills-section">
   <div class="section-label">Skills</div>
   <h2>Tools &amp; <em>methods</em></h2>
@@ -325,42 +252,37 @@ footer span{font-family:var(--mono);font-size:0.53rem;letter-spacing:0.12em;colo
     </div>
   </div>
 </section>
-
-<!-- CONTACT -->
 <section id="contact" class="contact-section">
   <div class="section-label">Contact</div>
   <h2>Get in <em>touch</em></h2>
-  <p>Open to conversations about mine rehabilitation, contaminated land, and resources sector environmental roles. Interested in work where data becomes a decision.</p>
-  <div class="contact-links">
-    <a href="https://github.com/AcorusT" class="contact-link" target="_blank">GitHub</a>
-    <a href="https://www.linkedin.com/in/beijia-tang/" class="contact-link" target="_blank">LinkedIn</a>
-    <a href="mailto:your@email.com" class="contact-link">Email</a><!-- replace your@email.com -->
+  <div class="contact-inner">
+    <p>Open to conversations about mine rehabilitation, contaminated land, and resources sector environmental roles. Interested in work where data becomes a decision.</p>
+    <div class="contact-links">
+      <a href="https://github.com/AcorusT" class="contact-link" target="_blank">GitHub</a>
+      <a href="https://www.linkedin.com/in/beijia-tang/" class="contact-link" target="_blank">LinkedIn</a>
+      <a href="mailto:your@email.com" class="contact-link">Email</a>
+    </div>
   </div>
 </section>
-
 <footer>
   <span>Beijia Tang · Brisbane</span>
   <span>Applied Environmental Scientist</span>
-  <span>© 2025</span>
+  <span>&#169; 2025</span>
 </footer>
-
 <script>
-// CURSOR
-const cursor=document.getElementById('cursor');
-const ring=document.getElementById('cursor-ring');
+const cursor=document.getElementById("cursor");
+const ring=document.getElementById("cursor-ring");
 let mx=window.innerWidth/2,my=window.innerHeight/2,rx=mx,ry=my;
-document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cursor.style.left=mx+'px';cursor.style.top=my+'px';});
-(function ar(){rx+=(mx-rx)*0.12;ry+=(my-ry)*0.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(ar);})();
-document.querySelectorAll('a').forEach(el=>{
-  el.addEventListener('mouseenter',()=>{ring.style.width='42px';ring.style.height='42px';ring.style.opacity='0.75';});
-  el.addEventListener('mouseleave',()=>{ring.style.width='28px';ring.style.height='28px';ring.style.opacity='0.45';});
+document.addEventListener("mousemove",e=>{mx=e.clientX;my=e.clientY;cursor.style.left=mx+"px";cursor.style.top=my+"px";});
+(function ar(){rx+=(mx-rx)*0.12;ry+=(my-ry)*0.12;ring.style.left=rx+"px";ring.style.top=ry+"px";requestAnimationFrame(ar);})();
+document.querySelectorAll("a").forEach(el=>{
+  el.addEventListener("mouseenter",()=>{ring.style.width="42px";ring.style.height="42px";ring.style.opacity="0.75";});
+  el.addEventListener("mouseleave",()=>{ring.style.width="28px";ring.style.height="28px";ring.style.opacity="0.45";});
 });
-
-// MAGNETIC FIELD
-const mc=document.getElementById('mag-canvas');
-const mctx=mc.getContext('2d');
+const mc=document.getElementById("mag-canvas");
+const mctx=mc.getContext("2d");
 function rmag(){mc.width=window.innerWidth;mc.height=window.innerHeight;}
-rmag();window.addEventListener('resize',rmag);
+rmag();window.addEventListener("resize",rmag);
 const pts=Array.from({length:48},()=>{const ox=Math.random()*window.innerWidth,oy=Math.random()*window.innerHeight;return{ox,oy,x:ox,y:oy,vx:0,vy:0};});
 (function am(){
   mctx.clearRect(0,0,mc.width,mc.height);
@@ -369,64 +291,39 @@ const pts=Array.from({length:48},()=>{const ox=Math.random()*window.innerWidth,o
     p.vx+=dx*pull*0.04+(p.ox-p.x)*0.025;p.vy+=dy*pull*0.04+(p.oy-p.y)*0.025;
     p.vx*=0.80;p.vy*=0.80;p.x+=p.vx;p.y+=p.vy;
   });
-  mctx.lineWidth=0.7;mctx.strokeStyle='#3ca98a';
+  mctx.lineWidth=0.7;mctx.strokeStyle="#3ca98a";
   for(let i=0;i<pts.length;i++)for(let j=i+1;j<pts.length;j++){
     const dx=pts[i].x-pts[j].x,dy=pts[i].y-pts[j].y,d=Math.sqrt(dx*dx+dy*dy);
     if(d<105){mctx.globalAlpha=(1-d/105)*0.42;mctx.beginPath();mctx.moveTo(pts[i].x,pts[i].y);mctx.lineTo(pts[j].x,pts[j].y);mctx.stroke();}
   }
-  mctx.globalAlpha=0.38;mctx.fillStyle='#3ca98a';
+  mctx.globalAlpha=0.38;mctx.fillStyle="#3ca98a";
   pts.forEach(p=>{mctx.beginPath();mctx.arc(p.x,p.y,1.3,0,Math.PI*2);mctx.fill();});
   mctx.globalAlpha=1;
   requestAnimationFrame(am);
 })();
-
-// WORK MAP POPUPS
 const workData=[
   {org:"Hydrobiology QLD",area:"Mary River & Paradise Dam",body:"Threatened species habitat mapping under EPBC Act — Mary River Turtle surveys feeding into EIA documentation for regulatory submission. Water quality REMP reporting aligned to EPP 2019. AUSRIVAS bioassessment and macroinvertebrate taxonomy across catchment reference sites."},
   {org:"Geoconsult",area:"North Bowen Basin · Chinchilla region",body:"ASTER and Sentinel-2 multispectral remote sensing for coal target identification and bentonite characterisation. Biodiversity offset assessments and land clearing approvals for proposed mine sites. 100+ project maps for drilling plans and EA approval submissions."},
   {org:"DNRMMRRD — Native Title",area:"Woppaburra & Manbarra · QLD/NSW/NT",body:"Native title determination and claims mapping under the Native Title Act 1993. Historical cadastral boundary research supporting land compensation outcomes in Queensland courts. Cross-border spatial work spanning QLD, NSW, and NT."},
   {org:"DNRMMRRD — Place Names",area:"Queensland-wide localities",body:"Maintained Queensland Place Names Gazetteer under Place Names Act 1994. Python scripts automating QSCF feature integration into address and administrative boundary datasets. FME workbenches for state-wide dataset validation and transformation."},
 ];
-const wmWrap=document.getElementById('wm-wrap');
-const wmPopup=document.getElementById('wm-popup');
-['wm0','wm1','wm2','wm3'].forEach((id,i)=>{
-  document.getElementById(id).addEventListener('click',e=>{
+const wmWrap=document.getElementById("wm-wrap");
+const wmPopup=document.getElementById("wm-popup");
+["wm0","wm1","wm2","wm3"].forEach((id,i)=>{
+  document.getElementById(id).addEventListener("click",e=>{
     const rect=wmWrap.getBoundingClientRect();
     const d=workData[i];
-    document.getElementById('wp-org').textContent=d.org;
-    document.getElementById('wp-area').textContent=d.area;
-    document.getElementById('wp-body').textContent=d.body;
+    document.getElementById("wp-org").textContent=d.org;
+    document.getElementById("wp-area").textContent=d.area;
+    document.getElementById("wp-body").textContent=d.body;
     let px=e.clientX-rect.left+14,py=e.clientY-rect.top-10;
     if(px+250>wmWrap.offsetWidth) px=e.clientX-rect.left-264;
     if(py<0) py=4;
-    wmPopup.style.left=px+'px';wmPopup.style.top=py+'px';wmPopup.style.display='block';
+    wmPopup.style.left=px+"px";wmPopup.style.top=py+"px";wmPopup.style.display="block";
     e.stopPropagation();
   });
 });
-wmWrap.addEventListener('click',()=>wmPopup.style.display='none');
-
-// TRAVEL MAP POPUPS
-// To add a new place: copy one entry below, update city/mem, and add a matching <g id="tp2"> pin in the SVG above
-const travelData=[
-  {city:"Prague · Czech Republic",mem:"Lived on a boat hotel on the Vltava river. The hotel no longer exists."},
-  {city:"Füssen · Germany",mem:"Watched the musical about Ludwig II, then walked up to his castle the next day."},
-];
-const tmWrap=document.getElementById('tm-wrap');
-const tPopup=document.getElementById('t-popup');
-['tp0','tp1'].forEach((id,i)=>{
-  document.getElementById(id).addEventListener('click',e=>{
-    const rect=tmWrap.getBoundingClientRect();
-    const d=travelData[i];
-    document.getElementById('tp-city').textContent=d.city;
-    document.getElementById('tp-mem').textContent=d.mem;
-    let px=e.clientX-rect.left+14,py=e.clientY-rect.top-10;
-    if(px+220>tmWrap.offsetWidth) px=e.clientX-rect.left-234;
-    if(py<0) py=4;
-    tPopup.style.left=px+'px';tPopup.style.top=py+'px';tPopup.style.display='block';
-    e.stopPropagation();
-  });
-});
-tmWrap.addEventListener('click',()=>tPopup.style.display='none');
+wmWrap.addEventListener("click",()=>wmPopup.style.display="none");
 </script>
 </body>
 </html>
