@@ -27,33 +27,12 @@ The website includes:
 * GIS and environmental related visual materials
 * Embedded SVG graphics
 * Responsive webpage layout
-
-## Technologies
-
-```text id="w2j7ck"
-HTML
-CSS
-JavaScript
-SVG
-GitHub Pages
-```
+  
 
 ## Deployment
 
 This website is deployed through GitHub Pages.
-
 Updates are published automatically after changes are committed and pushed to the main branch.
-
-## Updating the Website
-
-Typical update workflow:
-
-```text id="e5n4hs"
-Edit local files
-Upload or push changes to repository
-Commit changes
-GitHub Pages automatically rebuilds the site
-```
 
 ## Notes
 
