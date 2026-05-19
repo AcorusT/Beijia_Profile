@@ -1,0 +1,1029 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Beijia Tang</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  /* Cool near-white base, expanded accent set */
+  --paper:#f5f4ee;           /* warm parchment */
+  --paper-2:#edeade;         /* slightly deeper warm parchment */
+  --paper-deep:#dedad0;      /* warm beige */
+  --forest:#1d3d33;          /* deep forest-teal */
+  --forest-dark:#0e2620;     /* night forest */
+  --moss:#5e8a4f;            /* mossy green */
+  --moss-pale:#bcc9a3;       /* lichen */
+  --clay:#b85a32;            /* terracotta */
+  --clay-soft:#d68a64;       /* warm clay */
+  --indigo:#1e3a5f;          /* deep blue (Tang) */
+  --indigo-soft:#3a6394;     /* mid blue */
+  --sky:#80c7ed;             /* aquatic sky blue */
+  --violet:#a78bbf;          /* remote-sensing violet */
+  --sage:#7aa098;            /* sustainability sage */
+  --ocean:#4a7a9c;           /* marine ocean blue */
+  --grey:#9c9c9a;            /* neutral grey */
+  --ochre:#b8995a;           /* wheat */
+  --ochre-soft:#d4c39a;      /* pale stone */
+  --ink:#23332b;             /* warm dark slate */
+  --muted:#7d8378;           /* cool warm gray */
+  --line:#d8dcd2;            /* hairline cool beige */
+  --serif:"Cormorant Garamond",Georgia,serif;
+  --mono:"DM Mono",ui-monospace,monospace;
+}
+html{scroll-behavior:smooth;}
+body{
+  background:var(--paper);
+  color:var(--ink);
+  font-family:var(--serif);
+  font-size:17px;
+  line-height:1.7;
+  overflow-x:hidden;
+}
+
+
+/* ===== Animated topographic background ===== */
+#topo{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:0;}
+#grain{position:fixed;inset:0;pointer-events:none;z-index:1;opacity:0.28;mix-blend-mode:multiply;
+  background-image:
+    radial-gradient(circle at 22% 18%,rgba(184,90,50,0.04),transparent 38%),
+    radial-gradient(circle at 78% 70%,rgba(58,99,148,0.05),transparent 42%),
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='1.6' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.18  0 0 0 0 0.16  0 0 0 0 0.10  0 0 0 0.55 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  background-size:auto,auto,220px 220px;
+}
+
+/* ===== Nav ===== */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;justify-content:space-between;align-items:center;padding:0.85rem 3.5rem;background:rgba(241,235,220,0.85);backdrop-filter:blur(10px) saturate(1.1);border-bottom:1px solid var(--line);}
+nav .logo{font-family:var(--mono);font-size:0.68rem;letter-spacing:0.18em;color:var(--muted);text-transform:uppercase;display:flex;align-items:center;gap:0.55rem;}
+nav .logo::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--clay);box-shadow:0 0 0 3px rgba(184,90,50,0.18);}
+nav ul{list-style:none;display:flex;gap:2rem;}
+nav a{font-family:var(--mono);font-size:0.64rem;letter-spacing:0.13em;text-transform:uppercase;color:var(--forest);text-decoration:none;position:relative;padding:0.2rem 0;transition:color 0.25s;}
+nav a::after{content:"";position:absolute;bottom:-2px;left:50%;width:0;height:2px;border-radius:2px;background:var(--clay);transition:width 0.3s ease,left 0.3s ease;}
+nav a:hover{color:var(--clay);}
+nav a:hover::after{width:100%;left:0;}
+
+/* ===== Hero ===== */
+.hero{padding:5.5rem 3.5rem 3.5rem;display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:center;position:relative;z-index:2;}
+.hero-eyebrow{font-family:var(--mono);font-size:0.78rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--clay);margin-bottom:0.9rem;display:flex;align-items:center;gap:0.6rem;}
+.hero-eyebrow .dot{width:6px;height:6px;border-radius:50%;background:var(--clay);animation:pulse 2.4s ease-in-out infinite;}
+@keyframes pulse{0%,100%{transform:scale(1);opacity:1;}50%{transform:scale(1.6);opacity:0.4;}}
+h1{font-size:clamp(3.8rem,7vw,6.6rem);font-weight:300;line-height:0.95;color:var(--forest);margin-bottom:1.4rem;letter-spacing:-0.01em;}
+h1 em{font-style:italic;font-weight:600;color:var(--indigo);position:relative;letter-spacing:-0.015em;}
+h1 em::after{content:"";position:absolute;left:0;right:6%;bottom:6%;height:0.16em;background:rgba(58,99,148,0.22);z-index:-1;border-radius:0.18em;}
+.hero-desc{font-size:1.18rem;color:#3e524b;max-width:42ch;font-style:italic;line-height:1.85;margin-bottom:1.6rem;}
+.hero-tags{display:flex;flex-wrap:wrap;gap:0.45rem;}
+.tag{
+  display:inline-flex;align-items:center;gap:0.4rem;
+  font-family:var(--mono);font-size:0.58rem;letter-spacing:0.09em;text-transform:uppercase;
+  padding:0.34rem 0.8rem;border:1px solid var(--line);border-radius:999px;
+  background:#fff;color:var(--forest);
+  transition:transform 0.28s cubic-bezier(.6,1.6,.4,1),background 0.28s,border-color 0.28s,color 0.28s,box-shadow 0.28s;
+}
+.tag::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor;opacity:0.55;flex-shrink:0;}
+.tag:hover{transform:translateY(-3px) rotate(-1.5deg);box-shadow:0 8px 18px -10px rgba(0,0,0,0.18);}
+.tag:nth-child(even):hover{transform:translateY(-3px) rotate(2deg);}
+.tag.t-clay   {background:rgba(184,90,50,0.10);border-color:rgba(184,90,50,0.40);color:#8a4124;}
+.tag.t-clay:hover   {background:var(--clay);color:#fff;}
+.tag.t-moss   {background:rgba(94,138,79,0.12);border-color:rgba(94,138,79,0.40);color:#3f5f37;}
+.tag.t-moss:hover   {background:var(--moss);color:#fff;}
+.tag.t-ochre  {background:rgba(184,153,90,0.14);border-color:rgba(184,153,90,0.40);color:#6e5a2c;}
+.tag.t-ochre:hover  {background:var(--ochre);color:#fff;}
+.tag.t-sky    {background:rgba(128,199,237,0.16);border-color:rgba(128,199,237,0.55);color:#256d92;}
+.tag.t-sky:hover    {background:var(--sky);color:#0a2538;}
+.tag.t-violet {background:rgba(167,139,191,0.14);border-color:rgba(167,139,191,0.45);color:#574277;}
+.tag.t-violet:hover {background:var(--violet);color:#fff;}
+.tag.t-grey   {background:rgba(140,140,140,0.10);border-color:rgba(140,140,140,0.38);color:#555;}
+.tag.t-grey:hover   {background:var(--grey);color:#fff;}
+.tag.t-sage   {background:rgba(122,160,152,0.14);border-color:rgba(122,160,152,0.45);color:#3a605a;}
+.tag.t-sage:hover   {background:var(--sage);color:#fff;}
+.tag.t-ocean  {background:rgba(74,122,156,0.12);border-color:rgba(74,122,156,0.45);color:#274f6c;}
+.tag.t-ocean:hover  {background:var(--ocean);color:#fff;}
+
+/* ===== Hero right-side: floating thoughts ===== */
+.hero-right{position:relative;min-height:600px;height:100%;}
+.thoughts{position:absolute;inset:0;overflow:hidden;}
+.thought{
+  position:absolute;
+  font-family:var(--serif);
+  font-size:0.92rem;
+  line-height:1.45;
+  color:#2f3f38;
+  background:rgba(255,255,255,0.88);
+  backdrop-filter:blur(4px);
+  -webkit-backdrop-filter:blur(4px);
+  border:1px solid rgba(184,160,120,0.32);
+  border-left:2px solid var(--ochre);
+  border-radius:3px;
+  padding:0.5rem 0.8rem;
+  max-width:240px;
+  box-shadow:0 4px 14px -8px rgba(29,61,51,0.18);
+  transition:background 0.5s, box-shadow 0.5s, border-color 0.5s, opacity 0.6s, transform 0.45s cubic-bezier(.4,1.5,.5,1);
+  cursor:pointer;
+  will-change:transform;
+  user-select:none;
+  opacity:0.85;
+}
+.thought.featured{
+  background:rgba(255,255,255,0.99);
+  box-shadow:0 16px 38px -14px rgba(29,61,51,0.32);
+  border-color:rgba(58,99,148,0.55);
+  opacity:1;
+  z-index:30;
+  transform:translate(var(--dx,0px),var(--dy,0px)) scale(1.04);
+}
+.thought:hover{
+  background:rgba(255,255,255,0.99);
+  box-shadow:0 14px 36px -14px rgba(29,61,51,0.28);
+  z-index:40;
+  opacity:1;
+}
+.thought.pressed{
+  background:#ffffff;
+  box-shadow:0 22px 50px -18px rgba(29,61,51,0.42);
+  border-color:var(--indigo);
+  opacity:1;
+  z-index:50;
+  transform:scale(1.06);
+  transition:background 0.3s, box-shadow 0.3s, border-color 0.3s, transform 0.25s;
+}
+.thought.c-moss{border-left-color:var(--moss);}
+.thought.c-ochre{border-left-color:var(--ochre);}
+.thought.c-clay{border-left-color:var(--clay);}
+.thought.c-indigo{border-left-color:var(--indigo);}
+.thought.c-sky{border-left-color:#80c7ed;}
+.thought.c-violet{border-left-color:#a78bbf;}
+.thought.c-sage{border-left-color:#6b9080;}
+.thought.c-forest{border-left-color:var(--forest);}
+
+/* ===== Sections ===== */
+section{padding:4rem 3.5rem;position:relative;z-index:2;}
+.section-label{font-family:var(--mono);font-size:0.74rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--clay);margin-bottom:1.8rem;display:flex;align-items:center;gap:1rem;}
+.section-label::before{content:"";width:14px;height:14px;background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 14'><g stroke='%23b85a32' stroke-width='1.2' stroke-linecap='round'><line x1='7' y1='1' x2='7' y2='13'/><line x1='1' y1='7' x2='13' y2='7'/><line x1='2.5' y1='2.5' x2='11.5' y2='11.5'/><line x1='2.5' y1='11.5' x2='11.5' y2='2.5'/></g></svg>") center/contain no-repeat;animation:spin 22s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.section-label::after{content:"";flex:1;max-width:120px;height:1px;background:var(--line);}
+h2{font-size:clamp(2.15rem,3.8vw,3.1rem);font-weight:300;line-height:1.15;color:var(--forest);margin-bottom:1.5rem;letter-spacing:-0.005em;}
+h2 em{font-style:italic;color:var(--indigo);}
+
+/* ===== About ===== */
+.about-grid{display:grid;grid-template-columns:1fr 1.7fr;gap:3.5rem;align-items:start;}
+.about-stats{display:grid;grid-template-columns:1fr 1fr;gap:1.1rem;}
+.stat{position:relative;padding:0.55rem 0 0.55rem 1rem;border-left:2px solid var(--moss);transition:border-color 0.3s,transform 0.3s;}
+.stat:nth-child(2){border-color:var(--ochre);}
+.stat:nth-child(3){border-color:var(--clay);}
+.stat:nth-child(4){border-color:var(--forest);}
+.stat:hover{transform:translateX(4px);}
+.stat-num{font-size:2.1rem;font-weight:300;color:var(--forest);display:block;line-height:1.05;font-feature-settings:"lnum";}
+.stat-label{font-family:var(--mono);font-size:0.66rem;letter-spacing:0.13em;text-transform:uppercase;color:var(--muted);}
+.about-edu{margin-top:1.6rem;padding-top:1.5rem;border-top:1px dashed var(--line);}
+.about-edu-label{font-family:var(--mono);font-size:0.7rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--clay);margin-bottom:0.7rem;}
+.about-edu ul{list-style:none;font-size:0.88rem;color:var(--forest);line-height:1.95;}
+.about-edu li{position:relative;padding-left:1rem;}
+.about-edu li::before{content:"·";position:absolute;left:0;color:var(--clay);font-size:1.4rem;line-height:1;top:0.1rem;}
+.about-body{font-size:0.94rem;line-height:1.88;color:#3a4a44;}
+.about-body p+p{margin-top:0.95rem;}
+
+
+/* ===== Origins (dark zone overrides) ===== */
+#origins>*{position:relative;}
+#origins .section-label{color:var(--ochre-soft);}
+#origins .section-label::before{background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 14'><g stroke='%23e6c378' stroke-width='1.2' stroke-linecap='round'><line x1='7' y1='1' x2='7' y2='13'/><line x1='1' y1='7' x2='13' y2='7'/><line x1='2.5' y1='2.5' x2='11.5' y2='11.5'/><line x1='2.5' y1='11.5' x2='11.5' y2='2.5'/></g></svg>") center/contain no-repeat;}
+#origins .section-label::after{background:rgba(230,195,120,0.18);}
+#origins h2{color:var(--paper);}
+#origins h2 em{color:var(--ochre-soft);}
+#origins .stat-num{color:var(--paper);}
+#origins .stat-label{color:var(--moss-pale);}
+#origins .about-edu{border-top-color:rgba(230,195,120,0.22);}
+#origins .about-edu-label{color:var(--ochre-soft);}
+#origins .about-edu ul{color:var(--paper);}
+#origins .about-edu li::before{color:var(--ochre-soft);}
+#origins .about-body{color:var(--moss-pale);}
+#origins .stat{border-left-color:var(--moss-pale);}
+#origins .stat:nth-child(2){border-left-color:var(--ochre-soft);}
+#origins .stat:nth-child(3){border-left-color:var(--clay-soft);}
+#origins .stat:nth-child(4){border-left-color:var(--moss-pale);}
+
+/* ===== Approach (bright zone with particles) ===== */
+.approach-section{background:var(--paper-2);padding:4rem 3.5rem;position:relative;z-index:2;overflow:hidden;}
+.approach-section::before{content:"";position:absolute;inset:0;opacity:0.32;background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence baseFrequency='2.4' numOctaves='1'/><feColorMatrix values='0 0 0 0 0.55  0 0 0 0 0.5  0 0 0 0 0.4  0 0 0 0.3 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");pointer-events:none;}
+#approachParticles{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:1;}
+.approach-section>*{position:relative;z-index:2;}
+.approach-section .section-label{color:var(--clay);}
+.approach-section .section-label::after{background:var(--line);}
+.approach-inner{max-width:64ch;margin:0 auto;position:relative;}
+.identity-text{font-size:1.18rem;line-height:1.92;color:#3a4a44;}
+.identity-text p+p{margin-top:1rem;}
+.identity-text em{color:var(--indigo);font-style:italic;background:linear-gradient(transparent 65%,rgba(207,154,59,0.35) 65%);padding:0 0.1em;}
+.quote-mark{position:absolute;left:-3.5rem;top:-0.8rem;font-family:var(--serif);font-size:6rem;line-height:1;color:var(--clay);opacity:0.35;font-style:italic;pointer-events:none;}
+.quote-mark.close{left:auto;right:-3.5rem;top:auto;bottom:-3.5rem;}
+/* Inline italic phrase with a hand-drawn blue squiggle underline */
+.squiggle{
+  font-style:italic;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 4' preserveAspectRatio='none'><path d='M0 2 Q 3 0.4 6 2 T 12 2' stroke='%234a7a9c' stroke-width='0.9' fill='none' stroke-linecap='round'/></svg>");
+  background-repeat:repeat-x;
+  background-position:0 100%;
+  background-size:12px 4px;
+  padding-bottom:0.22em;
+}
+
+/* ===== Workmap (dark zone) ===== */
+.workmap-section{background:linear-gradient(170deg,var(--forest) 0%,var(--forest-dark) 100%);padding:4rem 3.5rem;position:relative;z-index:2;color:var(--paper);}
+.workmap-section::before{content:"";position:absolute;inset:0;background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='400' height='400'><filter id='n'><feTurbulence baseFrequency='0.012' numOctaves='3'/><feColorMatrix values='0 0 0 0 0.36  0 0 0 0 0.6  0 0 0 0 0.31  0 0 0 0.10 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");opacity:0.5;pointer-events:none;}
+.workmap-section>*{position:relative;}
+.workmap-section .section-label{color:var(--ochre-soft);}
+.workmap-section .section-label::before{background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 14'><g stroke='%23e6c378' stroke-width='1.2' stroke-linecap='round'><line x1='7' y1='1' x2='7' y2='13'/><line x1='1' y1='7' x2='13' y2='7'/><line x1='2.5' y1='2.5' x2='11.5' y2='11.5'/><line x1='2.5' y1='11.5' x2='11.5' y2='2.5'/></g></svg>") center/contain no-repeat;}
+.workmap-section .section-label::after{background:rgba(230,195,120,0.18);}
+.workmap-section h2{color:var(--paper);}
+.workmap-section h2 em{color:var(--ochre-soft);}
+.workmap-section .sub{font-size:1.02rem;color:var(--moss-pale);font-style:italic;margin-bottom:1.6rem;}
+#wm-wrap{position:relative;width:100%;max-width:540px;margin:0 auto;background:#0a1d18;border:1px solid rgba(207,154,59,0.2);border-radius:6px;overflow:hidden;box-shadow:0 30px 70px -30px rgba(0,0,0,0.6);}
+#wm-wrap svg{display:block;width:100%;height:auto;}
+.wm-popup{position:absolute;background:rgba(8,22,18,0.98);border:1px solid var(--ochre);border-radius:6px;padding:1.1rem 1.3rem;width:288px;pointer-events:none;z-index:10;display:none;box-shadow:0 10px 30px rgba(0,0,0,0.5);}
+.wm-popup .wp-org{font-family:var(--mono);font-size:0.68rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--ochre-soft);margin-bottom:0.35rem;}
+.wm-popup .wp-area{font-size:1.05rem;font-weight:400;color:var(--paper);margin-bottom:0.45rem;line-height:1.25;font-style:italic;}
+.wm-popup .wp-body{font-size:0.92rem;color:var(--moss-pale);line-height:1.65;}
+
+/* ===== Skills ===== */
+.skills-section{background:var(--paper-2);padding:4rem 3.5rem;position:relative;z-index:2;}
+.skills-section::before{content:"";position:absolute;inset:0;opacity:0.4;background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence baseFrequency='2.4' numOctaves='1'/><feColorMatrix values='0 0 0 0 0.55  0 0 0 0 0.5  0 0 0 0 0.4  0 0 0 0.3 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");pointer-events:none;}
+.skills-section>*{position:relative;}
+.skills-section .section-label::after{background:#bcb195;}
+.skills-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0.65rem;margin-top:1.8rem;}
+.skill-group{background:var(--paper);border-radius:10px;padding:1.4rem 1.5rem;border:1px solid var(--line);transition:transform 0.3s cubic-bezier(.5,1.5,.5,1),box-shadow 0.3s,border-color 0.3s;position:relative;overflow:hidden;}
+.skill-group::before{content:"";position:absolute;top:0;left:0;width:30px;height:3px;background:var(--moss);border-radius:0 0 3px 0;}
+.skill-group:nth-child(2)::before{background:var(--ochre);}
+.skill-group:nth-child(3)::before{background:var(--clay);}
+.skill-group:nth-child(4)::before{background:var(--forest);}
+.skill-group:nth-child(5)::before{background:var(--moss);}
+.skill-group:nth-child(6)::before{background:var(--ochre);}
+.skill-group:hover{transform:translateY(-3px);box-shadow:0 14px 30px -16px rgba(29,61,51,0.3);border-color:var(--clay-soft);}
+.skill-group-title{font-family:var(--mono);font-size:0.7rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--clay);margin-bottom:0.7rem;}
+.skill-list{list-style:none;font-size:1.02rem;color:var(--forest);line-height:1.95;}
+
+/* ===== Contact ===== */
+.contact-section{background:linear-gradient(170deg,var(--forest) 0%,var(--forest-dark) 100%);color:var(--paper);padding:4rem 3.5rem;position:relative;z-index:2;}
+.contact-section::before{content:"";position:absolute;inset:0;background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='400' height='400'><filter id='n'><feTurbulence baseFrequency='0.012' numOctaves='3'/><feColorMatrix values='0 0 0 0 0.36  0 0 0 0 0.6  0 0 0 0 0.31  0 0 0 0.08 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");opacity:0.4;pointer-events:none;}
+.contact-section>*{position:relative;}
+.contact-section .section-label{color:var(--ochre-soft);}
+.contact-section .section-label::before{background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 14'><g stroke='%23e6c378' stroke-width='1.2' stroke-linecap='round'><line x1='7' y1='1' x2='7' y2='13'/><line x1='1' y1='7' x2='13' y2='7'/><line x1='2.5' y1='2.5' x2='11.5' y2='11.5'/><line x1='2.5' y1='11.5' x2='11.5' y2='2.5'/></g></svg>") center/contain no-repeat;}
+.contact-section .section-label::after{background:rgba(230,195,120,0.18);}
+.contact-section h2{color:var(--paper);margin-bottom:0.7rem;}
+.contact-section h2 em{color:var(--ochre-soft);}
+.contact-inner{max-width:64ch;margin:0 auto;}
+.contact-inner p{font-size:0.95rem;color:var(--moss-pale);font-style:italic;margin-bottom:1.8rem;}
+
+/* ===== Cute pill buttons ===== */
+.contact-links{display:flex;gap:0.8rem;flex-wrap:wrap;}
+.contact-link{
+  font-family:var(--mono);font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;
+  color:var(--paper);text-decoration:none;
+  padding:0.85rem 1.6rem 0.85rem 2.3rem;border-radius:999px;
+  background:rgba(255,255,255,0.04);
+  border:1px solid rgba(230,195,120,0.3);
+  position:relative;
+  transition:transform 0.3s cubic-bezier(.5,1.6,.5,1),background 0.3s,border-color 0.3s,color 0.3s,box-shadow 0.3s;
+  display:inline-flex;align-items:center;gap:0.5rem;
+}
+.contact-link::before{
+  content:"";position:absolute;left:1rem;top:50%;width:8px;height:8px;border-radius:50%;
+  background:var(--ochre-soft);transform:translateY(-50%);
+  transition:transform 0.3s cubic-bezier(.5,1.6,.5,1),background 0.3s;
+}
+.contact-link::after{content:"→";opacity:0;margin-left:-0.4rem;transition:opacity 0.3s,margin 0.3s;}
+.contact-link:hover{
+  transform:translateY(-3px);
+  background:var(--ochre);color:var(--forest-dark);
+  border-color:var(--ochre);
+  box-shadow:0 14px 28px -14px rgba(207,154,59,0.6);
+}
+.contact-link:hover::before{background:var(--clay);transform:translateY(-50%) scale(1.3);}
+.contact-link:hover::after{opacity:1;margin-left:0.2rem;}
+.contact-link:nth-child(2):hover{background:var(--clay-soft);border-color:var(--clay);color:#fff;}
+.contact-link:nth-child(2):hover::before{background:var(--paper);}
+.contact-link:nth-child(3):hover{background:var(--moss);border-color:var(--moss);color:#fff;}
+.contact-link:nth-child(3):hover::before{background:var(--paper);}
+
+/* ===== Footer ===== */
+footer{padding:1rem 3.5rem;background:#070f0c;display:flex;justify-content:space-between;align-items:center;position:relative;z-index:2;flex-wrap:wrap;gap:0.4rem;}
+footer span{font-family:var(--mono);font-size:0.54rem;letter-spacing:0.13em;color:#3a5448;text-transform:uppercase;}
+
+@media (max-width:780px){
+  nav{padding:0.7rem 1.3rem;}
+  nav ul{gap:1rem;}
+  .hero{padding:5rem 1.3rem 2rem;grid-template-columns:1fr;}
+  .hero-right{height:280px;}
+  section,.approach-section,.workmap-section,.skills-section,.contact-section{padding:3rem 1.3rem;}
+  .about-grid{grid-template-columns:1fr;gap:2rem;}
+  .skills-grid{grid-template-columns:1fr;}
+  .quote-mark{display:none;}
+}
+</style>
+</head>
+<body>
+<canvas id="topo"></canvas>
+<div id="grain"></div>
+
+<nav>
+  <span class="logo">Beijia Tang</span>
+  <ul>
+    <li><a href="#work">Work</a></li>
+    <li><a href="#approach">Approach</a></li>
+    <li><a href="#origins">Origins</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<section class="hero" style="grid-template-columns:1fr;max-width:700px;">
+  <div>
+    <p class="hero-eyebrow"><span class="dot"></span>Applied Scientist · Brisbane · Environmental Regulation</p>
+    <h1>Beijia<br><em>Tang</em></h1>
+    <p class="hero-desc">Drawn to places where human decisions have left a physical mark on the landscape - and to the data that makes those marks legible.</p>
+    <div style="margin-bottom:1.2rem;"><a href="https://github.com/AcorusT/Beijia_Profile/raw/main/beijia_resume.pdf" download style="font-family:var(--mono);font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;padding:0.6rem 1.4rem;background:var(--forest);color:var(--paper);text-decoration:none;border:1px solid var(--forest);border-radius:999px;transition:background 0.2s,color 0.2s;display:inline-block;" onmouseover="this.style.background='transparent';this.style.color='var(--forest)'" onmouseout="this.style.background='var(--forest)';this.style.color='var(--paper)'">Download Resume</a></div>
+    <div class="hero-tags">
+      <span class="tag t-clay">Mine Rehabilitation</span>
+      <span class="tag t-moss">Vegetation Management</span>
+      <span class="tag t-ochre">Native Title</span>
+      <span class="tag t-sky">Aquatic Ecology</span>
+      <span class="tag t-violet">Remote Sensing</span>
+      <span class="tag t-grey">Contaminated Land</span>
+      <span class="tag t-sage">Sustainability</span>
+      <span class="tag t-ocean">Marine Conservation</span>
+    </div>
+  </div>
+</section>
+
+
+
+
+
+<section id="work" class="workmap-section">
+  <div class="section-label">Work</div>
+  <h2>Where the <em>work happened</em></h2>
+  <p class="sub">Areas I have worked in across Queensland. Click a marker for context.</p>
+  <div id="wm-wrap">
+    <svg viewBox="-50 -25 459.58 558.33" xmlns="http://www.w3.org/2000/svg">
+      <rect x="-50" y="-25" width="459.58" height="558.33" fill="#0a1d18"/>
+      <g stroke="rgba(207,154,59,0.07)" stroke-width="0.5">
+        <line x1="0" y1="60" x2="359.58" y2="60"/><line x1="0" y1="120" x2="359.58" y2="120"/>
+        <line x1="0" y1="180" x2="359.58" y2="180"/><line x1="0" y1="240" x2="359.58" y2="240"/>
+        <line x1="0" y1="300" x2="359.58" y2="300"/><line x1="0" y1="360" x2="359.58" y2="360"/>
+        <line x1="0" y1="420" x2="359.58" y2="420"/><line x1="0" y1="480" x2="359.58" y2="480"/>
+        <line x1="60" y1="0" x2="60" y2="508.33"/><line x1="120" y1="0" x2="120" y2="508.33"/>
+        <line x1="180" y1="0" x2="180" y2="508.33"/><line x1="240" y1="0" x2="240" y2="508.33"/>
+        <line x1="300" y1="0" x2="300" y2="508.33"/>
+      </g>
+      <path d="m126.75 0.5875-0.87 0.72-1.88-0.16-1 2.91-1.87 1.84-2.72 0.16 0.4 0.87-1.12-0.71 0.4-0.32-2 1.16 0.44 3.19-0.15 0.56 0.28 0.56 0.28-0.56-0.13 0.72-1.31 2.44 0.31 3.75-1.03 2.15-0.84 1.75v0.56h-0.28l-0.88 3.04-0.15 0.28-0.57 1.72 0.13 0.43 2.47-0.12-0.6 0.84-2.43-0.28-1.29 4.91 0.13 0.4 0.59-0.28-0.43 0.44 1 0.44 0.56 1.31 0.75-1.47h0.12l-0.56 2.31-1.87-1-0.6 1 0.44 1.72-1.16 0.6 1.03-0.72-1.31-4.19 0.6-0.72-0.88-0.16-0.72 0.72-3.03 6.07 0.72 0.28 0.28-0.28 0.88 0.59-0.88-0.16-0.28 0.44 0.16-0.44-1.44-0.15-3.47 8.34 0.87 0.59 1.72-0.59v-0.56h-1.15l0.56-1.91 0.59 0.47 1.88-0.16-1.88 1.04 1.72 0.84 1.44 1.75 1.59-0.59 0.44 0.43 1.16-0.72 1 0.88-1.28-0.16-0.6 0.57-0.28-0.41-1.87 1.28 1.43 0.56 1 1.6 1.44-0.28-0.41 0.12 0.41 0.31-1.72 0.41 0.72 4.19-1.28-2 0.12-2.75-1-1.16-0.87 0.28v-0.72l-2 4.47-2.47 1.6-0.41-0.29-0.87 1.16-0.44 1 0.88 1.44v3.03l1.72 2.59-1.16 2 0.44 0.28 1-0.84h0.72l-1.44 0.84 1.59 1.16-0.56-0.12 0.28 1-0.59-0.72-0.44 0.28 0.31-0.72-1.15 0.44-0.6-0.6-2.59 4.07-2.16 8.18-0.12 2.03 3.03 4.16 0.56 2.75-0.56-0.16 0.12 2.32-2.15 5.47 1.43 9.81 1.16 2 0.72 3.03-1.16 1.72 0.28 1.15-1.28 1.16-0.15 0.13-1.16 3.31-0.12 0.59-2.16 4.91-2.16 9.19-0.43 0.59 1.28 4.16-2 3.18-1.6 4.75-0.28 0.44 0.16 1.88-1.03 1.84-0.88 0.87-0.72 2.6-0.12 0.15-2.75 2.72-0.28-0.12-0.72 2.28-2.6 2.75-0.28 1.16h0.57l-1 3.43-0.29 0.6-1.15 4.75-1.6 2.15-3.31 1.16-2.59 1.87-0.72 0.13-3 1.47 0.12-0.6-2.15 0.88-3.47 0.28h-0.56l-2.88 0.44-2.31-0.44-1.16-0.87-0.56-1.44-2.47-0.88-0.4-0.72-1.6 0.16-0.72-0.72-1.87-0.44-0.88-1-0.28 0.88-0.12-1.31-1.16-0.57-1.75-2.03-0.72 0.44 0.16-0.56-0.72-0.44-3.03-0.28-1.56-1.31-1.88-3.44-0.44-2.75 0.44-1.44-1.59-0.72-1.32-1.59v-1l-7.03-2.16-3.18-2.03-3.72 0.28-3.03-1.28h-0.72l-4.35-1.87v-0.16l-1.28-0.56-3.34-3.41-5.6 248.19 71.13 3.47-4.44 78.62 80.5 6.19 50.97 5.19 51.34 6.19 2.07-1.29 1.15-2.46 1.32-0.04 5.59-3.28 0.59 0.44 2.44-2.5 3.53 1 2.1 0.34 3.15 0.29 3.91 0.09 4.31 0.22 1.88-0.6 3.37 3.63 1.81 0.28v0.41l1-0.28 1.16 0.75 2.87-0.75 2.6 1.87h0.72l0.56 1.31 1.87 0.85 0.29 2.59 1.31-0.28 2.72 2.31 0.72 1.94-0.41 3.09 0.72 1.32-0.31 0.56 1.87 0.72 2.88-2.44v-1.31l1.31-1.57 2.31-0.31 2.16-1.28 0.87 2.59 0.72-0.15 0.56 0.44 0.57-1.29 2.46 0.57 2-1.16-0.43-0.44 1.15-2.87 0.72-0.56-0.12-0.72-1.32-1.03v-1.72l-0.71-1 0.28-0.88 0.59-0.28v0.59l0.72 0.13 1.44-1.31 2.15-0.57 1.32 0.57 2.43-1.85 1.72 0.41 0.88-0.84 0.15-0.88 0.57 0.16 0.56-0.88 1.03-0.15 0.72 0.43-0.44 1.03 1 1.13 1.16-1.72 0.43 1.31 2.29 1.72 1.31-0.15 4.09 0.21 3.38 0.07 1.18-0.41 0.29-1.16 1.28 0.72 1.15-0.72 1.72 0.72 3.19-1.87 1.16 0.72 0.37-0.28h-0.53l-1-1-0.16-1.04-0.43 0.16 0.43-0.28-0.43-5.91 0.59-2.15-0.88-0.44-0.12-2.16-0.88-1.15v-1.72l0.57-0.28-0.72-1.03 0.44-0.88h-0.72l-0.28-1.44-0.29 0.44-1.03-0.28-0.12-2-1 0.56-1.03 0.28 1.31-0.56 0.56-1.44-1.59-1.03-0.28-1.44-0.85 0.16 1-0.28-0.15-1.16 0.43 0.88 0.72 0.12 0.44-1.28v-0.59l-1.72-0.13v-1.87l0.28 0.72 0.72-1 1.88-0.6-0.72-0.28-0.44-1.59-0.44 0.15 0.28-0.71-0.71-0.16 0.15-0.44 0.56 0.31-0.4-1.03 0.84-0.72-0.28 1.88 1.72 3.47 1-0.72-1.13-5.19 0.41-1.87-0.72 1.87 0.44-1.87h0.72l0.15-3.32-2.03-1.71 1.32 0.56 0.28-3.03 1.31-3.72h-1.88l0.85-0.16 0.44-3.87 3.87-7.38-0.84 0.44-1-0.72-0.44-3.03-0.72-0.41 0.56 0.57-0.72 0.59 0.29 1-0.29 0.56-0.71-0.28 0.71 0.88-0.56 0.12-0.59 1.31-0.44-0.72 1.03-0.87-0.31-0.84 0.31-0.04v-0.84l-0.15-0.03 0.15-1-0.72-0.84-0.87 0.12v0.44l-0.16-0.72h1.03l0.13-0.56-1-0.44-0.72-1.16 0.44-0.43-1.16-0.41 0.44-0.59 0.72 0.28-0.72-3.32 0.72-0.12-0.44-0.44 0.87 0.16v-0.88h-0.09l0.66-0.72-0.88 0.13 0.88-0.44 0.28 0.31 0.59-0.87-2.75 1.28-2.15-0.12 2.15-0.16 0.88-1.28h0.84l-1-0.6 0.72 0.16 0.59 0.56v-4.03l-1.43-0.28-0.32-1-0.72 0.56-3-1-0.87-1.87-1.44-0.28-0.31 0.56 0.31-0.72-0.44-0.12 2.04 0.28 0.4-0.44-1.72-2.44-1.15-2.87 0.28-1-0.85 0.28 1-0.6-0.28-2.71-1.15-1.88h-0.44l-0.28 1h-0.16l0.16-1.59-2.03-0.57-1.28-1.59-0.6-0.72 0.56 0.72-0.4-0.28-0.41 0.19 0.25-0.19-1.84-2.59-0.88-1.88-0.59 0.28 0.44-0.4-1.28-2.6-0.44-4.9-1.16-2.6-0.31 0.56h-0.84l-1-1.56-1-0.31 1 0.16-0.72-2.32 0.43-0.4-0.59-0.44-0.16 0.41-2-1.41-0.87-0.16-0.13 0.88 0.72-0.16v0.72l0.88 0.72 0.12 0.44-0.4-0.16 0.28 1-1-1.28-1.47-0.88-0.56 0.88 0.12 0.16-0.4 1-0.44-1.72-0.88-0.32-0.43 0.72-0.41-1.28-0.16 1.6-0.59-1.6 0.44-0.28-1.16-2.16h-0.41l-0.43-2.03-0.88 1 0.28-1.56-2.87-1.59-0.56-1.16 0.28-1.16-0.44 0.32-0.44-1.19 0.44-0.25-0.72-0.47h0.59l-1.59-1.12-0.56-2.04v1.44h-0.44l0.28-1.15-0.87-0.57-0.13 1.16-0.87 0.28 0.43 0.44-0.59-0.44-0.12 1.72-0.44-1.72-1.28-1.72 0.72 0.13v-0.44l-1.91-1.44 1.59 0.31 0.44-0.59-1.16-2.16-0.28-2.31-0.59-0.28v-0.44l0.75 0.44 1-1.28-0.16-1-1.12-0.59h0.56l0.16-1-1.03-0.88 1.15-4.47-0.44 0.88 0.44-1.44-0.72 0.56-0.28-1.15 1.72 0.59-0.12-1.44 1.71-5.06-1.31-1.13 0.31-3.18-0.59-0.13 0.44 0.85-1 1.03 0.28 1.12-1-0.12-0.44-0.88 0.88 0.72v-2l-1.03 0.13 0.31-0.41-0.75-1.88 0.59 0.41 0.16-0.41 0.84 1.29 1-1.72-1.44-0.72-0.28-2.19-0.59 0.47 0.47 0.84-0.31 1.32-0.16-0.72-0.72 0.4 0.31-0.56 0.41-0.16-1-0.71 0.72-0.16-0.44-0.84 0.44 0.43 0.28-0.59-2-1-1 2.16 0.56 0.87-0.56-0.28 0.12 0.44 1.16 0.72-1.28-0.44 1.56 1.56-0.72-0.56-0.4 0.15 2.15 1.44-0.15 0.56-0.57-0.43v0.59l-0.31-1.16-1-0.28 0.72 2.6 1 0.28h-0.84l0.43 1-1.43-2.6-0.88 0.72 0.28-0.56-0.56-0.59 0.56 0.15-1.28-1.15 0.44 1.43-0.44-1.28-0.87-0.15-0.88-1.44-2.28-1.88v-0.59l-2.03-0.41-0.84-1.03 0.4-0.84-0.72-0.72v-1.16l-1.28-1.31-0.15-1.72-0.85-0.84-2.31 1.28-1.28 3.47 1.28 0.41-1.44 0.15 2 7.94 0.6 0.72-1.32-1.03-0.56-2.28-1.72-1.6-1.59-3.19-0.72 1.16-2.59 1.59 0.28 0.29-0.88-0.16-1 1.91 0.72-2.16 1.44-0.88 0.28-1.87-0.28-1.16-1 0.57-0.72-0.41h0.87l-0.59-1.59-1.56-0.16-0.88 1-0.59-0.28 1.47-0.72 1.12-0.56-0.84-2.32-0.44 0.16 0.56-0.59-0.84-2.72 0.28-1.16-1.31-2.87 0.44-2.19h-0.85l0.72-0.41-0.59-0.59-0.13-1.56 0.72-0.32 0.56 0.44 0.16-0.44-0.72-0.4-0.15-2.03 1.59-2.32-0.59-0.4-0.72 1.12-0.13-0.72h-0.87l-0.44-0.56 0.59-1.15-1.15 0.28-0.16-0.85-1.16 0.57-0.12 0.71v-1.15l-0.59-0.44h0.87l0.16-1.12 0.84 0.28v-0.44l-1.56-0.72h1.28l-0.16-3.16h-0.72l-0.4-0.87-1.88 1.72 0.57-1-0.72-0.16 1-0.84-0.57-1-0.71 0.12 0.56-0.28 0.15 0.16 0.29 0.28 0.43-1.88-1.15-0.31h1.28l0.15 0.6 0.44-2.04h-0.59l-0.72-1.12-0.28-0.88-0.56-0.28-0.29 0.85-0.59-1.57-1.56 0.13-0.6 0.59 0.29-1.43 0.43 0.12-0.43-0.72h1.15l-0.56-0.84-0.72 0.28-1.16-1.16-1 0.28-0.59-1-1.44 1 0.28-2-1.15-0.31 0.28-0.56h1.03l-2.59-2.31v-1l-1 0.15 1.28-1.03-2.16-2.72 0.88 0.57 1.12-1.6-0.72-1.72 2.03 1.32 1-0.72v-0.72l0.44 2.15 0.72 0.88 1.88 0.41-1-1.29 0.71-0.31-0.28-0.28h-0.59l-0.84-1.16 0.12-1-0.44-0.28 0.6-0.72-1.72-1.87 0.84-0.16-0.56-0.28v-1l-0.59-0.15-0.57 1.03-1.31-0.16 0.28-1-0.56 0.13v-0.57l0.56-1.15-0.84 1-0.16-1.28-0.28 1.28-0.72-0.28 0.56-0.88-1 0.44 0.44-0.85-0.72 0.13v-2.88l-0.87 0.72-1.72-1.15-0.44 1.43 1.16 0.44-1.31 0.81-0.41-0.09-0.16 0.59-0.28-0.15-0.15-0.56-1.57-0.32 0.13-0.28-1.56-1.56 0.4-0.31-1.28-1 0.28-0.57 0.72 0.13-0.12-1.28-0.6 0.12-0.44-0.84-1.71-0.44 0.28 0.56-1.16-0.71-0.56-1.72-2.47 0.87-1.13-0.31-1.03-1.16 0.32 0.75-0.88-1.47-0.28-3.15-0.59-0.88-1.72-0.28-0.28 1.72 0.71 1.75 0.57 0.16-0.44 0.12-2.72-0.72-1.87-2.87-0.44 0.44 0.28-0.88 0.31 0.16 0.13-0.88-1.57-0.56 1.44-0.16-0.31-1.31-0.84-0.41 0.84 0.29v-0.6l-0.41-1.28-0.18 0.06-0.13-0.34-1.12-1.88-0.66-1.81-0.5 0.81-3.19-0.87-1.56 0.87-0.16-0.71-1.43-0.44-0.44 0.72 0.15-0.88h-0.71l-0.32 1.16-0.28-1.72-1.56-2.59 0.56-1-1-2.04 0.13 0.72-1.57 2.32-2.03-0.29-0.87-0.87-0.41 0.16 0.28-0.72-1.15-0.44-0.28-1.47-3.04-0.28-4.62-3.44-4.44-6.06 2.28-5.75-0.72-0.16 0.72-0.56-0.12-1.03-0.28-0.41 0.72 0.16-0.16-0.88-0.44-0.31-0.12 0.44-0.44-0.72-0.53 0.13-0.35-0.57-0.87-0.12-0.56 0.56 0.43-0.84-0.71-0.32 0.43-0.12-0.31-0.59-0.72 0.31-0.4-2.6v1l-2.91-4.46-0.28-2.16 0.87-2 0.72-1.31-0.72-0.28 0.72 0.12 0.44-1.28 0.12 0.44 0.72-0.28v-1.91l0.72-1.13-0.72-2.03 0.72-0.28-0.28-1.72 1.31-1.43-0.31-1.32-0.56 0.88-0.13-0.06 0.57-0.94-1.44-2.31 0.44-3.04-1.6-2-1.15-5.18-1.29-2.03 0.29-1.72 1.56-2.6-0.85-0.87-0.43 0.87-0.72 0.16-0.56-1.03-1.88 1.31-0.44-0.59 0.44-0.72-0.59-0.28-0.72-1.88-0.85-0.72-0.31-1-2.15-1.59-2.32-3.88-0.12-1.75-1.44-0.56 0.28-3.15 0.88-1.44-0.88-0.31 1.88 0.15-1.16-2.75 1.16-2.44-1.6-3.87-1.43-0.28 0.87-2.47-0.59-0.88 0.43-2.15-1.15-2.16 0.28-1.87-2.56-1.57 1.43 0.29 0.29-0.88-0.6-1h-0.4l1.56-2.75-0.28-0.72 1.87-1-0.44-1.44-0.71 0.88-1.16-0.16-0.44-2.87-0.72-0.72 0.72 0.44 1.03-2.03 2-1.88-0.12-0.84h-1.75l-1.44-2.19 0.28-1.13-3-0.43-0.44-0.72-0.43 0.56v-0.72l-0.88 0.28-0.72-1.43-1.43-0.72v-1.57l-0.72-0.43-0.28-1.44-2.72-0.59-0.44-1.29-2.47-0.15-1.56-2.16v-1.15l1-1.72-1.6-0.16 0.44-2.59-2.03-2.72h-0.72l-0.84 1.72-1.31 0.72 0.31 0.28-0.75-0.13-1.28 0.72-1.6-0.28-1.56-1.47-0.59 0.16v1.72l-0.72 1.59-3.47 2.31-2-0.15-0.44 0.87-0.28-1.03-1.72-0.41-1.31-1.03-1.44-2.28-1-4.03-0.28-5.19-1.59-1.44-0.57-2.59-1.59-2.75 1-4.31 0.88-1.28-1.16-0.16h1l0.44-3.03-0.44-1.28-1.28-1.31 0.12-3.88-0.4-1.31v-5.19l1.28-2.28-1.6 0.44-0.84-0.44-1.31 0.84 0.44 1.03-0.72 0.57v-0.57l-0.88-0.31 0.6-0.28-0.72-0.28 0.12-1.72 1.88-3.91-0.57-0.28 1-1.31-3.15-1.84-0.88-1.6-0.87 0.44 1.03-0.72-0.16-2.03-0.59-0.72-1.72-1.15h-1.16l0.32 0.43-0.72-0.72-0.44 0.6-0.59-0.6 0.59-4.31-0.87-1.15 0.87 0.59 2.59-4.19 1 0.16 0.29-0.6-0.72-0.43-1 0.56-0.6-1.56-1.28-0.72-1.72 1-1.43-0.16-3.04-2.72 0.29-5.18-0.72-4.47 1.15-2-0.59-1.72-1.13-1.31v-5.35l-1.75-3.31-1.15 0.31-0.56 0.85 0.56-1.44-0.72-0.44-1.28 0.31 0.72-1.15-0.72-1v0.4l-0.88-0.4-0.4 0.56 0.56 1.44-0.88-0.72-0.4 0.72-0.47 0.15 0.59-3.03 0.72-0.15 1.72-2.16-1.28-0.56-0.72-1.16zm112.97 239.53 0.06-0.06-0.22-0.38 0.16 0.44zm-0.16-0.44-0.62-1.78-0.6-0.43 1.22 2.21zm45.28 84.63h0.47l-0.28 0.41-0.19-0.41zm46.5 50.72-0.56 1.53-0.12-1.16 0.68-0.37zm8.1 19.19 0.44 0.34h-0.88l0.44-0.34zm4.03 3.37h0.12l0.16 1-0.28-1z" fill="rgba(207,200,180,0.06)" stroke="rgba(220,210,190,0.55)" stroke-width="0.85" stroke-linejoin="round" stroke-linecap="round"/>
+
+      <g id="wm0" style="cursor:pointer">
+        <circle cx="325.9" cy="430.7" r="14" fill="rgba(207,154,59,0.10)">
+          <animate attributeName="r" values="14;20;14" dur="3s" repeatCount="indefinite"/>
+          <animate attributeName="opacity" values="0.6;0.1;0.6" dur="3s" repeatCount="indefinite"/>
+        </circle>
+        <circle cx="325.9" cy="430.7" r="8" fill="rgba(207,154,59,0.20)"/>
+        <circle cx="325.9" cy="430.7" r="4.5" fill="#cf9a3b" stroke="rgba(230,195,120,0.7)" stroke-width="1"/>
+      </g>
+      <g id="wm1" style="cursor:pointer">
+        <circle cx="240" cy="295" r="14" fill="rgba(184,90,50,0.10)">
+          <animate attributeName="r" values="14;20;14" dur="3.4s" repeatCount="indefinite"/>
+          <animate attributeName="opacity" values="0.6;0.1;0.6" dur="3.4s" repeatCount="indefinite"/>
+        </circle>
+        <circle cx="240" cy="295" r="8" fill="rgba(184,90,50,0.20)"/>
+        <circle cx="240" cy="295" r="4.5" fill="#b85a32" stroke="rgba(214,138,100,0.7)" stroke-width="1"/>
+      </g>
+      <g id="wm2" style="cursor:pointer">
+        <circle cx="325" cy="335" r="14" fill="rgba(184,153,90,0.12)">
+          <animate attributeName="r" values="14;20;14" dur="3.8s" repeatCount="indefinite"/>
+          <animate attributeName="opacity" values="0.6;0.1;0.6" dur="3.8s" repeatCount="indefinite"/>
+        </circle>
+        <circle cx="325" cy="335" r="8" fill="rgba(184,153,90,0.22)"/>
+        <circle cx="325" cy="335" r="4.5" fill="#b8995a" stroke="rgba(212,195,154,0.7)" stroke-width="1"/>
+      </g>
+      <g id="wm3" style="cursor:pointer">
+        <circle cx="30" cy="280" r="14" fill="rgba(212,160,23,0.12)">
+          <animate attributeName="r" values="14;20;14" dur="3.2s" repeatCount="indefinite"/>
+          <animate attributeName="opacity" values="0.6;0.1;0.6" dur="3.2s" repeatCount="indefinite"/>
+        </circle>
+        <circle cx="30" cy="280" r="8" fill="rgba(212,160,23,0.22)"/>
+        <circle cx="30" cy="280" r="4.5" fill="#d4a017" stroke="rgba(232,200,100,0.75)" stroke-width="1"/>
+      </g>
+      <g id="wm4" style="cursor:pointer">
+        <circle cx="215" cy="325" r="14" fill="rgba(58,99,148,0.12)">
+          <animate attributeName="r" values="14;20;14" dur="3.6s" repeatCount="indefinite"/>
+          <animate attributeName="opacity" values="0.6;0.1;0.6" dur="3.6s" repeatCount="indefinite"/>
+        </circle>
+        <circle cx="215" cy="325" r="8" fill="rgba(58,99,148,0.20)"/>
+        <circle cx="215" cy="325" r="4.5" fill="#3a6394" stroke="rgba(128,199,237,0.7)" stroke-width="1"/>
+      </g>
+      <g id="wm5" style="cursor:pointer">
+        <circle cx="82" cy="462" r="14" fill="rgba(167,139,191,0.12)">
+          <animate attributeName="r" values="14;20;14" dur="3.0s" repeatCount="indefinite"/>
+          <animate attributeName="opacity" values="0.6;0.1;0.6" dur="3.0s" repeatCount="indefinite"/>
+        </circle>
+        <circle cx="82" cy="462" r="8" fill="rgba(167,139,191,0.20)"/>
+        <circle cx="82" cy="462" r="4.5" fill="#a78bbf" stroke="rgba(212,195,228,0.7)" stroke-width="1"/>
+      </g>
+      <g id="wm6" style="cursor:pointer">
+        <circle cx="102" cy="75" r="14" fill="rgba(128,199,237,0.12)">
+          <animate attributeName="r" values="14;20;14" dur="3.3s" repeatCount="indefinite"/>
+          <animate attributeName="opacity" values="0.6;0.1;0.6" dur="3.3s" repeatCount="indefinite"/>
+        </circle>
+        <circle cx="102" cy="75" r="8" fill="rgba(128,199,237,0.22)"/>
+        <circle cx="102" cy="75" r="4.5" fill="#80c7ed" stroke="rgba(200,230,245,0.7)" stroke-width="1"/>
+      </g>
+      <g id="wm7" style="cursor:pointer">
+        <circle cx="305" cy="215" r="14" fill="rgba(74,122,156,0.14)">
+          <animate attributeName="r" values="14;20;14" dur="3.5s" repeatCount="indefinite"/>
+          <animate attributeName="opacity" values="0.6;0.1;0.6" dur="3.5s" repeatCount="indefinite"/>
+        </circle>
+        <circle cx="305" cy="215" r="8" fill="rgba(74,122,156,0.22)"/>
+        <circle cx="305" cy="215" r="4.5" fill="#4a7a9c" stroke="rgba(180,210,230,0.7)" stroke-width="1"/>
+      </g>
+      <g id="wm9" style="cursor:pointer">
+        <circle cx="248" cy="418" r="14" fill="rgba(229,182,122,0.14)">
+          <animate attributeName="r" values="14;20;14" dur="3.1s" repeatCount="indefinite"/>
+          <animate attributeName="opacity" values="0.6;0.1;0.6" dur="3.1s" repeatCount="indefinite"/>
+        </circle>
+        <circle cx="248" cy="418" r="8" fill="rgba(229,182,122,0.22)"/>
+        <circle cx="248" cy="418" r="4.5" fill="#e5b67a" stroke="rgba(240,210,170,0.7)" stroke-width="1"/>
+      </g>
+      <g id="wm11" style="cursor:pointer">
+        <circle cx="337.6" cy="466.8" r="14" fill="rgba(220,170,90,0.14)">
+          <animate attributeName="r" values="14;20;14" dur="3.3s" repeatCount="indefinite"/>
+          <animate attributeName="opacity" values="0.6;0.1;0.6" dur="3.3s" repeatCount="indefinite"/>
+        </circle>
+        <circle cx="337.6" cy="466.8" r="8" fill="rgba(220,170,90,0.22)"/>
+      </g>
+      <g id="wm8" style="cursor:pointer">
+        <circle cx="250" cy="235" r="14" fill="rgba(217,119,87,0.12)">
+          <animate attributeName="r" values="14;20;14" dur="3.7s" repeatCount="indefinite"/>
+          <animate attributeName="opacity" values="0.6;0.1;0.6" dur="3.7s" repeatCount="indefinite"/>
+        </circle>
+        <circle cx="250" cy="235" r="8" fill="rgba(217,119,87,0.22)"/>
+        <circle cx="250" cy="235" r="4.5" fill="#d97757" stroke="rgba(232,170,140,0.7)" stroke-width="1"/>
+      </g>
+      <g id="wm9" style="display:none"></g>
+      <g id="wm10" style="cursor:pointer">
+        <circle cx="300" cy="460" r="14" fill="rgba(205,191,153,0.14)">
+          <animate attributeName="r" values="14;20;14" dur="3.4s" repeatCount="indefinite"/>
+          <animate attributeName="opacity" values="0.6;0.1;0.6" dur="3.4s" repeatCount="indefinite"/>
+        </circle>
+        <circle cx="300" cy="460" r="8" fill="rgba(205,191,153,0.22)"/>
+        <circle cx="300" cy="460" r="4.5" fill="#cdbf99" stroke="rgba(225,215,180,0.75)" stroke-width="1"/>
+      </g>
+
+      <polygon points="337.6,463.9 340.93,466.32 339.66,470.23 335.54,470.23 334.27,466.32" fill="rgba(255,255,255,0.95)" stroke="rgba(255,255,255,0.6)" stroke-width="0.5"/>
+      <polygon points="337.6,462.4 342.36,465.85 340.54,471.44 334.66,471.44 332.84,465.85" fill="none" stroke="rgba(255,255,255,0.55)" stroke-width="0.4"/>
+    </svg>
+    <div class="wm-popup" id="wm-popup">
+      <div class="wp-org" id="wp-org"></div>
+      <div class="wp-area" id="wp-area"></div>
+      <div class="wp-body" id="wp-body"></div>
+    </div>
+  </div>
+</section>
+
+<section id="approach" class="approach-section">
+  <canvas id="approachParticles"></canvas>
+  <div class="section-label">Approach</div>
+  <div class="approach-inner">
+    <span class="quote-mark">“</span>
+    <div class="identity-text">
+      <p>In Plato's Apology, Socrates says "I neither know nor think I know", his method was questions. I grew up genuinely fascinated by how natural systems work. I kept asking <strong>WHY</strong> to this world. My friends call me a troubleshooter. My supervisor described me as stimulates by information and keeps trying. When I cannot solve something with what I have, I turn the question inward and go find what I am missing. I have upskilled into every context I have worked in for exactly that reason.</p>
+      <p>Natural sciences gave me the instinct to read the world as mechanism.  Environmental management gave me the framework to ask what are the consequences when people make decisions about it. GIS is the tool that brings both to ground. <span class="squiggle">The answer is usually where the more interesting question begins.</span></p>
+    </div>
+    <span class="quote-mark close">”</span>
+  </div>
+</section>
+
+<section id="funfacts" style="background:var(--paper);padding:4rem 3.5rem;position:relative;z-index:2;min-height:520px;overflow:hidden;">
+  <div style="position:absolute;inset:0;opacity:0.28;background:url(&quot;data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence baseFrequency='2.4' numOctaves='1'/><feColorMatrix values='0 0 0 0 0.55  0 0 0 0 0.5  0 0 0 0 0.4  0 0 0 0.3 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>&quot;);pointer-events:none;"></div>
+  <div class="section-label" style="color:var(--clay);position:relative;">Marginalia</div>
+  <div class="thoughts" id="thoughts" style="position:relative;min-height:460px;"></div>
+</section>
+
+<section id="origins" style="background:linear-gradient(170deg,var(--forest) 0%,var(--forest-dark) 100%);color:var(--paper);position:relative;z-index:2;padding:3.5rem 3.5rem;overflow:hidden;">
+  <div style="position:absolute;inset:0;background:url(&quot;data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='400' height='400'><filter id='n'><feTurbulence baseFrequency='0.012' numOctaves='3'/><feColorMatrix values='0 0 0 0 0.36  0 0 0 0 0.6  0 0 0 0 0.31  0 0 0 0.10 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>&quot;);opacity:0.5;pointer-events:none;"></div>
+  <div class="section-label">About</div>
+  <div class="about-grid">
+    <div>
+      <h2>Science<br>with <em>consequence</em></h2>
+      <div class="about-stats">
+        <div class="stat"><span class="stat-num">3</span><span class="stat-label">Countries studied</span></div>
+        <div class="stat"><span class="stat-num">4+</span><span class="stat-label">Industry sectors</span></div>
+        <div class="stat"><span class="stat-num">10+</span><span class="stat-label">Years volunteering</span></div>
+        <div class="stat"><span class="stat-num">5</span><span class="stat-label">Languages spoken</span></div>
+      </div>
+      <div class="about-edu">
+        <div class="about-edu-label">Education</div>
+                <ul>
+          <li>Master of Environmental Management — University of Queensland, 2023</li>
+          <li>Bachelor of Marine Science — University of Queensland, 2023</li>
+          <li>Laurea Triennale Natural Sciences — University of Bologna, 2020</li>
+        </ul>
+      </div>
+    </div>
+    <div class="about-body">
+      <p>My first contact with how industry accounts for its environmental obligations was at METServe, quantifying foliar damage from SO2 emissions and feeding results into impact monitoring outputs. At Geoconsult the work sat at the exploration end of the mining cycle, where remote sensing identified coal targets and lithology gave the geological context beneath them, Python models built from lab desorption data quantified gas content and emission , and spatial outputs supported EA approval submissions. Hydrobiology brought the ecological and regulatory side that threatened species habitat mapping under the EPBC Act and AUSRIVAS bioassessment across reference catchments. Queensland Government has been the spatial infrastructure underneath all of it, native title claims feeding into court proceedings, vegetation datasets governing what landholders can legally clear, and place name legislation applied at state scale.</p>
+      <p>My Academic path ran from natural sciences at Bologna across biological, earth, and environmental disciplines, to marine science and environmental management at Brisbane. Research covered Diamantina Basin carbon sequestration using HYDRUS-2D and Great Barrier Reef carbonate chemistry under ANZG ecotoxicological frameworks.</p>
+      <p>Multilingual across Chinese, English and Italian. Volunteered since 2015 for GBIF, NGOs and Climate Science topics, translating scientific documentary and reports content into Chinese. Since Australia, volunttered with research vessel for reef health across Moreton Bay and the Whitsundays. </p>
+    </div>
+  </div>
+</section>
+
+<section id="skills" class="skills-section" style="background:var(--paper);position:relative;z-index:2;">
+  <div class="section-label">Skills</div>
+  <h2>Tools &amp; <em>methods</em></h2>
+  <div class="skills-grid">
+    <div class="skill-group">
+      <div class="skill-group-title">Spatial platforms</div>
+      <ul class="skill-list"><li>ArcGIS Pro</li><li>QGIS</li><li>FME</li><li>Fiji ImageJ</li></ul>
+    </div>
+    <div class="skill-group">
+      <div class="skill-group-title">Remote sensing &amp; analysis</div>
+      <ul class="skill-list"><li>ASTER · Sentinel-2 · Landsat</li><li>ERDAS IMAGINE</li><li>Vegetation indices (NDVI/EVI)</li><li>Google Earth Engine</li></ul>
+    </div>
+    <div class="skill-group">
+      <div class="skill-group-title">Programming &amp; data</div>
+      <ul class="skill-list"><li>Python</li><li>PowerBI</li><li>WellCAD</li><li>HYDRUS</li></ul>
+    </div>
+    <div class="skill-group">
+      <div class="skill-group-title">Field &amp; lab</div>
+      <ul class="skill-list"><li>Macroinvertebrate taxonomy</li><li>Core logging</li><li>Leaf damage quantification</li><li>Seagrass &amp; coral surveys</li></ul>
+    </div>
+    <div class="skill-group">
+      <div class="skill-group-title">Regulatory frameworks</div>
+      <ul class="skill-list"><li>EPBC Act 1999</li><li>Native Title Act 1993</li><li>Vegetation Mgmt Act 1999</li><li>Place Names Act 1994</li></ul>
+    </div>
+    <div class="skill-group">
+      <div class="skill-group-title">Languages</div>
+      <ul class="skill-list"><li>Chinese</li><li>English</li><li>Italian</li><li>Spanish</li></ul>
+    </div>
+  </div>
+</section>
+
+<section id="contact" class="contact-section">
+  <div class="section-label">Contact</div>
+  <h2>Get in <em>touch</em></h2>
+  <div class="contact-inner">
+    <p>Open to conversations about mine rehabilitation, contaminated land, and resources sector environmental roles. Interested in work where data becomes a decision.</p>
+    <div class="contact-links">
+      <a href="https://github.com/AcorusT/Beijia_Profile/raw/main/beijia_resume.pdf" download class="contact-link">Download Resume</a>
+      <a href="https://www.linkedin.com/in/beijia-tang/" class="contact-link" target="_blank">LinkedIn</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span>Beijia Tang · Brisbane</span>
+  <span>Applied Environmental Scientist</span>
+  <span>&#169; 2025</span>
+</footer>
+
+<script>
+/* ===== Cursor (cursor follower disabled — elements removed) ===== */
+let mx=window.innerWidth/2,my=window.innerHeight/2;
+document.addEventListener("mousemove",e=>{mx=e.clientX;my=e.clientY;});
+
+/* ===== Animated topographic contour background ===== */
+const topo=document.getElementById("topo");
+const tctx=topo.getContext("2d");
+let TW=0,TH=0,DPR=Math.min(window.devicePixelRatio||1,1.6);
+function resizeTopo(){
+  TW=window.innerWidth;TH=window.innerHeight;
+  topo.width=TW*DPR;topo.height=TH*DPR;
+  topo.style.width=TW+"px";topo.style.height=TH+"px";
+  tctx.setTransform(DPR,0,0,DPR,0,0);
+}
+resizeTopo();window.addEventListener("resize",resizeTopo);
+
+/* Marching-squares contour rendering on a low-res scalar field
+   built from drifting Gaussian "peaks" + the cursor as a soft anchor.
+   This produces topographic-map style isolines that morph organically. */
+const GW=84,GH=52;            // grid resolution
+const field=new Float32Array(GW*GH);
+const peaks=[
+  {phx:0.22,phy:0.30,fx:0.00021,fy:0.00017,ax:0.18,ay:0.22,base:0.5},
+  {phx:0.78,phy:0.65,fx:-0.00018,fy:0.00024,ax:0.22,ay:0.18,base:1.3},
+  {phx:0.50,phy:0.18,fx:0.00024,fy:-0.00019,ax:0.16,ay:0.20,base:2.4},
+  {phx:0.40,phy:0.85,fx:-0.00015,fy:-0.00022,ax:0.20,ay:0.16,base:3.6},
+];
+let mxN=0.5,myN=0.5;
+document.addEventListener("mousemove",e=>{mxN=e.clientX/window.innerWidth;myN=e.clientY/window.innerHeight;});
+
+function buildField(t){
+  // Anchor positions
+  for(const p of peaks){
+    p.cx=0.5+p.ax*Math.sin(t*p.fx+p.base);
+    p.cy=0.5+p.ay*Math.cos(t*p.fy+p.base*1.3);
+  }
+  const k=18;        // gaussian sharpness
+  const km=14;       // mouse sharpness
+  for(let j=0;j<GH;j++){
+    const y=j/(GH-1);
+    for(let i=0;i<GW;i++){
+      const x=i/(GW-1);
+      let v=0;
+      for(const p of peaks){
+        const dx=x-p.cx,dy=y-p.cy;
+        v+=Math.exp(-(dx*dx+dy*dy)*k);
+      }
+      const mdx=x-mxN,mdy=y-myN;
+      v+=0.7*Math.exp(-(mdx*mdx+mdy*mdy)*km);
+      field[j*GW+i]=v;
+    }
+  }
+}
+
+function drawContour(level,color,width){
+  const cw=TW/(GW-1),ch=TH/(GH-1);
+  tctx.lineWidth=width;
+  tctx.strokeStyle=color;
+  tctx.beginPath();
+  for(let j=0;j<GH-1;j++){
+    for(let i=0;i<GW-1;i++){
+      const a=field[j*GW+i],b=field[j*GW+i+1],c=field[(j+1)*GW+i+1],d=field[(j+1)*GW+i];
+      const idx=(a>level?1:0)|(b>level?2:0)|(c>level?4:0)|(d>level?8:0);
+      if(idx===0||idx===15) continue;
+      const eTx=(i+(level-a)/(b-a||1e-6))*cw, eTy=j*ch;
+      const eRx=(i+1)*cw, eRy=(j+(level-b)/(c-b||1e-6))*ch;
+      const eBx=(i+(level-d)/(c-d||1e-6))*cw, eBy=(j+1)*ch;
+      const eLx=i*cw, eLy=(j+(level-a)/(d-a||1e-6))*ch;
+      switch(idx){
+        case 1:case 14: tctx.moveTo(eLx,eLy);tctx.lineTo(eTx,eTy); break;
+        case 2:case 13: tctx.moveTo(eTx,eTy);tctx.lineTo(eRx,eRy); break;
+        case 3:case 12: tctx.moveTo(eLx,eLy);tctx.lineTo(eRx,eRy); break;
+        case 4:case 11: tctx.moveTo(eRx,eRy);tctx.lineTo(eBx,eBy); break;
+        case 6:case 9:  tctx.moveTo(eTx,eTy);tctx.lineTo(eBx,eBy); break;
+        case 7:case 8:  tctx.moveTo(eLx,eLy);tctx.lineTo(eBx,eBy); break;
+        case 5: tctx.moveTo(eLx,eLy);tctx.lineTo(eTx,eTy);tctx.moveTo(eRx,eRy);tctx.lineTo(eBx,eBy); break;
+        case 10:tctx.moveTo(eTx,eTy);tctx.lineTo(eRx,eRy);tctx.moveTo(eLx,eLy);tctx.lineTo(eBx,eBy); break;
+      }
+    }
+  }
+  tctx.stroke();
+}
+
+/* Neutral beige contours with subtle blue + clay accents near peaks */
+const levels=[
+  {v:0.10,c:"rgba(180,168,148,0.22)", w:0.7}, // soft beige
+  {v:0.18,c:"rgba(170,160,140,0.26)", w:0.7},
+  {v:0.28,c:"rgba(160,150,130,0.30)", w:0.7},
+  {v:0.42,c:"rgba(150,140,120,0.34)", w:0.8},
+  {v:0.60,c:"rgba(140,130,112,0.36)", w:0.85},
+  {v:0.82,c:"rgba(94,138,79,0.32)",   w:0.9},  // moss accent
+  {v:1.10,c:"rgba(58,99,148,0.32)",   w:1.0},  // indigo blue
+  {v:1.45,c:"rgba(184,90,50,0.36)",   w:1.05}, // clay near peaks
+  {v:1.85,c:"rgba(29,61,51,0.42)",    w:1.1},  // forest at peaks
+];
+
+let lastBuild=0;
+(function loop(now){
+  // Throttle field rebuild to ~24fps; drawing still runs each frame
+  if(!now||now-lastBuild>40){buildField(now||0);lastBuild=now||0;}
+  tctx.clearRect(0,0,TW,TH);
+  for(const l of levels) drawContour(l.v,l.c,l.w);
+  requestAnimationFrame(loop);
+})();
+
+/* ===== Workmap popup (preserved from original) ===== */
+const workData=[
+  {org:"Hydrobiology",area:"Mary River & Paradise Dam · Compliance",body:"A mine discharges water into a river system, and the question becomes whether that discharge has crossed a line that matters legally. I worked on the spatial and water quality data that answers that question. The Environment Protection Act 1994 sets the thresholds. My job was to translate the field measurements into language the regulator can act on."},
+  {org:"Geoconsult",area:"North Bowen Basin · Exploration",body:"Before a coal site can be drilled, someone has to decide where the rock is most likely to hold what the company is looking for, and what is living on top of it. I processed ASTER and Sentinel-2 imagery to identify thermal anomalies and soil signatures. From that base I produced the maps that went into EA approval submissions, drilling plans, and landholder consultations. Biodiversity offset and land clearing assessments sat on top of the same spatial foundation."},
+  {org:"Queensland Government",area:"Great Keppel Island · Native Title",body:"A native title determination is not just a map. It is a legal document with consequences for compensation, for land use, and for whose voice has authority over Country. I produced determination and claims maps in ArcGIS Pro and researched pre-1975 Queensland cadastral plans where the modern record runs out. I maintained QNTIME, the Queensland system that holds the official record of every native title claim and determination in the state."},
+  {org:"Queensland Government",area:"Queensland-wide · Place Names Act",body:"A place name in Queensland is not informal. It is gazetted under the Place Names Act 1994, and it lives inside an administrative boundary dataset that determines what address a property has, which council it falls under, and what services it receives. I maintained the Gazetteer and wrote Python scripts that automated integration of Queensland Spatial Cadastral Fabric points into the address and administrative boundary datasets statewide. FME workbenches handled the validation. Local councils handled the disputes."},
+  {org:"METServe",area:"North Bowen Basin · Mine Closure",body:"SO2 emissions from a mine leave a measurable signature on the leaves of nearby vegetation. I analysed leaf samples in Fiji Image J to quantify foliar damage, converting biological evidence into the statistics that fed the Sulphur Dioxide Environmental Impact Monitoring Program. The work sat inside a broader closure planning frame covering progressive rehabilitation and landform stability. The underlying question was how a mined landscape eventually has to be returned."},
+  {org:"UQ Research",area:"Diamantina Basin · Carbon Sequestration",body:"Arid and semi-arid catchments are not normally where carbon sequestration research happens. They should be. I used HYDRUS-2D hydrological modelling to study soil moisture and CO2 flux dynamics across the Diamantina catchment, situating the findings inside global literature on dry-land carbon storage. Earth sciences on one side. Environmental management on the other. The research sat across both."},
+  {org:"Hydrobiology",area:"Weipa · Bioassessment",body:"A river's health is not measured by how the water looks. It is measured by which small invertebrates can still live in it. Following AUSRIVAS protocols, I identified macroinvertebrates to genus level and matched the assemblages against reference sites. The output is a number that determines whether monitoring obligations have been met under EPP 2019 and REMP frameworks."},
+  {org:"UQ Research",area:"Great Barrier Reef · Ocean Acidification",body:"The carbonate chemistry of reef water tells you something the temperature data alone cannot. It tells you whether the conditions still allow corals to build their skeletons. I worked on spatial and temporal water chemistry data across four reef systems, comparing them against ocean buoy reference data under ANZG ecotoxicological frameworks. The research sits inside the broader question of what ocean acidification is doing to one of the most studied marine systems in the world."},
+  {org:"Queensland Government",area:"Palm Island · Native Title",body:"Native title over sea country and coastal areas is harder to map than land. The boundaries depend on documented connection and historical record. I worked on the spatial datasets behind these determinations and built ArcGIS Online applications that allow lawyers, Traditional Owner groups, and government staff to interrogate the same geography from inside a browser. The Native Title Act 1993 sets the framework. The mapping makes it usable."},
+  {org:"Queensland Government",area:"Queensland-wide · Vegetation Management",body:"A satellite image of Queensland's vegetation is not just data. It is the basis for what a landholder can legally clear under the Vegetation Management Act 1999, and what falls under Regional Planning Interests Act 2014 protection. I worked with the spatial datasets and Property Maps of Assessable Vegetation that sit underneath those legal decisions. Misreading a polygon by a few hectares has direct consequences for what gets cleared and what stays."},
+  {org:"University of Queensland",area:"Brisbane · St Lucia campus",body:"I chose UQ for its research reputation and the pull of the Sunshine State, however then ended up attending Zoom University for most of it, courtesy of the pandemic. The sandstone campus eventually won me over in person, along with the resident bush turkeys who patrol the lawns like they own the title deeds. And every October the jacarandas detonate into purple all at once, which is gorgeous unless you are sitting under one wearing white. Brisbane has been the anchor for everything since."},
+  {org:"Geoconsult",area:"Surat Basin · Coal Seam Gas",body:"Coal seam gas operations leak measurable amounts of methane, and someone has to quantify how much. I built Python models that took laboratory desorption data from geological samples and converted it into emissions estimates. Field preparation, lab coordination, and dataset processing all fed into the same question. How much gas is leaking, and at what rate."},
+];
+const wmWrap=document.getElementById("wm-wrap");
+const wmPopup=document.getElementById("wm-popup");
+const MARKERS=["wm0","wm1","wm2","wm3","wm4","wm5","wm6","wm7","wm8","wm10","wm11","wm9"];
+MARKERS.forEach((id,i)=>{
+  document.getElementById(id).addEventListener("click",e=>{
+    const rect=wmWrap.getBoundingClientRect();
+    const d=workData[i];
+    document.getElementById("wp-org").textContent=d.org;
+    document.getElementById("wp-area").textContent=d.area;
+    document.getElementById("wp-body").textContent=d.body;
+    // Render off-screen first to measure actual popup size
+    wmPopup.style.left="-9999px";wmPopup.style.top="0px";wmPopup.style.display="block";
+    const pw=wmPopup.offsetWidth, ph=wmPopup.offsetHeight;
+    const fw=wmWrap.offsetWidth, fh=wmWrap.offsetHeight;
+    const PAD=8;
+    let px=e.clientX-rect.left+14, py=e.clientY-rect.top-10;
+    // If popup would overflow right, flip to the left of cursor
+    if(px+pw+PAD>fw) px=e.clientX-rect.left-pw-14;
+    // Final clamp to keep entirely within frame
+    px=Math.max(PAD,Math.min(px,fw-pw-PAD));
+    py=Math.max(PAD,Math.min(py,fh-ph-PAD));
+    wmPopup.style.left=px+"px";wmPopup.style.top=py+"px";
+    e.stopPropagation();
+  });
+});
+// Click anywhere outside a marker closes the popup
+document.addEventListener("click",ev=>{
+  if(!ev.target.closest("#wm-wrap g[id]")) wmPopup.style.display="none";
+});
+</script>
+
+<script>
+(function(){
+  const T = [
+    ["I can read Queensland Deed of Grant drawn before 1975.","clay"],
+    ["I have assembled coal canisters for coal seam gas desorption testing.","ochre"],
+    ["I set up the camera traps with team, once captured a snow leopard.","moss"],
+    ["I have done specimen taxonomy at the natural history museum.","sage"],
+    ["I translated a book on natural gas hydrates in the Makran Accretionary Wedge into Chinese.","indigo"],
+    ["I taught myself French to follow musicals.","violet"],
+    ["I once took a course in DAMS, the Italian academic field for performing arts.","ochre"],
+    ["My first time speaking Italian in the formal tone, I was with an old gentleman at a theatre.","violet"],
+    ["I watched sea turtles hatch on Lampedusa.","sky"],
+    ["I climbed Mount Etna, nearly got lost, and walked back with strangers.","clay"],
+    ["First time I saw a Komodo dragon was at Leipzig Zoo not Indonesia.","moss"],
+    ["I travelled five days straight on overnight trains and buses, alone.","indigo"],
+    ["My maps have entered Queensland courts as evidence.","forest"],
+    ["I co-wrote Convention on Biodiversity reporting for China's Ministry of Ecology and African NGOs.","moss"],
+    ["I have a carpet python named Tanzi, the character for \"carpet\" in Chinese.","ochre"],
+    ["I own a series of Finding Nemo buoys and I take to diving. My friends love them.","sky"],
+    ["While doing seagrass surveys in Moreton Bay, I once saw a herd of dugongs.","sky"],
+    ["I hold a jet ski license but have never actually driven one.","violet"],
+  ];
+  const host = document.getElementById('thoughts');
+  if(!host) return;
+
+  // Seeded PRNG so layout is stable across reloads
+  let seed = 13371;
+  const rand = () => { seed = (seed * 9301 + 49297) % 233280; return seed/233280; };
+
+  // Create elements first so we can measure
+  const els = T.map(t => {
+    const el = document.createElement('div');
+    el.className = 'thought c-' + t[1];
+    el.textContent = t[0];
+    el.style.visibility = 'hidden';
+    host.appendChild(el);
+    return el;
+  });
+
+  function layout(){
+    const W = host.clientWidth;
+    const H = host.clientHeight;
+    if(!W || !H) return;
+    seed = 13371;
+    const placed = [];
+    const PAD = 18;          // edge padding
+    const BUF = 14;          // min gap between cards
+    els.forEach((el, i) => {
+      // reset for measurement
+      el.style.left = '0px';
+      el.style.top = '0px';
+      const w = Math.min(el.offsetWidth, W - PAD*2);
+      const h = el.offsetHeight;
+      let best = null;
+      for(let attempt = 0; attempt < 240; attempt++){
+        const x = PAD + rand() * Math.max(1, W - w - PAD*2);
+        const y = PAD + rand() * Math.max(1, H - h - PAD*2);
+        let minGap = Infinity;
+        for(const p of placed){
+          const gx = Math.max(0, Math.max(p.x - (x+w), x - (p.x+p.w)));
+          const gy = Math.max(0, Math.max(p.y - (y+h), y - (p.y+p.h)));
+          const gap = Math.max(gx, gy); // axis-separation distance
+          if(gap < minGap) minGap = gap;
+        }
+        if(minGap >= BUF){ best = {x,y}; break; }
+        if(!best || minGap > best.gap){ best = {x,y,gap:minGap}; }
+      }
+      placed.push({x:best.x, y:best.y, w, h});
+      el.dataset.bx = best.x;
+      el.dataset.by = best.y;
+      el.style.left = best.x + 'px';
+      el.style.top = best.y + 'px';
+      el.style.visibility = '';
+    });
+  }
+
+  // Initial layout (after fonts settle)
+  requestAnimationFrame(() => requestAnimationFrame(layout));
+  window.addEventListener('resize', () => { clearTimeout(window.__thRz); window.__thRz = setTimeout(layout, 150); });
+
+  // === Drift animation (rAF, since we need to compose with drag/featured) ===
+  const driftState = els.map((_, i) => ({
+    ax: 6 + (i*0.7)%6,   // x amplitude
+    ay: 5 + (i*0.9)%5,   // y amplitude
+    px: (i*0.6),
+    py: (i*0.4)+1.3,
+    sx: 0.00018 + (i*0.000007),  // speed
+    sy: 0.00021 + (i*0.000005),
+  }));
+  function tick(t){
+    for(let i=0;i<els.length;i++){
+      const el = els[i];
+      if(el.classList.contains('pressed')) continue;
+      const s = driftState[i];
+      const dx = Math.sin(t*s.sx + s.px) * s.ax;
+      const dy = Math.cos(t*s.sy + s.py) * s.ay;
+      el.style.setProperty('--dx', dx.toFixed(2)+'px');
+      el.style.setProperty('--dy', dy.toFixed(2)+'px');
+      if(!el.classList.contains('featured')){
+        el.style.transform = 'translate('+dx.toFixed(2)+'px,'+dy.toFixed(2)+'px)';
+      }
+    }
+    requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+
+  // === Auto-cycle: feature one card at a time so audience can read every line ===
+  let featIdx = -1;
+  function nextFeature(){
+    let tries = 0;
+    do {
+      featIdx = (featIdx + 1) % els.length;
+      tries++;
+    } while(els[featIdx].classList.contains('pressed') && tries < els.length);
+    if(els[featIdx].classList.contains('pressed')) return;
+    els.forEach(e => e.classList.remove('featured'));
+    els[featIdx].classList.add('featured');
+  }
+  setInterval(nextFeature, 2400);
+  setTimeout(nextFeature, 400);
+
+  // === Press + drag: hold to bring to top + enlarge + drag freely
+  //     Release → card stays at new position and resumes drifting from there ===
+  let zCounter = 50;
+  els.forEach((el) => {
+    let down = null;
+
+    el.addEventListener('pointerdown', (e) => {
+      e.preventDefault();
+      zCounter++;
+      el.style.zIndex = zCounter;
+      el.classList.add('pressed');
+      el.classList.remove('featured');
+
+      const r = el.getBoundingClientRect();
+      const hostR = host.getBoundingClientRect();
+      down = {
+        offX: e.clientX - r.left,
+        offY: e.clientY - r.top,
+        hL: hostR.left, hT: hostR.top,
+        hW: hostR.width, hH: hostR.height,
+        eW: r.width, eH: r.height,
+      };
+      try { el.setPointerCapture(e.pointerId); } catch(_) {}
+    });
+
+    el.addEventListener('pointermove', (e) => {
+      if (!down) return;
+      let nx = e.clientX - down.hL - down.offX;
+      let ny = e.clientY - down.hT - down.offY;
+      nx = Math.max(4, Math.min(down.hW - down.eW - 4, nx));
+      ny = Math.max(4, Math.min(down.hH - down.eH - 4, ny));
+      el.style.left = nx + 'px';
+      el.style.top  = ny + 'px';
+    });
+
+    function release(e) {
+      if (!down) return;
+      try { el.releasePointerCapture(e.pointerId); } catch(_) {}
+      // Update base position to where card was dropped
+      // so drift resumes from the new location
+      const newX = parseFloat(el.style.left);
+      const newY = parseFloat(el.style.top);
+      el.dataset.bx = newX;
+      el.dataset.by = newY;
+      down = null;
+      el.classList.remove('pressed');
+      el.style.zIndex = zCounter;
+    }
+
+    el.addEventListener('pointerup',     release);
+    el.addEventListener('pointercancel', release);
+  });
+})();
+</script>
+
+
+<script>
+(function(){
+  const c = document.getElementById('approachParticles');
+  if(!c) return;
+  const section = c.parentElement; // #approach
+  const ctx = c.getContext('2d');
+  const colors = [
+    'rgba(184, 90, 50, 0.65)',  // clay
+    'rgba(184,153, 90, 0.60)',  // ochre
+    'rgba( 94,138, 79, 0.60)',  // moss
+    'rgba( 30, 58, 95, 0.55)',  // indigo
+    'rgba(122,160,152, 0.60)',  // sage
+  ];
+  let W=0, H=0, DPR=Math.min(window.devicePixelRatio||1, 1.5), particles=[];
+  // cursor position in section-local coords; -1,-1 = inactive
+  let cx = -1, cy = -1, active = false;
+
+  function size(){
+    const r = section.getBoundingClientRect();
+    W = r.width; H = r.height;
+    c.width = W*DPR; c.height = H*DPR;
+    c.style.width = W+'px'; c.style.height = H+'px';
+    ctx.setTransform(DPR,0,0,DPR,0,0);
+  }
+  function spawn(){
+    const target = Math.round((W*H)/8000);
+    particles = [];
+    for(let i=0; i<target; i++){
+      particles.push({
+        x: Math.random()*W,
+        y: Math.random()*H,
+        vx: (Math.random()-0.5)*0.6,   // ~5x faster
+        vy: (Math.random()-0.5)*0.6,
+        r: 0.9 + Math.random()*1.9,
+        color: colors[(Math.random()*colors.length)|0],
+        a: 0.40 + Math.random()*0.45,
+      });
+    }
+  }
+  function resize(){ size(); spawn(); }
+  resize();
+  window.addEventListener('resize', () => { clearTimeout(window.__apRz); window.__apRz = setTimeout(resize, 120); });
+
+  section.addEventListener('mousemove', (e) => {
+    const r = section.getBoundingClientRect();
+    cx = e.clientX - r.left;
+    cy = e.clientY - r.top;
+    active = true;
+  });
+  section.addEventListener('mouseleave', () => { active = false; });
+
+  function tick(){
+    ctx.clearRect(0,0,W,H);
+    const MAG_R = 180;     // magnet radius
+    const MAG_R2 = MAG_R*MAG_R;
+    const MAG_K = 0.018;   // pull strength (lowered for slower, gentler response)
+    const DAMP = 0.985;    // higher damping = longer, lazier trails
+
+    for(const p of particles){
+      if(active){
+        const dx = cx - p.x, dy = cy - p.y;
+        const d2 = dx*dx + dy*dy;
+        if(d2 < MAG_R2 && d2 > 1){
+          const t = 1 - d2/MAG_R2;
+          // Curl-attract: pull plus a tangential component for "swirl" feel
+          p.vx += dx * 0.0014 * t * MAG_K * 60;
+          p.vy += dy * 0.0014 * t * MAG_K * 60;
+          p.vx += -dy * 0.00018 * t * 60;
+          p.vy +=  dx * 0.00018 * t * 60;
+        }
+      }
+      p.vx *= DAMP; p.vy *= DAMP;
+      // Maintain a baseline minimum drift speed so they keep moving when far from cursor
+      const sp2 = p.vx*p.vx + p.vy*p.vy;
+      if(sp2 < 0.04){
+        p.vx += (Math.random()-0.5) * 0.025;
+        p.vy += (Math.random()-0.5) * 0.025;
+      }
+      p.x += p.vx; p.y += p.vy;
+      if(p.x < -10) p.x = W+10;
+      if(p.x > W+10) p.x = -10;
+      if(p.y < -10) p.y = H+10;
+      if(p.y > H+10) p.y = -10;
+
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI*2);
+      ctx.fillStyle = p.color;
+      ctx.globalAlpha = p.a;
+      ctx.fill();
+    }
+
+    // soft links between nearby particles
+    ctx.globalAlpha = 1;
+    for(let i=0; i<particles.length; i++){
+      for(let j=i+1; j<particles.length; j++){
+        const a = particles[i], b = particles[j];
+        const dx = a.x-b.x, dy = a.y-b.y;
+        const d2 = dx*dx + dy*dy;
+        if(d2 < 7200){
+          const t = 1 - d2/7200;
+          ctx.strokeStyle = 'rgba(184,153,90,'+(t*0.22).toFixed(3)+')';
+          ctx.lineWidth = 0.6;
+          ctx.beginPath();
+          ctx.moveTo(a.x,a.y);
+          ctx.lineTo(b.x,b.y);
+          ctx.stroke();
+        }
+      }
+    }
+    requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+})();
+</script>
+
+</body>
+</html>
