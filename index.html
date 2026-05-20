@@ -46,6 +46,9 @@ body{
 
 /* ===== Animated topographic background ===== */
 #topo{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:0;}
+#peak-marker{position:fixed;top:0;left:0;width:22px;height:22px;transform:translate(-50%,-50%);pointer-events:none;z-index:2;opacity:0;transition:opacity 0.35s ease;mix-blend-mode:multiply;}
+#peak-marker.on{opacity:0.85;}
+@media (max-width:780px){#peak-marker{display:none;}}
 #grain{position:fixed;inset:0;pointer-events:none;z-index:1;opacity:0.28;mix-blend-mode:multiply;
   background-image:
     radial-gradient(circle at 22% 18%,rgba(184,90,50,0.04),transparent 38%),
@@ -178,10 +181,10 @@ h2 em{font-style:italic;color:var(--indigo);}
 .stat-label{font-family:var(--mono);font-size:0.66rem;letter-spacing:0.13em;text-transform:uppercase;color:var(--muted);}
 .about-edu{margin-top:1.6rem;padding-top:1.5rem;border-top:1px dashed var(--line);}
 .about-edu-label{font-family:var(--mono);font-size:0.7rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--clay);margin-bottom:0.7rem;}
-.about-edu ul{list-style:none;font-size:0.88rem;color:var(--forest);line-height:1.95;}
+.about-edu ul{list-style:none;font-size:1.01rem;color:var(--forest);line-height:1.95;}
 .about-edu li{position:relative;padding-left:1rem;}
 .about-edu li::before{content:"·";position:absolute;left:0;color:var(--clay);font-size:1.4rem;line-height:1;top:0.1rem;}
-.about-body{font-size:0.94rem;line-height:1.88;color:#3a4a44;}
+.about-body{font-size:1.08rem;line-height:1.88;color:#3a4a44;}
 .about-body p+p{margin-top:0.95rem;}
 
 
@@ -239,10 +242,10 @@ h2 em{font-style:italic;color:var(--indigo);}
 .workmap-section .sub{font-size:1.02rem;color:var(--moss-pale);font-style:italic;margin-bottom:1.6rem;}
 #wm-wrap{position:relative;width:100%;max-width:540px;margin:0 auto;background:#0a1d18;border:1px solid rgba(207,154,59,0.2);border-radius:6px;overflow:hidden;box-shadow:0 30px 70px -30px rgba(0,0,0,0.6);}
 #wm-wrap svg{display:block;width:100%;height:auto;}
-.wm-popup{position:absolute;background:rgba(8,22,18,0.98);border:1px solid var(--ochre);border-radius:6px;padding:1.1rem 1.3rem;width:288px;pointer-events:none;z-index:10;display:none;box-shadow:0 10px 30px rgba(0,0,0,0.5);}
-.wm-popup .wp-org{font-family:var(--mono);font-size:0.68rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--ochre-soft);margin-bottom:0.35rem;}
-.wm-popup .wp-area{font-size:1.05rem;font-weight:400;color:var(--paper);margin-bottom:0.45rem;line-height:1.25;font-style:italic;}
-.wm-popup .wp-body{font-size:0.92rem;color:var(--moss-pale);line-height:1.65;}
+.wm-popup{position:absolute;background:rgba(8,22,18,0.98);border:1px solid var(--ochre);border-radius:6px;padding:1.2rem 1.4rem;width:330px;pointer-events:none;z-index:10;display:none;box-shadow:0 10px 30px rgba(0,0,0,0.5);}
+.wm-popup .wp-org{font-family:var(--mono);font-size:0.78rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--ochre-soft);margin-bottom:0.4rem;}
+.wm-popup .wp-area{font-size:1.21rem;font-weight:400;color:var(--paper);margin-bottom:0.5rem;line-height:1.25;font-style:italic;}
+.wm-popup .wp-body{font-size:1.06rem;color:var(--moss-pale);line-height:1.65;}
 
 /* ===== Skills ===== */
 .skills-section{background:var(--paper-2);padding:4rem 3.5rem;position:relative;z-index:2;}
@@ -338,7 +341,7 @@ footer span{font-family:var(--mono);font-size:0.54rem;letter-spacing:0.13em;colo
 .wm-modal-close:hover{background:var(--ochre);color:var(--forest-dark);}
 .wm-modal-org{
   font-family:var(--mono);
-  font-size:0.72rem;
+  font-size:0.83rem;
   letter-spacing:0.18em;
   text-transform:uppercase;
   color:var(--ochre-soft);
@@ -346,7 +349,7 @@ footer span{font-family:var(--mono);font-size:0.54rem;letter-spacing:0.13em;colo
 }
 .wm-modal-area{
   font-family:var(--serif);
-  font-size:1.5rem;
+  font-size:1.72rem;
   font-weight:300;
   font-style:italic;
   color:var(--paper);
@@ -357,7 +360,7 @@ footer span{font-family:var(--mono);font-size:0.54rem;letter-spacing:0.13em;colo
 }
 .wm-modal-body{
   font-family:var(--serif);
-  font-size:1.08rem;
+  font-size:1.24rem;
   color:var(--moss-pale);
   line-height:1.75;
   flex:1;
@@ -379,7 +382,7 @@ footer span{font-family:var(--mono);font-size:0.54rem;letter-spacing:0.13em;colo
   /* Performance: disable tag hover animations on mobile */
   .tag{transition:none;}
   .about-grid{grid-template-columns:1fr;gap:2rem;overflow:hidden;}
-  .about-body{font-size:1rem;max-width:100%;}
+  .about-body{font-size:1.15rem;max-width:100%;}
   .about-stats{grid-template-columns:1fr 1fr;max-width:360px;}
   .about-edu{max-width:360px;}
   .about-grid > div:first-child{display:flex;flex-direction:column;align-items:center;text-align:center;}
@@ -423,6 +426,12 @@ footer span{font-family:var(--mono);font-size:0.54rem;letter-spacing:0.13em;colo
 </head>
 <body>
 <canvas id="topo"></canvas>
+<div id="peak-marker" aria-hidden="true">
+  <svg viewBox="0 0 24 24" width="22" height="22">
+    <polygon points="12,4 20,19 4,19" fill="none" stroke="rgba(184,90,50,0.75)" stroke-width="1.4" stroke-linejoin="round"/>
+    <polygon points="12,9 17,18 7,18" fill="rgba(184,90,50,0.55)" stroke="none"/>
+  </svg>
+</div>
 <div id="grain"></div>
 
 <nav>
@@ -430,7 +439,7 @@ footer span{font-family:var(--mono);font-size:0.54rem;letter-spacing:0.13em;colo
   <ul>
     <li><a href="#work">Work</a></li>
     <li><a href="#approach">Approach</a></li>
-    <li><a href="#origins">Origins</a></li>
+    <li><a href="#origins">ABOUT</a></li>
     <li><a href="#skills">Skills</a></li>
     <li><a href="#contact">Contact</a></li>
   </ul>
@@ -719,7 +728,18 @@ const peaks=[
   {phx:0.40,phy:0.85,fx:-0.00015,fy:-0.00022,ax:0.20,ay:0.16,base:3.6},
 ];
 let mxN=0.5,myN=0.5;
-document.addEventListener("mousemove",e=>{mxN=e.clientX/window.innerWidth;myN=e.clientY/window.innerHeight;});
+const peakMarker=document.getElementById("peak-marker");
+let pmHideT=null;
+document.addEventListener("mousemove",e=>{
+  mxN=e.clientX/window.innerWidth;myN=e.clientY/window.innerHeight;
+  if(peakMarker){
+    peakMarker.style.left=e.clientX+"px";
+    peakMarker.style.top=e.clientY+"px";
+    peakMarker.classList.add("on");
+    clearTimeout(pmHideT);
+    pmHideT=setTimeout(()=>peakMarker.classList.remove("on"),900);
+  }
+});
 
 function buildField(t){
   // Anchor positions
@@ -728,7 +748,7 @@ function buildField(t){
     p.cy=0.5+p.ay*Math.cos(t*p.fy+p.base*1.3);
   }
   const k=18;        // gaussian sharpness
-  const km=14;       // mouse sharpness
+  const km=55;      // mouse sharpness — tighter so the cursor 'peak' is small and reforms quickly
   for(let j=0;j<GH;j++){
     const y=j/(GH-1);
     for(let i=0;i<GW;i++){
@@ -739,7 +759,7 @@ function buildField(t){
         v+=Math.exp(-(dx*dx+dy*dy)*k);
       }
       const mdx=x-mxN,mdy=y-myN;
-      v+=0.7*Math.exp(-(mdx*mdx+mdy*mdy)*km);
+      v+=0.55*Math.exp(-(mdx*mdx+mdy*mdy)*km);
       field[j*GW+i]=v;
     }
   }
@@ -1062,17 +1082,20 @@ document.addEventListener("click",ev=>{
   }
   function spawn(){
     const isMobileDevice = window.innerWidth <= 780;
-    const target = isMobileDevice ? Math.min(20, Math.round((W*H)/20000)) : Math.round((W*H)/8000);
+    // Mobile: skip particles entirely for performance
+    if(isMobileDevice){ particles = []; c.style.display='none'; return; }
+    c.style.display='';
+    const target = Math.round((W*H)/8000);
     particles = [];
     for(let i=0; i<target; i++){
       particles.push({
         x: Math.random()*W,
         y: Math.random()*H,
-        vx: (Math.random()-0.5)*0.6,   // ~5x faster
-        vy: (Math.random()-0.5)*0.6,
+        vx: (Math.random()-0.5)*1.4,   // faster baseline drift
+        vy: (Math.random()-0.5)*1.4,
         r: 0.9 + Math.random()*1.9,
         color: colors[(Math.random()*colors.length)|0],
-        a: 0.40 + Math.random()*0.45,
+        a: 0.78 + Math.random()*0.20,
       });
     }
   }
@@ -1089,11 +1112,14 @@ document.addEventListener("click",ev=>{
   section.addEventListener('mouseleave', () => { active = false; });
 
   function tick(){
+    // Mobile: skip the loop entirely
+    if(window.innerWidth <= 780 || !particles.length){ requestAnimationFrame(tick); return; }
     ctx.clearRect(0,0,W,H);
-    const MAG_R = 180;     // magnet radius
+    const MAG_R = 320;     // magnet radius — wider so cursor 'sweeps' more particles in
     const MAG_R2 = MAG_R*MAG_R;
-    const MAG_K = 0.015;   // pull strength (lowered for slower, gentler response)
-    const DAMP = 0.985;    // higher damping = longer, lazier trails
+    const MAG_K = 0.045;   // stronger pull — cursor actually collects particles
+    const DAMP_NEAR = 0.94;   // more friction near cursor so they settle into a cluster
+    const DAMP_FAR  = 0.992;  // very little friction far away — released particles keep moving
 
     for(const p of particles){
       if(active){
@@ -1101,19 +1127,32 @@ document.addEventListener("click",ev=>{
         const d2 = dx*dx + dy*dy;
         if(d2 < MAG_R2 && d2 > 1){
           const t = 1 - d2/MAG_R2;
-          // Curl-attract: pull plus a tangential component for "swirl" feel
-          p.vx += dx * 0.0014 * t * MAG_K * 60;
-          p.vy += dy * 0.0014 * t * MAG_K * 60;
-          p.vx += -dy * 0.00018 * t * 60;
-          p.vy +=  dx * 0.00018 * t * 60;
+          // Inverse-distance attract — stronger close in so they cluster tightly under the cursor
+          const d = Math.sqrt(d2);
+          const pull = MAG_K * t * (1 + 40/Math.max(d,40));
+          p.vx += (dx/d) * pull;
+          p.vy += (dy/d) * pull;
+          // tiny tangential nudge keeps the cluster from collapsing into a single dot
+          p.vx += -dy * 0.00006 * t;
+          p.vy +=  dx * 0.00006 * t;
         }
       }
+      // Choose damping based on distance to cursor — released particles disperse fast
+      const dcx0 = active ? (cx - p.x) : 1e6;
+      const dcy0 = active ? (cy - p.y) : 1e6;
+      const nearCursor = (dcx0*dcx0 + dcy0*dcy0) < MAG_R2;
+      const DAMP = nearCursor ? DAMP_NEAR : DAMP_FAR;
       p.vx *= DAMP; p.vy *= DAMP;
-      // Maintain a baseline minimum drift speed so they keep moving when far from cursor
+      // Baseline drift only when cursor is far away (or inactive)
+      const dcx = dcx0, dcy = dcy0;
+      const farFromCursor = !nearCursor;
       const sp2 = p.vx*p.vx + p.vy*p.vy;
-      if(sp2 < 0.04){
-        p.vx += (Math.random()-0.5) * 0.025;
-        p.vy += (Math.random()-0.5) * 0.025;
+      if(farFromCursor){
+        // Stronger baseline jitter so they scatter quickly once released
+        if(sp2 < 0.6){
+          p.vx += (Math.random()-0.5) * 0.14;
+          p.vy += (Math.random()-0.5) * 0.14;
+        }
       }
       p.x += p.vx; p.y += p.vy;
       if(p.x < -10) p.x = W+10;
@@ -1128,17 +1167,18 @@ document.addEventListener("click",ev=>{
       ctx.fill();
     }
 
-    // soft links between nearby particles
+    // soft links between nearby particles — thinner, more transparent strokes
     ctx.globalAlpha = 1;
+    ctx.lineWidth = 0.35;
+    const LINK2 = 16000; // ~126px link reach
     for(let i=0; i<particles.length; i++){
       for(let j=i+1; j<particles.length; j++){
         const a = particles[i], b = particles[j];
         const dx = a.x-b.x, dy = a.y-b.y;
         const d2 = dx*dx + dy*dy;
-        if(d2 < 7200){
-          const t = 1 - d2/7200;
-          ctx.strokeStyle = 'rgba(184,153,90,'+(t*0.22).toFixed(3)+')';
-          ctx.lineWidth = 0.6;
+        if(d2 < LINK2){
+          const t = 1 - d2/LINK2;
+          ctx.strokeStyle = 'rgba(184,153,90,'+(t*0.14).toFixed(3)+')';
           ctx.beginPath();
           ctx.moveTo(a.x,a.y);
           ctx.lineTo(b.x,b.y);
