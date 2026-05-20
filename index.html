@@ -308,15 +308,100 @@ h2 em{font-style:italic;color:var(--indigo);}
 footer{padding:1rem 3.5rem;background:#070f0c;display:flex;justify-content:space-between;align-items:center;position:relative;z-index:2;flex-wrap:wrap;gap:0.4rem;}
 footer span{font-family:var(--mono);font-size:0.54rem;letter-spacing:0.13em;color:#3a5448;text-transform:uppercase;}
 
+/* ===== Mobile fullscreen popup overlay ===== */
+.wm-modal-overlay{
+  display:none;
+  position:fixed;
+  inset:0;
+  z-index:9999;
+  background:rgba(6,18,14,0.97);
+  padding:2rem 1.4rem;
+  flex-direction:column;
+  overflow-y:auto;
+}
+.wm-modal-overlay.open{display:flex;}
+.wm-modal-close{
+  font-family:var(--mono);
+  font-size:0.68rem;
+  letter-spacing:0.18em;
+  text-transform:uppercase;
+  color:var(--ochre-soft);
+  background:transparent;
+  border:1px solid rgba(207,154,59,0.35);
+  border-radius:999px;
+  padding:0.6rem 1.4rem;
+  cursor:pointer;
+  align-self:flex-end;
+  margin-bottom:2rem;
+  transition:background 0.2s,color 0.2s;
+}
+.wm-modal-close:hover{background:var(--ochre);color:var(--forest-dark);}
+.wm-modal-org{
+  font-family:var(--mono);
+  font-size:0.72rem;
+  letter-spacing:0.18em;
+  text-transform:uppercase;
+  color:var(--ochre-soft);
+  margin-bottom:0.6rem;
+}
+.wm-modal-area{
+  font-family:var(--serif);
+  font-size:1.5rem;
+  font-weight:300;
+  font-style:italic;
+  color:var(--paper);
+  line-height:1.25;
+  margin-bottom:1.4rem;
+  border-bottom:1px solid rgba(207,154,59,0.2);
+  padding-bottom:1.4rem;
+}
+.wm-modal-body{
+  font-family:var(--serif);
+  font-size:1.08rem;
+  color:var(--moss-pale);
+  line-height:1.75;
+  flex:1;
+}
+
+/* ===== Existing mobile styles ===== */
 @media (max-width:780px){
   nav{padding:0.7rem 1.3rem;}
   nav ul{gap:1rem;}
+  nav a{font-size:0.58rem;}
   .hero{padding:5rem 1.3rem 2rem;grid-template-columns:1fr;}
   .hero-right{height:280px;}
   section,.approach-section,.workmap-section,.skills-section,.contact-section{padding:3rem 1.3rem;}
   .about-grid{grid-template-columns:1fr;gap:2rem;}
-  .skills-grid{grid-template-columns:1fr;}
+  .about-body{font-size:1rem;}
+  .skills-grid{grid-template-columns:1fr 1fr;}
   .quote-mark{display:none;}
+  h2{font-size:clamp(1.7rem,7vw,2.4rem);}
+  .identity-text{font-size:1rem;}
+  .approach-inner{max-width:100%;}
+  .contact-inner{max-width:100%;}
+  .contact-links{flex-direction:column;gap:0.6rem;}
+  /* Marginalia list on mobile */
+  #funfacts{min-height:unset !important;}
+  #funfacts .thoughts{
+    position:relative !important;
+    min-height:unset !important;
+    display:flex;
+    flex-direction:column;
+    gap:0.6rem;
+  }
+  #funfacts .thought{
+    position:relative !important;
+    left:auto !important;
+    top:auto !important;
+    transform:none !important;
+    opacity:1 !important;
+    max-width:100% !important;
+    width:100%;
+  }
+}
+@media (max-width:480px){
+  .skills-grid{grid-template-columns:1fr;}
+  h1{font-size:clamp(2.6rem,13vw,3.8rem);}
 }
 </style>
 </head>
@@ -490,7 +575,7 @@ footer span{font-family:var(--mono);font-size:0.54rem;letter-spacing:0.13em;colo
   <div class="approach-inner">
     <span class="quote-mark">“</span>
     <div class="identity-text">
-      <p>In Plato's Apology, Socrates says "I neither know nor think I know", his method was questions. I grew up genuinely fascinated by how natural systems work. I kept asking <strong>WHY</strong> to this world. My friends call me a troubleshooter. My supervisor described me as stimulates by information and keeps trying. When I cannot solve something with what I have, I turn the question inward and go find what I am missing. I have upskilled into every context I have worked in for exactly that reason.</p>
+      <p>In Plato's Apology, Socrates says "I neither know nor think I know", his method was questions. I grew up genuinely fascinated by how natural systems work. I kept asking WHY to this world. My friend called me a troubleshooter. My supervisor described me as stimulates by information and keeps trying. When I cannot solve something with what I have, I turn the question inward and go find what I am missing. I have upskilled into every context I have worked in for exactly that reason.</p>
       <p>Natural sciences gave me the instinct to read the world as mechanism.  Environmental management gave me the framework to ask what are the consequences when people make decisions about it. GIS is the tool that brings both to ground. <span class="squiggle">The answer is usually where the more interesting question begins.</span></p>
     </div>
     <span class="quote-mark close">”</span>
@@ -574,6 +659,14 @@ footer span{font-family:var(--mono);font-size:0.54rem;letter-spacing:0.13em;colo
     </div>
   </div>
 </section>
+
+<!-- Mobile fullscreen popup modal -->
+<div class="wm-modal-overlay" id="wm-modal">
+  <button class="wm-modal-close" id="wm-modal-close">Close ×</button>
+  <div class="wm-modal-org" id="wm-modal-org"></div>
+  <div class="wm-modal-area" id="wm-modal-area"></div>
+  <div class="wm-modal-body" id="wm-modal-body"></div>
+</div>
 
 <footer>
   <span>Beijia Tang · Brisbane</span>
@@ -704,32 +797,46 @@ const workData=[
 ];
 const wmWrap=document.getElementById("wm-wrap");
 const wmPopup=document.getElementById("wm-popup");
+const wmModal=document.getElementById("wm-modal");
+const isMob=()=>window.innerWidth<=780;
 const MARKERS=["wm0","wm1","wm2","wm3","wm4","wm5","wm6","wm7","wm8","wm10","wm11","wm9"];
 MARKERS.forEach((id,i)=>{
   document.getElementById(id).addEventListener("click",e=>{
-    const rect=wmWrap.getBoundingClientRect();
     const d=workData[i];
-    document.getElementById("wp-org").textContent=d.org;
-    document.getElementById("wp-area").textContent=d.area;
-    document.getElementById("wp-body").textContent=d.body;
-    // Render off-screen first to measure actual popup size
-    wmPopup.style.left="-9999px";wmPopup.style.top="0px";wmPopup.style.display="block";
-    const pw=wmPopup.offsetWidth, ph=wmPopup.offsetHeight;
-    const fw=wmWrap.offsetWidth, fh=wmWrap.offsetHeight;
-    const PAD=8;
-    let px=e.clientX-rect.left+14, py=e.clientY-rect.top-10;
-    // If popup would overflow right, flip to the left of cursor
-    if(px+pw+PAD>fw) px=e.clientX-rect.left-pw-14;
-    // Final clamp to keep entirely within frame
-    px=Math.max(PAD,Math.min(px,fw-pw-PAD));
-    py=Math.max(PAD,Math.min(py,fh-ph-PAD));
-    wmPopup.style.left=px+"px";wmPopup.style.top=py+"px";
+    if(isMob()){
+      // Mobile: full screen modal
+      document.getElementById("wm-modal-org").textContent=d.org;
+      document.getElementById("wm-modal-area").textContent=d.area;
+      document.getElementById("wm-modal-body").textContent=d.body;
+      wmModal.classList.add("open");
+      document.body.style.overflow="hidden";
+    } else {
+      // Desktop: original absolute popup inside map frame
+      const rect=wmWrap.getBoundingClientRect();
+      document.getElementById("wp-org").textContent=d.org;
+      document.getElementById("wp-area").textContent=d.area;
+      document.getElementById("wp-body").textContent=d.body;
+      wmPopup.style.left="-9999px";wmPopup.style.top="0px";wmPopup.style.display="block";
+      const pw=wmPopup.offsetWidth, ph=wmPopup.offsetHeight;
+      const fw=wmWrap.offsetWidth, fh=wmWrap.offsetHeight;
+      const PAD=8;
+      let px=e.clientX-rect.left+14, py=e.clientY-rect.top-10;
+      if(px+pw+PAD>fw) px=e.clientX-rect.left-pw-14;
+      px=Math.max(PAD,Math.min(px,fw-pw-PAD));
+      py=Math.max(PAD,Math.min(py,fh-ph-PAD));
+      wmPopup.style.left=px+"px";wmPopup.style.top=py+"px";
+    }
     e.stopPropagation();
   });
 });
-// Click anywhere outside a marker closes the popup
+// Close modal
+document.getElementById("wm-modal-close").addEventListener("click",()=>{
+  wmModal.classList.remove("open");
+  document.body.style.overflow="";
+});
+// Close desktop popup on outside click
 document.addEventListener("click",ev=>{
-  if(!ev.target.closest("#wm-wrap g[id]")) wmPopup.style.display="none";
+  if(!ev.target.closest("#wm-wrap g[id]")&&!ev.target.closest(".wm-popup")) wmPopup.style.display="none";
 });
 </script>
 
@@ -739,20 +846,20 @@ document.addEventListener("click",ev=>{
     ["I can read Queensland Deed of Grant drawn before 1975.","clay"],
     ["I have assembled coal canisters for coal seam gas desorption testing.","ochre"],
     ["I set up the camera traps with team, once captured a snow leopard.","moss"],
-    ["I have done specimen taxonomy at the natural history museum.","sage"],
-    ["I translated a book on natural gas hydrates in the Makran Accretionary Wedge into Chinese.","indigo"],
+    ["I have done specimen taxonomy at the dinosaur museum.","sage"],
+    ["I translated a book on natural gas hydrates in the accretionary wedge into Chinese.","indigo"],
     ["I taught myself French to follow musicals.","violet"],
-    ["I once took a course in DAMS, the Italian academic field for performing arts.","ochre"],
+    ["When I was in Tassie, a wombat walked under my bike ignored every human watching.","ochre"],
     ["My first time speaking Italian in the formal tone, I was with an old gentleman at a theatre.","violet"],
-    ["I watched sea turtles hatch on Lampedusa.","sky"],
+    ["I watched sea turtles hatch on Heron.","sky"],
     ["I climbed Mount Etna, nearly got lost, and walked back with strangers.","clay"],
     ["First time I saw a Komodo dragon was at Leipzig Zoo not Indonesia.","moss"],
     ["I travelled five days straight on overnight trains and buses, alone.","indigo"],
     ["My maps have entered Queensland courts as evidence.","forest"],
-    ["I co-wrote Convention on Biodiversity reporting for China's Ministry of Ecology and African NGOs.","moss"],
+    ["I co-wrote Convention on Biodiversity reporting for China's State Council.","moss"],
     ["I have a carpet python named Tanzi, the character for \"carpet\" in Chinese.","ochre"],
     ["I own a series of Finding Nemo buoys and I take to diving. My friends love them.","sky"],
-    ["While doing seagrass surveys in Moreton Bay, I once saw a herd of dugongs.","sky"],
+    ["While doing seagrass surveys in Moreton Bay, I once surrounded by a herd of dugongs.","sky"],
     ["I hold a jet ski license but have never actually driven one.","violet"],
   ];
   const host = document.getElementById('thoughts');
@@ -823,6 +930,7 @@ document.addEventListener("click",ev=>{
     sy: 0.00021 + (i*0.000005),
   }));
   function tick(t){
+    if(window.innerWidth<=780){ requestAnimationFrame(tick); return; }
     for(let i=0;i<els.length;i++){
       const el = els[i];
       if(el.classList.contains('pressed')) continue;
