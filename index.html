@@ -371,8 +371,24 @@ footer span{font-family:var(--mono);font-size:0.54rem;letter-spacing:0.13em;colo
   .hero{padding:5rem 1.3rem 2rem;grid-template-columns:1fr;}
   .hero-right{height:280px;}
   section,.approach-section,.workmap-section,.skills-section,.contact-section{padding:3rem 1.3rem;}
-  .about-grid{grid-template-columns:1fr;gap:2rem;}
-  .about-body{font-size:1rem;}
+
+  /* Performance: disable topo background on mobile */
+  #topo{display:none;}
+  /* Performance: remove expensive blend mode on mobile */
+  #grain{mix-blend-mode:normal;opacity:0.18;}
+  /* Performance: disable tag hover animations on mobile */
+  .tag{transition:none;}
+  .about-grid{grid-template-columns:1fr;gap:2rem;overflow:hidden;}
+  .about-body{font-size:1rem;max-width:100%;}
+  .about-stats{grid-template-columns:1fr 1fr;max-width:360px;}
+  .about-edu{max-width:360px;}
+  .about-grid > div:first-child{display:flex;flex-direction:column;align-items:center;text-align:center;}
+  .about-grid > div:first-child .stat{text-align:left;}
+  .about-grid > div:first-child h2{text-align:center;}
+  #origins .about-grid > div:first-child{text-align:center;display:flex;flex-direction:column;align-items:center;}
+  #origins .about-stats{max-width:100%;width:100%;}
+  #origins .stat{text-align:left;}
+  #origins .about-edu{width:100%;}
   .skills-grid{grid-template-columns:1fr 1fr;}
   .quote-mark{display:none;}
   h2{font-size:clamp(1.7rem,7vw,2.4rem);}
@@ -446,7 +462,7 @@ footer span{font-family:var(--mono);font-size:0.54rem;letter-spacing:0.13em;colo
 <section id="work" class="workmap-section">
   <div class="section-label">Work</div>
   <h2>Where the <em>work happened</em></h2>
-  <p class="sub">Areas I have worked in across Queensland. Click a marker for context.</p>
+  <p class="sub">Projects I have worked on across Queensland. Click a marker for context.</p>
   <div id="wm-wrap">
     <svg viewBox="-50 -25 459.58 558.33" xmlns="http://www.w3.org/2000/svg">
       <rect x="-50" y="-25" width="459.58" height="558.33" fill="#0a1d18"/>
@@ -609,10 +625,10 @@ footer span{font-family:var(--mono);font-size:0.54rem;letter-spacing:0.13em;colo
         </ul>
       </div>
     </div>
-    <div class="about-body">
-      <p>My first contact with how industry accounts for its environmental obligations was at METServe, quantifying foliar damage from SO2 emissions and feeding results into impact monitoring outputs. At Geoconsult the work sat at the exploration end of the mining cycle, where remote sensing identified coal targets and lithology gave the geological context beneath them, Python models built from lab desorption data quantified gas content and emission , and spatial outputs supported EA approval submissions. Hydrobiology brought the ecological and regulatory side that threatened species habitat mapping under the EPBC Act and AUSRIVAS bioassessment across reference catchments. Queensland Government has been the spatial infrastructure underneath all of it, native title claims feeding into court proceedings, vegetation datasets governing what landholders can legally clear, and place name legislation applied at state scale.</p>
-      <p>My Academic path ran from natural sciences at Bologna across biological, earth, and environmental disciplines, to marine science and environmental management at Brisbane. Research covered Diamantina Basin carbon sequestration using HYDRUS-2D and Great Barrier Reef carbonate chemistry under ANZG ecotoxicological frameworks.</p>
-      <p>Multilingual across Chinese, English and Italian. Volunteered since 2015 for GBIF, NGOs and Climate Science topics, translating scientific documentary and reports content into Chinese. Since Australia, volunttered with research vessel for reef health across Moreton Bay and the Whitsundays. </p>
+        <div class="about-body">
+      <p>I grew up spending weekends in museums and zoos, but I was never satisfied just looking. I needed to understand the mechanism behind what I was seeing: why the rock folded that way; what the bug's morphology was adapted for; how the system held together. That habit of questioning led me to Natural Sciences at Bologna, where the curriculum covered geology, botany, zoology, and ecology within a single degree. Our lecturers took us into the field and taught us to read a piece of land through a naturalist's eye.</p>
+      <p>Today, the profession of "naturalist" has all but disappeared. Yet the problems requiring this integrated perspective have not gone away. Mine closure requires reading soil chemistry, ecology, hydrology, and rehabilitation law at the same time. Native title research requires holding cadastral history, legal frameworks, and cultural geography together. Vegetation management requires satellite data, ecological knowledge, and legislative consequence in the same decision. Each of these is a problem that only makes sense when you look at it from more than one direction.</p>
+      <p>I came to Australia to study environmental management at the University of Queensland, where natural sciences meet regulatory frameworks and real-world consequence. My first GIS fieldwork was mapping coastal erosion on North Stradbroke Island. The work that followed spanned mining, aquatic ecology, and government spatial datasets, where these contexts required both the environmental knowledge to understand what the data meant and the spatial tools to make it usable for decisions. That is the integrated environmental project delivery I want to keep building.</p>
     </div>
   </div>
 </section>
@@ -694,7 +710,7 @@ resizeTopo();window.addEventListener("resize",resizeTopo);
 /* Marching-squares contour rendering on a low-res scalar field
    built from drifting Gaussian "peaks" + the cursor as a soft anchor.
    This produces topographic-map style isolines that morph organically. */
-const GW=84,GH=52;            // grid resolution
+const GW=60,GH=38;            // grid resolution
 const field=new Float32Array(GW*GH);
 const peaks=[
   {phx:0.22,phy:0.30,fx:0.00021,fy:0.00017,ax:0.18,ay:0.22,base:0.5},
@@ -773,10 +789,12 @@ const levels=[
 
 let lastBuild=0;
 (function loop(now){
-  // Throttle field rebuild to ~24fps; drawing still runs each frame
-  if(!now||now-lastBuild>40){buildField(now||0);lastBuild=now||0;}
-  tctx.clearRect(0,0,TW,TH);
-  for(const l of levels) drawContour(l.v,l.c,l.w);
+  // Skip entirely on mobile — topo is hidden via CSS, save the CPU
+  if(window.innerWidth > 780){
+    if(!now||now-lastBuild>40){buildField(now||0);lastBuild=now||0;}
+    tctx.clearRect(0,0,TW,TH);
+    for(const l of levels) drawContour(l.v,l.c,l.w);
+  }
   requestAnimationFrame(loop);
 })();
 
@@ -786,14 +804,14 @@ const workData=[
   {org:"Geoconsult",area:"North Bowen Basin · Exploration",body:"Before a coal site can be drilled, someone has to decide where the rock is most likely to hold what the company is looking for, and what is living on top of it. I processed ASTER and Sentinel-2 imagery to identify thermal anomalies and soil signatures. From that base I produced the maps that went into EA approval submissions, drilling plans, and landholder consultations. Biodiversity offset and land clearing assessments sat on top of the same spatial foundation."},
   {org:"Queensland Government",area:"Great Keppel Island · Native Title",body:"A native title determination is not just a map. It is a legal document with consequences for compensation, for land use, and for whose voice has authority over Country. I produced determination and claims maps in ArcGIS Pro and researched pre-1975 Queensland cadastral plans where the modern record runs out. I maintained QNTIME, the Queensland system that holds the official record of every native title claim and determination in the state."},
   {org:"Queensland Government",area:"Queensland-wide · Place Names Act",body:"A place name in Queensland is not informal. It is gazetted under the Place Names Act 1994, and it lives inside an administrative boundary dataset that determines what address a property has, which council it falls under, and what services it receives. I maintained the Gazetteer and wrote Python scripts that automated integration of Queensland Spatial Cadastral Fabric points into the address and administrative boundary datasets statewide. FME workbenches handled the validation. Local councils handled the disputes."},
-  {org:"METServe",area:"North Bowen Basin · Mine Closure",body:"SO2 emissions from a mine leave a measurable signature on the leaves of nearby vegetation. I analysed leaf samples in Fiji Image J to quantify foliar damage, converting biological evidence into the statistics that fed the Sulphur Dioxide Environmental Impact Monitoring Program. The work sat inside a broader closure planning frame covering progressive rehabilitation and landform stability. The underlying question was how a mined landscape eventually has to be returned."},
-  {org:"UQ Research",area:"Diamantina Basin · Carbon Sequestration",body:"Arid and semi-arid catchments are not normally where carbon sequestration research happens. They should be. I used HYDRUS-2D hydrological modelling to study soil moisture and CO2 flux dynamics across the Diamantina catchment, situating the findings inside global literature on dry-land carbon storage. Earth sciences on one side. Environmental management on the other. The research sat across both."},
+  {org:"METServe",area:"North Bowen Basin · Mine Closure",body:"SO2 emissions from a mine leave a measurable signature on the leaves of nearby vegetation. I analysed leaf samples in Fiji ImageJ to quantify foliar damage, converting biological evidence into the statistics that fed the Sulphur Dioxide Environmental Impact Monitoring Program. The work sat inside a broader closure planning frame covering progressive rehabilitation and landform stability. The underlying question was how a mined landscape eventually has to be returned."},
+  {org:"UQ Research",area:"Diamantina Basin · Carbon Sequestration",body:"The carbon sequestration potential of Arid and semi-arid catchments are underestimated which associated the onsite carbon management plan. I used HYDRUS-2D hydrological modelling to study soil moisture and CO2 flux dynamics across the Diamantina catchment, situating the findings inside global literature on dry-land carbon storage. Earth sciences on one side. Environmental management on the other. The research sat across both."},
   {org:"Hydrobiology",area:"Weipa · Bioassessment",body:"A river's health is not measured by how the water looks. It is measured by which small invertebrates can still live in it. Following AUSRIVAS protocols, I identified macroinvertebrates to genus level and matched the assemblages against reference sites. The output is a number that determines whether monitoring obligations have been met under EPP 2019 and REMP frameworks."},
   {org:"UQ Research",area:"Great Barrier Reef · Ocean Acidification",body:"The carbonate chemistry of reef water tells you something the temperature data alone cannot. It tells you whether the conditions still allow corals to build their skeletons. I worked on spatial and temporal water chemistry data across four reef systems, comparing them against ocean buoy reference data under ANZG ecotoxicological frameworks. The research sits inside the broader question of what ocean acidification is doing to one of the most studied marine systems in the world."},
   {org:"Queensland Government",area:"Palm Island · Native Title",body:"Native title over sea country and coastal areas is harder to map than land. The boundaries depend on documented connection and historical record. I worked on the spatial datasets behind these determinations and built ArcGIS Online applications that allow lawyers, Traditional Owner groups, and government staff to interrogate the same geography from inside a browser. The Native Title Act 1993 sets the framework. The mapping makes it usable."},
   {org:"Queensland Government",area:"Queensland-wide · Vegetation Management",body:"A satellite image of Queensland's vegetation is not just data. It is the basis for what a landholder can legally clear under the Vegetation Management Act 1999, and what falls under Regional Planning Interests Act 2014 protection. I worked with the spatial datasets and Property Maps of Assessable Vegetation that sit underneath those legal decisions. Misreading a polygon by a few hectares has direct consequences for what gets cleared and what stays."},
-  {org:"University of Queensland",area:"Brisbane · St Lucia campus",body:"I chose UQ for its research reputation and the pull of the Sunshine State, however then ended up attending Zoom University for most of it, courtesy of the pandemic. The sandstone campus eventually won me over in person, along with the resident bush turkeys who patrol the lawns like they own the title deeds. And every October the jacarandas detonate into purple all at once, which is gorgeous unless you are sitting under one wearing white. Brisbane has been the anchor for everything since."},
-  {org:"Geoconsult",area:"Surat Basin · Coal Seam Gas",body:"Coal seam gas operations leak measurable amounts of methane, and someone has to quantify how much. I built Python models that took laboratory desorption data from geological samples and converted it into emissions estimates. Field preparation, lab coordination, and dataset processing all fed into the same question. How much gas is leaking, and at what rate."},
+  {org:"University of Queensland",area:"Brisbane · St Lucia campus",body:"I chose UQ for its research reputation and the pull of the Sunshine State, however then ended up attending Zoom University for most of it courtesy of the pandemic. The sandstone campus eventually won me over in person, along with the resident bush turkeys who patrol the lawns like they own the title deeds. And every October the jacarandas detonate into purple all at once, which is gorgeous unless you are sitting under one wearing white. Brisbane has been the anchor for everything since."},
+  {org:"Geoconsult",area:"Surat Basin · Coal Seam Gas",body:"Coal mine operations release CO2 and methane, and NGER defines the operator has to measure and estimate how much. I built Python models that took laboratory desorption data from geological samples and converted it into emissions estimates. Field preparation, lab coordination, and dataset processing all fed into the same question. How much is the gas emission, and at what rate."},
 ];
 const wmWrap=document.getElementById("wm-wrap");
 const wmPopup=document.getElementById("wm-popup");
@@ -844,22 +862,22 @@ document.addEventListener("click",ev=>{
 (function(){
   const T = [
     ["I can read Queensland Deed of Grant drawn before 1975.","clay"],
-    ["I have assembled coal canisters for coal seam gas desorption testing.","ochre"],
+    ["I have assembled desorption canisters for coal seam gas testing until 6pm in the lab","ochre"],
     ["I set up the camera traps with team, once captured a snow leopard.","moss"],
-    ["I have done specimen taxonomy at the dinosaur museum.","sage"],
+    ["I have done specimen taxonomy at the jurassic dinosaur museum.","sage"],
     ["I translated a book on natural gas hydrates in the accretionary wedge into Chinese.","indigo"],
-    ["I taught myself French to follow musicals.","violet"],
+    ["I started teaching myself French for a musical about Louis XIV.","violet"],
     ["When I was in Tassie, a wombat walked under my bike ignored every human watching.","ochre"],
     ["My first time speaking Italian in the formal tone, I was with an old gentleman at a theatre.","violet"],
-    ["I watched sea turtles hatch on Heron.","sky"],
+    ["I watched sea turtles hatch on Heron Island.","sky"],
     ["I climbed Mount Etna, nearly got lost, and walked back with strangers.","clay"],
     ["First time I saw a Komodo dragon was at Leipzig Zoo not Indonesia.","moss"],
     ["I travelled five days straight on overnight trains and buses, alone.","indigo"],
     ["My maps have entered Queensland courts as evidence.","forest"],
-    ["I co-wrote Convention on Biodiversity reporting for China's State Council.","moss"],
+    ["I co-wrote Convention on Biodiversity reporting for China's Ministerial level.","moss"],
     ["I have a carpet python named Tanzi, the character for \"carpet\" in Chinese.","ochre"],
     ["I own a series of Finding Nemo buoys and I take to diving. My friends love them.","sky"],
-    ["While doing seagrass surveys in Moreton Bay, I once surrounded by a herd of dugongs.","sky"],
+    ["While doing seagrass surveys in Moreton Bay, I was once surrounded by a herd of dugongs.","sky"],
     ["I hold a jet ski license but have never actually driven one.","violet"],
   ];
   const host = document.getElementById('thoughts');
@@ -1043,7 +1061,8 @@ document.addEventListener("click",ev=>{
     ctx.setTransform(DPR,0,0,DPR,0,0);
   }
   function spawn(){
-    const target = Math.round((W*H)/8000);
+    const isMobileDevice = window.innerWidth <= 780;
+    const target = isMobileDevice ? Math.min(20, Math.round((W*H)/20000)) : Math.round((W*H)/8000);
     particles = [];
     for(let i=0; i<target; i++){
       particles.push({
@@ -1073,7 +1092,7 @@ document.addEventListener("click",ev=>{
     ctx.clearRect(0,0,W,H);
     const MAG_R = 180;     // magnet radius
     const MAG_R2 = MAG_R*MAG_R;
-    const MAG_K = 0.018;   // pull strength (lowered for slower, gentler response)
+    const MAG_K = 0.015;   // pull strength (lowered for slower, gentler response)
     const DAMP = 0.985;    // higher damping = longer, lazier trails
 
     for(const p of particles){
