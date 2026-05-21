@@ -368,10 +368,17 @@ footer span{font-family:var(--mono);font-size:0.54rem;letter-spacing:0.13em;colo
 
 /* ===== Existing mobile styles ===== */
 @media (max-width:780px){
-  nav{padding:0.7rem 1rem;flex-direction:column;align-items:flex-start;gap:0.4rem;}
-  /* Force nav links into a 3-column grid — wraps to 2 rows (3 + 2) on every phone */
-  nav ul{display:grid;grid-template-columns:repeat(3,minmax(0,auto));gap:0.4rem 1.1rem;width:100%;justify-content:start;}
-  nav a{font-size:0.6rem;letter-spacing:0.11em;white-space:nowrap;}
+  nav{padding:0.7rem 1rem;flex-direction:column;align-items:flex-start;gap:0.35rem;}
+  /* Keep nav links on a single row — gap shrinks first, font holds */
+  nav ul{display:flex;flex-wrap:nowrap;width:100%;justify-content:space-between;align-items:center;gap:clamp(0.25rem,1.8vw,1rem);}
+  nav li{flex:0 1 auto;min-width:0;}
+  nav a{
+    font-size:0.6rem;
+    letter-spacing:0.11em;
+    white-space:nowrap;
+    display:inline-block;
+  }
+  nav .logo{font-size:0.68rem;}
   /* Mobile padding must beat the inline padding on #about and #funfacts */
   section,.approach-section,.workmap-section,.skills-section,.contact-section,#about,#funfacts{padding:3rem 1.3rem !important;}
   .hero{padding:6.5rem 1.3rem 2rem !important;grid-template-columns:1fr;}
@@ -423,6 +430,13 @@ footer span{font-family:var(--mono);font-size:0.54rem;letter-spacing:0.13em;colo
 @media (max-width:480px){
   .skills-grid{grid-template-columns:1fr;}
   h1{font-size:clamp(2.6rem,13vw,3.8rem);}
+  /* Once gap is fully collapsed, start scaling the type down */
+  nav ul{gap:clamp(0.2rem,1.2vw,0.3rem);}
+  nav a{
+    font-size:clamp(0.44rem,2.05vw,0.6rem);
+    letter-spacing:clamp(0.05em,0.4vw,0.11em);
+  }
+  nav .logo{font-size:clamp(0.55rem,2.6vw,0.68rem);}
 }
 </style>
 </head>
@@ -900,12 +914,12 @@ window.addEventListener('resize', () => {
 const workData=[
   {org:"Hydrobiology",area:"Mary River & Paradise Dam · Compliance",body:"A mine discharges water into a river system, and the question becomes whether that discharge has crossed a line that matters legally. I worked on the spatial and water quality data that answers that question. The Environment Protection Act 1994 sets the thresholds. My job was to translate the field measurements into language the regulator can act on."},
   {org:"Geoconsult",area:"North Bowen Basin · Exploration",body:"Before a coal site can be drilled, someone has to decide where the rock is most likely to hold what the company is looking for, and what is living on top of it. I processed ASTER and Sentinel-2 imagery to identify thermal anomalies and soil signatures. From that base I produced the maps that went into EA approval submissions, drilling plans, and landholder consultations. Biodiversity offset and land clearing assessments sat on top of the same spatial foundation."},
-  {org:"Queensland Government",area:"Great Keppel Island · Native Title",body:"A native title determination is not just a map. It is a legal document with consequences for compensation, for land use, and for whose voice has authority over Country. I produced determination and claims maps in ArcGIS Pro and researched pre-1975 Queensland cadastral plans where the modern record runs out. I maintained QNTIME, the Queensland system that holds the official record of every native title claim and determination in the state."},
-  {org:"Queensland Government",area:"Queensland-wide · Place Names Act",body:"A place name in Queensland is not informal. It is gazetted under the Place Names Act 1994, and it lives inside an administrative boundary dataset that determines what address a property has, which council it falls under, and what services it receives. I maintained the Gazetteer and wrote Python scripts that automated integration of Queensland Spatial Cadastral Fabric points into the address and administrative boundary datasets statewide. FME workbenches handled the validation. Local councils handled the disputes."},
+  {org:"Queensland Government",area:"Great Keppel Island · Native Title",body:"A native title determination is a legal decision by the Federal Court with consequences for compensation, for land use, and for whose voice has authority over Country. I produced determination and claims maps in ArcGIS Pro and researched pre-1975 Queensland cadastral plans where the modern record runs out. I maintained QNTIME, the Queensland system that holds the official record of every native title claim and determination in the state."},
+  {org:"Queensland Government",area:"Queensland-wide · Place Names Act",body:"A place name in Queensland is gazetted under the Place Names Act 1994, and it lives inside an administrative boundary dataset that determines what address a property has, which council it falls under, and what services it receives. I maintained the Gazetteer and wrote Python scripts that automated integration of Queensland Spatial Cadastral Fabric points into the address and administrative boundary datasets statewide. FME workbenches handled the validation. Local councils handled the disputes."},
   {org:"METServe",area:"North Bowen Basin · Mine Closure",body:"SO2 emissions from a mine leave a measurable signature on the leaves of nearby vegetation. I analysed leaf samples in Fiji ImageJ to quantify foliar damage, converting biological evidence into the statistics that fed the Sulphur Dioxide Environmental Impact Monitoring Program. The work sat inside a broader closure planning frame covering progressive rehabilitation and landform stability. The underlying question was how a mined landscape eventually has to be returned."},
   {org:"UQ Research",area:"Diamantina Basin · Carbon Sequestration",body:"The carbon sequestration potential of Arid and semi-arid catchments are underestimated which associated the onsite carbon management plan. I used HYDRUS-2D hydrological modelling to study soil moisture and CO2 flux dynamics across the Diamantina catchment, situating the findings inside global literature on dry-land carbon storage. Earth sciences on one side. Environmental management on the other. The research sat across both."},
-  {org:"Hydrobiology",area:"Weipa · Bioassessment",body:"A river's health is not measured by how the water looks. It is measured by which small invertebrates can still live in it. Following AUSRIVAS protocols, I identified macroinvertebrates to genus level and matched the assemblages against reference sites. The output is a number that determines whether monitoring obligations have been met under EPP 2019 and REMP frameworks."},
-  {org:"UQ Research",area:"Great Barrier Reef · Ocean Acidification",body:"The carbonate chemistry of reef water tells you something the temperature data alone cannot. It tells you whether the conditions still allow corals to build their skeletons. I worked on spatial and temporal water chemistry data across four reef systems, comparing them against ocean buoy reference data under ANZG ecotoxicological frameworks. The research sits inside the broader question of what ocean acidification is doing to one of the most studied marine systems in the world."},
+  {org:"Hydrobiology",area:"Weipa · Bioassessment",body:"A river's health in aquatic science view is measured by its indicator, how varied small invertebrates can still live in it. Following AUSRIVAS protocols, I identified macroinvertebrates to genus level and matched the assemblages against reference sites. The output is a number that determines whether monitoring obligations have been met under EPP 2019 and REMP frameworks."},
+  {org:"UQ Research",area:"Great Barrier Reef · Ocean Acidification",body:"The carbonate chemistry of surface ocean water of the coral reefs tells you the combination of bio-geochemistry mechanism. It tells you whether the delicate conditions still allow corals to build their skeletons. I worked on spatial and temporal water chemistry data across four reef systems, comparing them against ocean buoy reference data under ANZG ecotoxicological frameworks. The research sits inside the broader question of what ocean acidification is doing to one of the most studied marine systems in the world."},
   {org:"Queensland Government",area:"Palm Island · Native Title",body:"Native title over sea country and coastal areas is harder to map than land. The boundaries depend on documented connection and historical record. I worked on the spatial datasets behind these determinations and built ArcGIS Online applications that allow lawyers, Traditional Owner groups, and government staff to interrogate the same geography from inside a browser. The Native Title Act 1993 sets the framework. The mapping makes it usable."},
   {org:"Queensland Government",area:"Queensland-wide · Vegetation Management",body:"A satellite image of Queensland's vegetation is not just data. It is the basis for what a landholder can legally clear under the Vegetation Management Act 1999, and what falls under Regional Planning Interests Act 2014 protection. I worked with the spatial datasets and Property Maps of Assessable Vegetation that sit underneath those legal decisions. Misreading a polygon by a few hectares has direct consequences for what gets cleared and what stays."},
   {org:"University of Queensland",area:"Brisbane · St Lucia campus",body:"I chose UQ for its research reputation and the pull of the Sunshine State, however then ended up attending Zoom University for most of it courtesy of the pandemic. The sandstone campus eventually won me over in person, along with the resident bush turkeys who patrol the lawns like they own the title deeds. And every October the jacarandas detonate into purple all at once, which is gorgeous unless you are sitting under one wearing white. Brisbane has been the anchor for everything since."},
