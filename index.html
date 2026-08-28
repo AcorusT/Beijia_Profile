@@ -875,6 +875,47 @@ nav{scroll-snap-align:none;}
 }
 
 </style>
+
+<style id="narrow-mobile-overflow-fix">
+/* Very narrow phones (e.g. Galaxy S23): allow stacked grid columns to truly shrink. */
+@media (max-width:390px){
+  #about .about-grid{
+    grid-template-columns:minmax(0,1fr) !important;
+    width:100%;
+    max-width:100%;
+    min-width:0;
+    overflow:visible;
+  }
+
+  #about .about-grid > *{
+    min-width:0;
+    width:100%;
+    max-width:100%;
+  }
+
+  #about .about-body,
+  #about .about-edu,
+  #about .about-stats{
+    min-width:0;
+    width:100%;
+    max-width:100%;
+  }
+
+  /* The stats stay two-up, but each track is allowed to shrink below its content's intrinsic width. */
+  #about .about-stats{
+    grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+  }
+
+  #about .stat,
+  #about .stat-label,
+  #about .about-edu li,
+  #about .about-body p{
+    min-width:0;
+    max-width:100%;
+    overflow-wrap:anywhere;
+  }
+}
+</style>
 </head>
 <body>
 <canvas id="topo"></canvas>
